@@ -9,6 +9,17 @@ package Nuhker;
  *
  */
 
+
+// HINT: args4j : Java command line arguments parser - http://args4j.kohsuke.org/
+
+// http://martin-thoma.com/how-to-parse-command-line-arguments-in-java/
+
+// HINT: The Apache Commons CLI library provides an API for parsing command line
+// options passed to programs. It's also able to print help messages detailing the
+// options available for a command line tool.
+//    http://commons.apache.org/proper/commons-cli/
+
+
 public class Run {
 
 	/**
