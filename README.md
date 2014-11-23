@@ -22,5 +22,5 @@ should give you the result below:
 
 
 Master plan is described in a separate file:
-	- TaskDescription.txt
+	- doc/TaskDescription.txt
 
