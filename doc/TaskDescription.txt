@@ -1,0 +1,94 @@
+ // created: Nov 20, 2014 12:20:39 AM
+ 
+Below is the technical task I am trying to accomplish.
+I am currently unable to estimate how feasible it is.
+
+- - -
+
+#### Summary
+
+The main goal for the program is to gather some badness information,
+e.g. which domains (in your constituency) are dirty/bad, i.e. contain or
+distribute malware. We are only interested in a plain fact, i.e. we
+do not investigate any particular malware.
+
+#### Design ideas
+
+The idea what the program shall do, is here:
+
+ - makes sure what the constituency is (e.g. country = EE).
+   + an extra variant: plus all domains ending in .ee
+ - questions several reputable web sources and tries to enumerate the constituency
+	e.g saying, all domains ending .ee plus all ASN's registered under country code EE
+	+ the deliverables are: the list of all ASNs (in .EE) plus the condition (.ee TLD ending)
+	+ there are numberous possibilities to obtain ASNs ... 
+  - recursively visits Google Safe Browsing: (https://safebrowsing.google.com/safebrowsing/diagnostic?site=www.ee/)
+	+ alternately pulls warning pages about ASNs and FQDN
+	+ parses these pages logically
+	+ extracts bad domains list from any suitable page
+	+ extracts new ASNs to check out
+	+ gathers the results
+	+ until the predefined depth of the recursion reached
+
+ - outputs only the domains with "badness found" (malware etc)
+	+ optionally (if requested), formats the result as an HTML page not TXT/CSV.
+	+ outputs the result to stderr or, if requested via options, into a file.
+
+ * EXTRA (if too few code)
+	+ will inquery reverse DNS for any FQDN not ending with EE
+	+ will inquery these IP's for any domains, if any additional EE, then include them
+
+ * EXTRA - whitelisting and blacklisting of previously known ASNs and FQDNs, via the command line options
+
+ * EXTRA - obtaining extra EE domains via clean-mx, parse these out of XML and include them
+	(ToDo - an URL required)	
+ * EXTRA EXTRA - any statistics about the run - time spentr; targets found on each recursion level,
+	network card traffic statistics (probably very dangerous security-wise ;) ) etc.
+
+
+### Non-functional requirements:
+
+a. Environment is Java. Not my choice, however.
+b. The program works from the (Linux) command line.
+
+Assumed: fast network, reasonably small constituency, fast DNS service
+Assumed: IPv4 only. IPv6 might be considered later
+
+
+Modularity planning:
+(which capabilities are realised in which module)
+
+Module: CommandLine
+   - handles numerous command line options
+
+Module: Defaults
+1. if no arguments given, substitute some reasonable defaults, like:
+   - country code = EE
+   - recursion depth = some reasonable value
+   - if not overridden, set e.g. 5 min for max execution time
+
+
+Module: A - launched first
+
+ 1. Rely on the 2-letter country codes.
+  1.1. obtain a list from somewhere (more like for practicing than for the need)
+  	* e.g. (http://xml.coverpages.org/country3166.html)
+  1.2. verify the presence of a particular country code before launching subsequent modules
+
+Module: B - ripping ASNs out of somewhere (HE, RIPE, RobTex, elsewhere)
+		(https://stat.ripe.net/data/country-resource-list/data.json?resource=ee)
+
+Module: C - dual (interleaved) recursion thingy.
+		- prehistorical credits to H.A. for the algorithm
+
+Module: D - possible IP reverse lookout
+
+Module: E - normalizing the output, optionally to a coloured HTML table.
+		- adding human-readable ISP names
+
+Module: F - organizing suitability timers, handling errors etc.
+
+Module: G - statistics, runtime summaries, etc
+
+
+optional task - trying to manage it via git (it seems there are several levels of sync)
