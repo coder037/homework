@@ -23,4 +23,4 @@ should give you the result below:
 
 Master plan is described in a separate file:
 	- doc/TaskDescription.txt
-
+ConceptDiagram.png is in doc/ directory
