@@ -1,0 +1,39 @@
+Some ideas which libraries to sepnd to.
+
+For HTML parsing
+	 org.jsoup
+  		jsoup
+  			1.8.1
+# ---------------------------
+
+For json parsing
+either
+ 	org.json
+  		json
+  			20141113
+or
+  	com.google.code.gson
+  		gson
+  			2.3.1
+# ---------------------------
+
+To work with files
+  	commons-io
+  		commons-io
+  			2.4
+# ---------------------------
+
+For commandline options
+  	net.sf.jopt-simple
+  		jopt-simple
+  			4.8
+
+Ref: https://github.com/martinpaljak/GlobalPlatform/blob/master/src/openkms/gp/GPTool.java
+# ---------------------------
+
+Some xtra HTML thing:
+	com.palominolabs.xpath
+    		xpath-utils
+    			1.0.1
+
+Ref: http://www.vogella.com/tutorials/JavaXML/article.html
