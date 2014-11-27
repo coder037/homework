@@ -2,10 +2,11 @@
 
 
 Some studium related stuff is located here. Nothing valuable.
-  Initiated: 2014-11-18.
-  Ready with the environment tuning, starting to write code.
-  Json src file parsing mostly completed - 2014-11-27
-  Next task: write the recursion module
+
+   Initiated: 2014-11-18.
+   Ready with the environment tuning, starting to write code.
+   Json src file parsing mostly completed - 2014-11-27.
+   Next task: write the recursion module.
 
 
 ### Identities
