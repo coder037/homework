@@ -91,7 +91,7 @@ public class ParseRIPEConstituency {
 
 
 		
-		public static String[] asnJsonParser (String jsonedASNList) throws IOException {
+		public static String[] asnJsonParser (String jsonedASNList) {
 			String[] arrayedASNList = null;
 			// We parse a 3-level json hierarchy here
 			// and obtain asn names from the 4-th level
@@ -99,13 +99,12 @@ public class ParseRIPEConstituency {
 			JSONParser simpleParser = new JSONParser(); 
 			try {
 			
-			// Hierarchy Level 1 - Outer braces of the json structure
+			// Hierarchy Level 1 - Outer braces of the json structure (main)
 			Object outerObject = simpleParser.parse(jsonedASNList);
 			JSONObject jsonObject1 = (JSONObject) outerObject;
 
 			String status = (String) jsonObject1.get("status");
 			System.out.println("Status: " + status);
-			
 			String time = (String) jsonObject1.get("time");
 			System.out.println("Time: " + time);
 						
@@ -135,7 +134,7 @@ public class ParseRIPEConstituency {
 					// but we are not interested in these just now
 		
 		} catch (ParseException e) {
-			System.out.println("Some exception made Boo-boo during asnJsonParser method,");
+			System.out.println("Parsing exception made Boo-boo during asnJsonParser method,");
 			System.out.println("        that's all I know currently...");
 			e.printStackTrace();
 		}
