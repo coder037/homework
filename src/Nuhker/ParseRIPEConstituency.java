@@ -9,7 +9,7 @@ package Nuhker;
  *
  */
 
-// Inspirations sources:
+// Inspiration sources:
 //    API PRINCIPLES: https://stat.ripe.net/docs/data_api
 //    SRC http://runnable.com/Uu83dm5vSScIAACw/download-a-file-from-the-web-for-java-files-and-save
 //    SRC http://www.mkyong.com/java/json-simple-example-read-and-write-json/
@@ -38,6 +38,37 @@ import java.util.ArrayList;
 public class ParseRIPEConstituency {
 
 	
+		public static byte[] downLoader (String urlToDL) throws IOException {
+			byte[] byteStream = null;
+			URL urlToVisit = new URL(urlToDL);
+			System.out.println("downLoader: URL: " + urlToVisit);
+
+			// Open a network stream to the resource
+			// and record the answer.
+			// input comes from here:
+			 InputStream networkSource = new BufferedInputStream(urlToVisit.openStream());
+			// output goes there:
+			 ByteArrayOutputStream httpResult = new ByteArrayOutputStream();
+			 
+			 // Hello man, this is some best industry-standard method
+			 // available in many textbooks. bufferlength = 1024 etc.
+			 // Me don't know who has written this code block ;)
+			 // GOOGLE for "java streams byte[1024]"
+			 
+			 byte[] queueBuffer = new byte[1024];
+			 int n = 0;
+			 while (-1!=(n=networkSource.read(queueBuffer)))
+			 {
+			    httpResult.write(queueBuffer, 0, n);
+			 }
+			 httpResult.close();
+			 networkSource.close();
+			 byteStream = httpResult.toByteArray();
+			 // end of the weird industry-standard HTTP seduction method
+			return byteStream;
+		}
+	
+	
 		public static String grabCountryDescription (String countryCode) throws IOException {
 			String jsonDataObtained =  "{\"status\": \"not OK\"}";		
 
@@ -45,30 +76,11 @@ public class ParseRIPEConstituency {
 			 String parameterToURL = countryCode.toLowerCase();
 			 String QueryBaseLink = "https://stat.ripe.net/data/country-resource-list/data.json?resource=";
 			 String fullUrl = QueryBaseLink + parameterToURL; 
-			 URL urlToVisit = new URL(fullUrl);
-			 System.out.println("URL: " + urlToVisit);
-		
 
-					
-		     // 2. Open a network stream from the resource and read it in
-			 	// input as:
-				 InputStream networkSource = new BufferedInputStream(urlToVisit.openStream());
-				// output as:
-				 ByteArrayOutputStream httpResult = new ByteArrayOutputStream();
-				// some weird industry-standard procedure with bufferlength = 1024
-				 byte[] fifoBuffer = new byte[1024];
-				 int n = 0;
-				 while (-1!=(n=networkSource.read(fifoBuffer)))
-				 {
-				    httpResult.write(fifoBuffer, 0, n);
-				 }
-				 httpResult.close();
-				 networkSource.close();
-				 byte[] response = httpResult.toByteArray();
-				 // end of the weird industry standard HTTP secuction method
-				 
-				 System.out.println("Chars in the array: " + response.length);
-				 jsonDataObtained = new String(response);
+			// 2. Open a network stream from the resource and read it in
+			byte[] response = downLoader(fullUrl);
+			System.out.println("Chars in the array: " + response.length);
+			jsonDataObtained = new String(response);
 				// DEBUG System.out.println("BlobString: " + passToParse);
 				 
 		 // WARNING! Is it safe to convert use hyperLONG Strings?
@@ -81,14 +93,13 @@ public class ParseRIPEConstituency {
 		
 		public static String[] asnJsonParser (String jsonedASNList) throws IOException {
 			String[] arrayedASNList = null;
-			// We parse a 3-level json hierarchy here and obtain 4-th level names
-			// See self-documenting URL:
-			// https://stat.ripe.net/data/country-resource-list/data.json?resource=ee
-			// will need it later
+			// We parse a 3-level json hierarchy here
+			// and obtain asn names from the 4-th level
+
 			JSONParser simpleParser = new JSONParser(); 
 			try {
 			
-			// Hierarchy Level 1 - // Outer braces of json structure
+			// Hierarchy Level 1 - Outer braces of the json structure
 			Object outerObject = simpleParser.parse(jsonedASNList);
 			JSONObject jsonObject1 = (JSONObject) outerObject;
 
@@ -109,21 +120,23 @@ public class ParseRIPEConstituency {
 					Object innerObject = (jsonObject2.get("resources"));
 					JSONObject jsonObject3 = (JSONObject) innerObject;
 					
-					// Hierarhy level 4 - each particular AS
+					// Hierarhy level 4 - each particular ASN
 					JSONArray asn = (JSONArray) jsonObject3.get("asn");
 					
 				// ToDo! This conversion can be nicer ;)
-				ArrayList outputList = new ArrayList(asn);
+				@SuppressWarnings("unchecked") // http://stackoverflow.com/questions/367626/how-do-i-fix-the-expression-of-type-list-needs-unchecked-conversion
+				ArrayList<String> outputList = new ArrayList<String>(asn);
 				int arraySize = outputList.size();
 
 				System.out.println("Size is: " + arraySize);
 				arrayedASNList = (String[]) outputList.toArray(new String[arraySize]);
 		
 		// Actually there are yet IPv4 and IPv6 lists available
-					/// but we are not currently interested in these
+					// but we are not interested in these just now
 		
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Some exception made Boo-boo during asnJsonParser method,");
+			System.out.println("        that's all I know currently...");
 			e.printStackTrace();
 		}
 
