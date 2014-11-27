@@ -1,16 +1,27 @@
  // created: Nov 20, 2014 12:20:39 AM
- 
+ // amended  Nov 27, 2014 03:35:00 AM 
+
 Below is the technical task I am trying to accomplish.
-I am currently unable to estimate how feasible it is.
 
 - - -
 
 #### Summary
 
-The main goal for the program is to gather some badness information,
-e.g. which domains (in your constituency) are dirty/bad, i.e. contain or
+The main goal of the package is to gather some badness information,
+about it, which domains (in your constituency) are dirty/bad, i.e. contain or
 distribute malware. We are only interested in a plain fact, i.e. we
-do not investigate any particular malware.
+do not obtain or investigate any particular malware binary.
+
+The main problem with that kind of information is the same as with
+any dangerous substances - provided you are not in the industry, it is
+difficult for you obtain the list of dangerous (infecting) websites.
+
+The package demonstrates how it is still possible to gather this
+information via OSInt. As with any OsInt, it takes time (due to the
+limits on too frequent requests) while no warranties cannot implied.
+However, after spending some time, provided this was your lucky day,
+you statistically will find some extra information.
+
 
 #### Design ideas
 
@@ -25,6 +36,43 @@ The idea what the program shall do, is here:
   - recursively visits Google Safe Browsing: (https://safebrowsing.google.com/safebrowsing/diagnostic?site=www.ee/)
 	+ alternately pulls warning pages about ASNs and FQDN
 	+ parses these pages logically
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+v 20, 2014 12:20:39 AM
 	+ extracts bad domains list from any suitable page
 	+ extracts new ASNs to check out
 	+ gathers the results
@@ -75,8 +123,10 @@ Module: A - launched first
   	* e.g. (http://xml.coverpages.org/country3166.html)
   1.2. verify the presence of a particular country code before launching subsequent modules
 
-Module: B - ripping ASNs out of somewhere (HE, RIPE, RobTex, elsewhere)
+Module: B - ripping an ASN list out of somewhere (HE, RIPE, RobTex, elsewhere)
 		(https://stat.ripe.net/data/country-resource-list/data.json?resource=ee)
+
+Status - mostly DONE.
 
 Module: C - dual (interleaved) recursion thingy.
 		- prehistorical credits to H.A. for the algorithm
@@ -91,5 +141,7 @@ Module: F - organizing suitability timers, handling errors etc.
 Module: G - statistics, runtime summaries, etc
 
 
-optional task - trying to manage it via git (it seems there are several levels of sync)
+optional task - trying to manage it via git
+
+Status - achieved - currently managed via Eclipse, Maven  M-2-E and git.
 
