@@ -36,43 +36,6 @@ The idea what the program shall do, is here:
   - recursively visits Google Safe Browsing: (https://safebrowsing.google.com/safebrowsing/diagnostic?site=www.ee/)
 	+ alternately pulls warning pages about ASNs and FQDN
 	+ parses these pages logically
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-v 20, 2014 12:20:39 AM
 	+ extracts bad domains list from any suitable page
 	+ extracts new ASNs to check out
 	+ gathers the results
@@ -143,5 +106,5 @@ Module: G - statistics, runtime summaries, etc
 
 optional task - trying to manage it via git
 
-Status - achieved - currently managed via Eclipse, Maven  M-2-E and git.
+Status - achieved - the project is currently managed via Eclipse, Maven  M-2-E and git.
 
