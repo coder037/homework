@@ -21,7 +21,7 @@ import org.jsoup.select.*;
 		
 		
 		public static boolean isNonsense (String suspect) {
-			// This method calculates whether the sentence testified
+			// This method calculates whether the sentence testified 
 			// is a valid data or some pre-defined crap that we don't need
 			
 			String [] urlNotUseful = {

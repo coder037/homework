@@ -155,7 +155,10 @@ public class ParseRIPEConstituency {
 		  for (int k = 0; k < countOfASNsObtained ; k++) {
 			  System.out.println(hasBeenParsed[k] + " ");
 		  }
-			 
+			
+		  // ToDo: json status field: if not OK or no data, then errmsg
+		  //    this will happen if wrong country code asked from RIPE
+		  
      } //MAIN
 			 
 } //CLASS
