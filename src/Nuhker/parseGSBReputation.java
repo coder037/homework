@@ -100,7 +100,7 @@ import org.jsoup.select.*;
 							// ToDo: the routine to exfiltrate all other ASNs except our initial one
 						 		// Is this ASN our initial ASN?
 					  	    } else {
-				  	    	System.out.println("Sub extracted a shit related URL: " + workspace);
+				  	    	System.out.println("Sub extracted a shit-related URL: " + workspace);
 				  	    		u = u + 1;
 				  	    	// ToDo: We should extrafiltrate these to some global list
 				  	    } 
