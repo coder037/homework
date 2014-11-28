@@ -38,7 +38,7 @@ import org.jsoup.select.*;
 		  			// System.out.println("Discard this and exit");
 		  			break virginity;
 		  		  }
-		  	} // FOR
+		  	} // FOR 
 			return whetherToDiscard;
 		} 
 		
