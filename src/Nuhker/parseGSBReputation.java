@@ -9,7 +9,7 @@ import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 
-//SRC http://stackoverflow.com/questions/12361925/html-parsing-with-jsoup
+//Tutorial: http://stackoverflow.com/questions/12361925/html-parsing-with-jsoup
 
 /**
  * @author coder037@xyz.ee
@@ -38,7 +38,7 @@ import org.jsoup.select.*;
 		  			// System.out.println("Discard this and exit");
 		  			break virginity;
 		  		  }
-		  	} // FOR 
+		  	} // FOR  
 			return whetherToDiscard;
 		} 
 		
