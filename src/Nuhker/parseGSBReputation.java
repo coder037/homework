@@ -53,6 +53,12 @@ import org.jsoup.select.*;
 		  String workspace = "";
 		  String as = "AS"; 
 
+		  //ToDo:
+		  //     1. to empty main method, create a separate method
+		  //     2. parametrize that method so that we can enter a string param
+		  //     3. do checks on param entry: whether FQDN or ASN (AS, no /$)
+		  //     4. some routine checks whether FQDN looks normalized (/ off)
+		  //     5. separate AS info from AS number for future bookkeeping
 
 	try {
 	  String url = url1;
