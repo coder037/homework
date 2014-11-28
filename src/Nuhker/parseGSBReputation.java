@@ -43,6 +43,9 @@ import org.jsoup.select.*;
 		} 
 		
 		
+		// ToDo: method: public static String[] grabGSBReputation (String fqdnOrAsn)
+		
+		
 	public static void main(String[] args) {
 		String url1 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=www.ee/";
 		String url2 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=AS:3249";
@@ -53,6 +56,7 @@ import org.jsoup.select.*;
 
 	try {
 	  String url = url1;
+	  System.out.println("START: " + url);
 	  Document doc = Jsoup.connect(url).get();
 	  Elements meaningfulSections = doc.select("a");
 	 // need to find memes that contain meaningful FQDNs.
@@ -60,22 +64,25 @@ import org.jsoup.select.*;
 		 
 		 workspace = fqdnCandidate.text();
 	     // System.out.println(workspace);
-	  	    if (workspace.contains(as)) {
-		 		System.out.println("Found AS info: " + workspace);
-		 // ToDo: the routine to exfiltrate other ASNs that our initial one
-	  		}
+
 	  	 // Checking each meme for nonsenselessness   
-	  	    if ( ! (isNonsense(workspace))) {
-	  	    	System.out.println("Sub says: " + workspace);
-	  	 // We should add these to some global list
+	  	    if ( ! (isNonsense(workspace))) { // throw away Google's own promo links
+		  	    if (workspace.contains(as)) {
+			 		System.out.println("Also found AS info: " + workspace);
+				// ToDo: the routine to exfiltrate all other ASNs except our initial one
+			 		// Is this ASN our initial ASN?
+		  	    } else {
+	  	    	System.out.println("Sub says SHIT FOUND AT: " + workspace);
+	  	    	// ToDo: We should extrafiltrate these to some global list
+
 	  	    } 
-	  	    
+	  	 }
 	  }  
 
 
 	} //TRY
 	
-	// Funny thing obtained from the source. Where does it go? Can we use it elsewhere?
+	// Funny thing obtained from a source. Should we use it elsewhere?
 	// SRC: http://tutorials.jenkov.com/java-logging/logger.html
 	catch (IOException ex) {
 	  Logger.getLogger(parseGSBReputation.class.getName())
