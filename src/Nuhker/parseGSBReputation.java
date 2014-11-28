@@ -14,7 +14,7 @@ import org.jsoup.select.*;
 /**
  * @author coder037@xyz.ee
  * @identity 3fde112fe1ca443210b843745f21b58aaeb7713576bbdd296848ca7b05b018283dc82c50ff51fc8d7c5243d883bfca92a3be4e068eb1ce541e91b54b1697340f
- * Tag Comments: @author @version @param @return @deprecated @since @throws @exception @see
+ * Tag Comments: @version @param @return @deprecated @since @throws @exception @see
  */
 	public class parseGSBReputation {
 
@@ -55,31 +55,34 @@ import org.jsoup.select.*;
 	  String url = url1;
 	  Document doc = Jsoup.connect(url).get();
 	  Elements meaningfulSections = doc.select("a");
-	 
+	 // need to find memes that contain meaningful FQDNs.
 	  for(Element fqdnCandidate : meaningfulSections) {
 		 
 		 workspace = fqdnCandidate.text();
 	     // System.out.println(workspace);
-	     
 	  	    if (workspace.contains(as)) {
 		 		System.out.println("Found AS info: " + workspace);
+		 // ToDo: the routine to exfiltrate other ASNs that our initial one
 	  		}
-		
-	  	    if (isNonsense(workspace)) {
-	  	    	// System.out.println("Sub says: nonsense!");
-	  	    } else {
+	  	 // Checking each meme for nonsenselessness   
+	  	    if ( ! (isNonsense(workspace))) {
 	  	    	System.out.println("Sub says: " + workspace);
-	  	    }
+	  	 // We should add these to some global list
+	  	    } 
 	  	    
 	  }  
 
 
 	} //TRY
+	
+	// Funny thing obtained from the source. Where does it go? Can we use it elsewhere?
+	// SRC: http://tutorials.jenkov.com/java-logging/logger.html
 	catch (IOException ex) {
 	  Logger.getLogger(parseGSBReputation.class.getName())
 	        .log(Level.SEVERE, null, ex);
 	   }
-	  }
-}
+	
+    } // MAIN
+} //CLASS
 	
 
