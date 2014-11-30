@@ -34,7 +34,7 @@ public class Run {
 			public static void main(String[] argv) throws Exception {
 
 				// Way 1
-				System.out.println(" ======= classical way ===== ");
+				System.out.println(" ======= classic way ===== ");
 				if (true) {
 					System.out.println("No options were passed.");
 				}
@@ -42,7 +42,7 @@ public class Run {
 					System.out.println("POS: " + s + " Value: " + argv[s]);
 				}
 				System.out.println(" ======= jobt-simple way ===== ");
-				System.out.println("So far EMULATING the command line.");
+				System.out.println("So far EMULATING the command line due the CLASSPATH.");
 				
 				// Argument plan
 				// -n or no-copyright OR name will be asked
@@ -79,11 +79,28 @@ public class Run {
 //				}
 				
 
+				// Argument plan
+				// -c or --country=EE
+				// -M or --maxrunningtime ms 80000000
+				// -n or no-copyright OR name will be asked
+				// -o OR --outputfile filename (.txt added?)
+				// -R or --recursionlevel 5
+				// -t or --timeoutbetween ms 3000
+
+				// -v or --verbose 3 (verbosity level)
 				
+
+
 		        
-		        parser.accepts( "x" );
-		        parser.accepts( "Y" );
-		        parser.accepts( "z" ).withRequiredArg();
+		        parser.accepts( "c" ).withRequiredArg();
+		        parser.accepts( "h" );
+		        parser.accepts( "M" ).withRequiredArg();
+		        parser.accepts( "n" ).withOptionalArg();
+		        parser.accepts( "o" ).withOptionalArg();
+		        parser.accepts( "R" ).withRequiredArg();
+		        parser.accepts( "t" ).withRequiredArg();
+		        parser.accepts( "v" ).withOptionalArg();
+
 
 		        
 
