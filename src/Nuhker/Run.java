@@ -19,6 +19,10 @@ package Nuhker;
 // options available for a command line tool.
 //    http://commons.apache.org/proper/commons-cli/
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -26,7 +30,15 @@ import joptsimple.OptionSet;
 
 public class Run {
 
-
+	private final static String OPT_COUNTRY = "country";
+	private final static String OPT_MAXRUN = "maxrunningtime";
+	private final static String OPT_NOCOPYRIGHT = "nocopyright";
+	private final static String OPT_OUTPUT = "output";
+	private final static String OPT_RECURSIONLEVEL = "recuresionlevel";
+	private final static String OPT_TIMEOUT = "timeout";
+	private final static String OPT_VERBOSE = "verbose";
+	private final static String OPT_VER = "version";
+	private final static String OPT_XTRA = "xtra";
 		
 		/**
 		 * @param args
@@ -42,19 +54,9 @@ public class Run {
 					System.out.println("POS: " + s + " Value: " + argv[s]);
 				}
 				System.out.println(" ======= jobt-simple way ===== ");
-				System.out.println("So far EMULATING the command line due the CLASSPATH.");
+				System.out.println("So far just EMULATING the commandline due the no CLASSPATH set.");
 				
-				// Argument plan
-				// -n or no-copyright OR name will be asked
-				// --country=EE
-				// -o OR --outputfile filename (.txt added?)
-				// -t or --timeoutbetween ms 3000
-				// -M or --maxrunningtime ms 80000000
-				// -R or --recursionlevel 5
-				// -v or --verbose 3 (verbosity level)
-				
-				
-				
+
 				
 				// Parse arguments
 				OptionSet args = null;
@@ -79,56 +81,39 @@ public class Run {
 //				}
 				
 
-				// Argument plan
-				// -c or --country=EE
-				// -M or --maxrunningtime ms 80000000
-				// -n or no-copyright OR name will be asked
-				// -o OR --outputfile filename (.txt added?)
-				// -R or --recursionlevel 5
-				// -t or --timeoutbetween ms 3000
-
-				// -v or --verbose 3 (verbosity level)
+		        
+				parser.acceptsAll(Arrays.asList("h", "help"), "Shows some help").forHelp();
+				parser.acceptsAll(Arrays.asList("c", OPT_COUNTRY), "Enter country code to work with; default=EE");
+				parser.acceptsAll(Arrays.asList("d", OPT_VERBOSE), "Debuglevel; default=3").withRequiredArg().ofType(Integer.class);
+				parser.acceptsAll(Arrays.asList("M", OPT_MAXRUN), "Max time in seconds we should run, kill then; default=80000 secs").withRequiredArg().ofType(Integer.class);
+				parser.acceptsAll(Arrays.asList("n", OPT_NOCOPYRIGHT), "Supress asking author's name on CLI");
+				parser.acceptsAll(Arrays.asList("o", OPT_OUTPUT), "Name of the output file; default=output");
+				parser.acceptsAll(Arrays.asList("R", OPT_RECURSIONLEVEL), "recursion depth; default=4").withRequiredArg().ofType(Integer.class);
+				parser.acceptsAll(Arrays.asList("t", OPT_TIMEOUT), "Timeout between requests; default=2800 ms or Google will block you").withRequiredArg().ofType(Integer.class);
+				parser.acceptsAll(Arrays.asList("v", OPT_VER), "Shows version number");
+				parser.acceptsAll(Arrays.asList("x", OPT_XTRA), "Possibly we implement an extra functionality later");
+			
 				
-
-
 		        
-		        parser.accepts( "c" ).withRequiredArg();
-		        parser.accepts( "h" );
-		        parser.accepts( "M" ).withRequiredArg();
-		        parser.accepts( "n" ).withOptionalArg();
-		        parser.accepts( "o" ).withOptionalArg();
-		        parser.accepts( "R" ).withRequiredArg();
-		        parser.accepts( "t" ).withRequiredArg();
-		        parser.accepts( "v" ).withOptionalArg();
-
-
-		        
-
-		        
-		        
-		        OptionSet cliOptions = parser.parse("-xYzsomeargument");
-
-		        if (cliOptions.has( "x" )) {
-		        	System.out.println("Option a was given");
-		        }
-		        
-		        if (cliOptions.has( "Y" )) {
-		        	System.out.println("Option Y was given");
-		        }
-		        
-		        if (cliOptions.has( "z" )) {
+		        // OptionSet cliOptions = parser.parse("--country", "EE", "-d", "7", "-M", "80000", "-n", "-o", "somefilename-001", "-R", "4", "-t", "2800");
+		        // OptionSet cliOptions = parser.parse("-c", "EE", "-d", "7", "-M", "80000", "-n", "-o", "somefilename-001", "-R", "4", "-t", "2800");
+				OptionSet cliOptions = parser.parse("--help");
+				
+		        if (cliOptions.has( "c" )) {
 		        	System.out.println("Option c was given");
-		        	String optionValue = (String)cliOptions.valueOf("z");
+		        }
+		        
+		        if (cliOptions.has( "d" )) {
+		        	System.out.println("Option d was given");
+		        }
+		        
+		        if (cliOptions.has( "M" )) {
+		        	System.out.println("Option M was given");
+		        	String optionValue = (String)cliOptions.valueOf("M");
 		        	System.out.println("     and it had a suboption: " + optionValue); 
 		        }
 		        
 
-				// Generic options
-//				parser.acceptsAll(Arrays.asList("h", CMD_HELP), "Shows help text").forHelp();
-
-
-
-				
 
 
 
