@@ -53,9 +53,11 @@ public class Run {
 				OptionSet args = null;
 				OptionParser parser = new OptionParser();
 			
+				// ToDo: to put this into a distinct method (argv+argv ;)
 				// WARNING, NEXT 15 lines are not of mine but from ELSEWHERE 
 				// Neat trick from https://github.com/martinpaljak/GlobalPlatform/blob/master/src/openkms/gp/GPTool.java
 				// lines 133-147
+
 				try {
 					args = parser.parse(argv);
 					// Try to fetch all values so that format is checked before usage
@@ -87,10 +89,11 @@ public class Run {
 				parser.acceptsAll(Arrays.asList("v", OPT_VER), "Show version number");
 				parser.acceptsAll(Arrays.asList("x", OPT_XTRA), "Some extra functionality we possible implement later");
 			
-		        // Currently we simulate (until we build the static program) 
-		        OptionSet cliOptions = parser.parse("--country", "EET", "--copyright", "Some Name", "--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800", "-d", "7", "-M", "80000");
+		        // Currently we simulate (until we build the static program)
+				// WARNING, TRY-catch  from above needed!
+		        // OptionSet cliOptions = parser.parse("--country", "EE", "--copyright", "Some Name", "--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800", "-d", "7", "-M", "80000");
 		        // OptionSet cliOptions = parser.parse("-c", "EE", "-d", "5", "-M", "80000", "-n", "-o", "somefilename-001", "-R", "4", "-t", "2800");
-				// OptionSet cliOptions = parser.parse("--help");
+				OptionSet cliOptions = parser.parse("--help");
 				
 				// Somewhat special options FIRST
 				
@@ -107,11 +110,26 @@ public class Run {
 					System.exit(0);
 				}
 				
-				 if (cliOptions.has( "v" )) {
+				if (cliOptions.has( "v" )) {
 					 
-			        	System.out.println(TAB + "Nuhker version: " + VERSION);
+			       	System.out.println(TAB + "Nuhker version: " + VERSION);
+
 			        	System.exit(0);
-			        }
+			    }
+				 
+			    if (cliOptions.has( "c" )) {
+			        	System.out.println(TAB + "Option c was found");
+			        	String optionValue = (String)cliOptions.valueOf("c");
+			        	if (2 == optionValue.length()) {
+			        		System.out.println(TAB + TAB + "CountryCode is: " + optionValue); 
+			        	} else {
+			        		System.out.println(TAB + TAB + "Man, I deeply doubt *"
+			        				+ optionValue + "* is a CountryCode RIPE is aware of.");
+			        		System.out.println("BailOut");
+				        	System.exit(1);
+			        	}
+;
+			     }
 				 
 			     if (cliOptions.has( "x" )) {
 			        	System.out.println(TAB + "Option x was found which isn't yet implemented. Anyway, thnx for supporting it!");
@@ -168,17 +186,7 @@ public class Run {
 		        	System.out.println(TAB + TAB + "and it had a suboption: " + optionValue); 
 		        }
 		        
-		        if (cliOptions.has( "c" )) {
-		        	System.out.println(TAB + "Option c was found");
-		        	String optionValue = (String)cliOptions.valueOf("c");
-		        	if (2 == optionValue.length()) {
-		        		System.out.println(TAB + TAB + "CountryCode is: " + optionValue); 
-		        	} else {
-		        		System.out.println(TAB + TAB + "Man, I deeply doubt *"
-		        				+ optionValue + "* is a CountryCode RIPE is aware of.");
-		        	}
-		    
-		        }
+
 		        
 		        if (cliOptions.has( "o" )) {
 		        	System.out.println(TAB + "Option o was found");
