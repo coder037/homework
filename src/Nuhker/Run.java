@@ -28,7 +28,7 @@ import java.security.MessageDigest;
 
 public class Run {
 
-	private final static String IDENTITY = "0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff";
+	private final static String AUTHOR = "0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff";
 	private final static String OPT_COPYRIGHT = "copyright";
 	private final static String OPT_COUNTRY = "country";
 	private final static String OPT_MAXRUN = "max-running-time";
@@ -74,21 +74,22 @@ public class Run {
 				// START of my code again
 
 		        
-				parser.acceptsAll(Arrays.asList("h", "help"), "Shows the help msg here").forHelp();
-				parser.acceptsAll(Arrays.asList("C", OPT_COPYRIGHT), "Formalism in square: requering for author's name").withRequiredArg().ofType(String.class);
+				parser.acceptsAll(Arrays.asList("h", "?", "help"), "Show the help msg").forHelp();
+				parser.acceptsAll(Arrays.asList("C", OPT_COPYRIGHT), "Formalism: requering for author's name").withRequiredArg().ofType(String.class);
 				parser.acceptsAll(Arrays.asList("c", OPT_COUNTRY), "Enter country code to work with; default=EE").withRequiredArg().ofType(String.class);
-				parser.acceptsAll(Arrays.asList("d", "V", OPT_VERBOSE), "Debuglevel; default=3").withRequiredArg().ofType(Integer.class);
+				// Alternative: .withOptionalArg().ofType( Level.class ); vs .withRequiredArg().ofType(Integer.class);
+				parser.acceptsAll(Arrays.asList("d", "V", OPT_VERBOSE), "Debuglevel 0-7; default=4").withRequiredArg().ofType(Integer.class);
 				parser.acceptsAll(Arrays.asList("M", OPT_MAXRUN), "Max time in seconds we should run, kill then; default=80000 secs").withRequiredArg().ofType(Integer.class);
-						// So far done with String.class not File.Class (guess why ;) )
+				// So far we do it with String.class identifier not File.Class one (guess why ;) )
 				parser.acceptsAll(Arrays.asList("o", "filename", OPT_OUTPUT), "Name of the output file; default=output").withRequiredArg().ofType(String.class);
 				parser.acceptsAll(Arrays.asList("R", OPT_RECURSIONLEVEL), "recursion depth; default=4").withRequiredArg().ofType(Integer.class);
-				parser.acceptsAll(Arrays.asList("t", OPT_TIMEOUT), "Timeout between requests; default=2800 ms or Google will block you").withRequiredArg().ofType(Integer.class);
-				parser.acceptsAll(Arrays.asList("v", OPT_VER), "Shows version number");
-				parser.acceptsAll(Arrays.asList("x", OPT_XTRA), "Possibly we implement an extra functionality later");
+				parser.acceptsAll(Arrays.asList("t", OPT_TIMEOUT), "Timeout between requests; default=2800 msecs or Google will block you").withRequiredArg().ofType(Integer.class);
+				parser.acceptsAll(Arrays.asList("v", OPT_VER), "Show version number");
+				parser.acceptsAll(Arrays.asList("x", OPT_XTRA), "Some extra functionality we possible implement later");
 			
 		        // Currently we simulate (until we build the static program) 
 		        OptionSet cliOptions = parser.parse("--country", "EET", "--copyright", "Some Name", "--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800", "-d", "7", "-M", "80000");
-		        // OptionSet cliOptions = parser.parse("-c", "EE", "-d", "7", "-M", "80000", "-n", "-o", "somefilename-001", "-R", "4", "-t", "2800");
+		        // OptionSet cliOptions = parser.parse("-c", "EE", "-d", "5", "-M", "80000", "-n", "-o", "somefilename-001", "-R", "4", "-t", "2800");
 				// OptionSet cliOptions = parser.parse("--help");
 				
 				// Somewhat special options FIRST
@@ -113,32 +114,34 @@ public class Run {
 			        }
 				 
 			     if (cliOptions.has( "x" )) {
-			        	System.out.println(TAB + "Option x was found which isn't yet implemented. Thnx for supporting it anyway!");
+			        	System.out.println(TAB + "Option x was found which isn't yet implemented. Anyway, thnx for supporting it!");
 			        }
 			       
 				 
 				 // Special copyright phuck
-
+			     
 			        if (cliOptions.has( "C" )) {
 			        	System.out.println(TAB + "Option C was called to expose the copyright message");
 		        	    String optionC = (String)cliOptions.valueOf("C");
 		        	    System.out.println(TAB + TAB + "and it had a sub-option: " + optionC); 
 		        	    
+		        	    	//Inspiration: http://stackoverflow.com/questions/3103652/hash-string-via-sha-256-in-java
 			        	    MessageDigest hashhash = MessageDigest.getInstance("SHA-512");
 			        	    byte[] sha512bytes = hashhash.digest(optionC.getBytes());
 			        	    // String output = String.format("%032X", new BigInteger(1, sha512sum));
 	
-			        	    //convert the byte to hex format http://www.mkyong.com/java/java-sha-hashing-example/
+			        	    //Inspiration: convert the byte to hex format http://www.mkyong.com/java/java-sha-hashing-example/
+			        	    
 			                StringBuffer sb = new StringBuffer();
 			                for (int i = 0; i < sha512bytes.length; i++) {
 			                  sb.append(Integer.toString((sha512bytes[i] & 0xff) + 0x100, 16).substring(1));
 			                }
 			                
 			                
-			                if (IDENTITY.equals(sb.toString())) {
+			                if (AUTHOR.equals(sb.toString())) {
 			                	System.out.println(TAB + TAB + "Copyright: " + optionC + " (validated cryptographically).");
 			                } else {
-			                	System.out.println(TAB + TAB + "Seems you dunno know who the actual author is...");
+			                	System.out.println(TAB + TAB + "You seem not to know who the actual author is...");
 			                }
 			               
 			        }
