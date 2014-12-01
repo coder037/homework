@@ -9,7 +9,7 @@ import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 
-//SRC http://stackoverflow.com/questions/12361925/html-parsing-with-jsoup
+//INSPIRATION http://stackoverflow.com/questions/12361925/html-parsing-with-jsoup
 
 /**
  * @author coder037@xyz.ee
@@ -88,7 +88,7 @@ import org.jsoup.select.*;
 
 	} //TRY
 	
-	// Funny thing obtained from a source. Should we use it elsewhere?
+	// Funny thing seen at a source. Should we use it elsewhere?
 	// SRC: http://tutorials.jenkov.com/java-logging/logger.html
 	catch (IOException ex) {
 	  Logger.getLogger(ParseGSBReputation.class.getName())

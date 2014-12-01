@@ -11,9 +11,9 @@ package Nuhker;
 
 // Inspiration sources:
 //    API PRINCIPLES: https://stat.ripe.net/docs/data_api
-//    SRC http://runnable.com/Uu83dm5vSScIAACw/download-a-file-from-the-web-for-java-files-and-save
-//    SRC http://www.mkyong.com/java/json-simple-example-read-and-write-json/
-// SOLVED MYSELF: how to parse hierarchical JSON (no simple example to follow)
+//    Inspiration: http://runnable.com/Uu83dm5vSScIAACw/download-a-file-from-the-web-for-java-files-and-save
+//    Inspiration: http://www.mkyong.com/java/json-simple-example-read-and-write-json/
+// SOLVED MYSELF: how to parse hierarchical JSON (have seen no public example to follow)
 
 
 import java.io.BufferedInputStream;
@@ -158,6 +158,7 @@ public class ParseRIPEConstituency {
 			
 		  // ToDo: json status field: if not OK or no data, then errmsg
 		  //    this will happen if wrong country code asked from RIPE
+		  // ToDo: web timeout
 		  
      } //MAIN
 			 

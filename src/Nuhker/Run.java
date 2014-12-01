@@ -10,14 +10,7 @@ package Nuhker;
  */
 
 
-// HINT: args4j : Java command line arguments parser - http://args4j.kohsuke.org/
 
-// http://martin-thoma.com/how-to-parse-command-line-arguments-in-java/
-
-// HINT: The Apache Commons CLI library provides an API for parsing command line
-// options passed to programs. It's also able to print help messages detailing the
-// options available for a command line tool.
-//    http://commons.apache.org/proper/commons-cli/
 
 
 import java.io.File;
@@ -38,9 +31,9 @@ public class Run {
 	private final static String IDENTITY = "0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff";
 	private final static String OPT_COPYRIGHT = "copyright";
 	private final static String OPT_COUNTRY = "country";
-	private final static String OPT_MAXRUN = "maxrunningtime";
+	private final static String OPT_MAXRUN = "max-running-time";
 	private final static String OPT_OUTPUT = "output";
-	private final static String OPT_RECURSIONLEVEL = "recuresionlevel";
+	private final static String OPT_RECURSIONLEVEL = "recursion-level";
 	private final static String OPT_TIMEOUT = "timeout";
 	private final static String OPT_VERBOSE = "verbose";
 	private final static String OPT_VER = "version";
@@ -54,68 +47,54 @@ public class Run {
 			public static void main(String[] argv) throws Exception {
 
 				// Way 1
-				System.out.println(" ======= classic way ===== ");
-				if (true) {
-					System.out.println("No options were passed.");
-				}
-				for (int s = 0; s < argv.length ; s++) { 
-					System.out.println("POS: " + s + " Value: " + argv[s]);
-				}
-				System.out.println(" ======= jobt-simple way ===== ");
-				System.out.println("So far just EMULATING the commandline due the no CLASSPATH set.");
-				
+				System.out.println(" ======= Start ===== ");
 
-				
 				// Parse arguments
 				OptionSet args = null;
 				OptionParser parser = new OptionParser();
 			
-				
-//				try {
-//					args = parser.parse(argv);
-//					// Try to fetch all values so that format is checked before usage
-//					for (String s: parser.recognizedOptions().keySet()) {args.valuesOf(s);}
-//				} catch (OptionException e) {
-//					if (e.getCause() != null) {
-//						System.out.println("ASUKOHT 1");
-//						System.err.println(e.getMessage() + ": " + e.getCause().getMessage());
-//					} else {
-//						System.out.println("ASUKOHT 2");
-//						System.err.println(e.getMessage());
-//					}
-//					System.err.println();
-//					parser.printHelpOn(System.err);
-//					System.exit(1);
-//				}
-				
+				// WARNING, NEXT 15 lines are not of mine but from ELSEWHERE 
+				// Neat trick from https://github.com/martinpaljak/GlobalPlatform/blob/master/src/openkms/gp/GPTool.java
+				// lines 133-147
+				try {
+					args = parser.parse(argv);
+					// Try to fetch all values so that format is checked before usage
+					for (String s: parser.recognizedOptions().keySet()) {args.valuesOf(s);}
+				} catch (OptionException e) {
+					if (e.getCause() != null) {
+						System.err.println(e.getMessage() + ": " + e.getCause().getMessage());
+					} else {
+						System.err.println(e.getMessage());
+					}
+					System.err.println();
+					parser.printHelpOn(System.err);
+					System.exit(1);
+				}
+				// END of somebody's else code.
+				// START of my code again
 
 		        
 				parser.acceptsAll(Arrays.asList("h", "help"), "Shows the help msg here").forHelp();
 				parser.acceptsAll(Arrays.asList("C", OPT_COPYRIGHT), "Formalism in square: requering for author's name").withRequiredArg().ofType(String.class);
 				parser.acceptsAll(Arrays.asList("c", OPT_COUNTRY), "Enter country code to work with; default=EE").withRequiredArg().ofType(String.class);
-				parser.acceptsAll(Arrays.asList("d", OPT_VERBOSE), "Debuglevel; default=3").withRequiredArg().ofType(Integer.class);
+				parser.acceptsAll(Arrays.asList("d", "V", OPT_VERBOSE), "Debuglevel; default=3").withRequiredArg().ofType(Integer.class);
 				parser.acceptsAll(Arrays.asList("M", OPT_MAXRUN), "Max time in seconds we should run, kill then; default=80000 secs").withRequiredArg().ofType(Integer.class);
-						// Not nice but ;)
-				parser.acceptsAll(Arrays.asList("o", OPT_OUTPUT), "Name of the output file; default=output").withRequiredArg().ofType(String.class);
+						// So far done with String.class not File.Class (guess why ;) )
+				parser.acceptsAll(Arrays.asList("o", "filename", OPT_OUTPUT), "Name of the output file; default=output").withRequiredArg().ofType(String.class);
 				parser.acceptsAll(Arrays.asList("R", OPT_RECURSIONLEVEL), "recursion depth; default=4").withRequiredArg().ofType(Integer.class);
 				parser.acceptsAll(Arrays.asList("t", OPT_TIMEOUT), "Timeout between requests; default=2800 ms or Google will block you").withRequiredArg().ofType(Integer.class);
 				parser.acceptsAll(Arrays.asList("v", OPT_VER), "Shows version number");
 				parser.acceptsAll(Arrays.asList("x", OPT_XTRA), "Possibly we implement an extra functionality later");
 			
-				
-		        
-		        OptionSet cliOptions = parser.parse("--country", "EE", "--copyright", "Some Name",
-		        		"--xtra", "-o", "somefilename-001",
-		        		"-R", "4", "-t", "2800", "-d", "7", "-M", "80000");
-		        
+		        // Currently we simulate (until we build the static program) 
+		        OptionSet cliOptions = parser.parse("--country", "EET", "--copyright", "Some Name", "--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800", "-d", "7", "-M", "80000");
 		        // OptionSet cliOptions = parser.parse("-c", "EE", "-d", "7", "-M", "80000", "-n", "-o", "somefilename-001", "-R", "4", "-t", "2800");
 				// OptionSet cliOptions = parser.parse("--help");
 				
-
-					// Somewhat special options
+				// Somewhat special options FIRST
 				
 				if (cliOptions.has( "d" )) {
-		        	System.out.println(TAB + "Option d was given");
+		        	System.out.println(TAB + "Option d was found");
 		        	// Set the global DebugLevel from here 
 		        } else {
 		        	// or the DebugLEvel = Default;
@@ -129,11 +108,12 @@ public class Run {
 				
 				 if (cliOptions.has( "v" )) {
 					 
-			        	System.out.println(TAB + "Nuhker version: " + VERSION);    	
+			        	System.out.println(TAB + "Nuhker version: " + VERSION);
+			        	System.exit(0);
 			        }
 				 
 			     if (cliOptions.has( "x" )) {
-			        	System.out.println(TAB + "Option x was given but not yet implemented. Thnx for it anyway!");
+			        	System.out.println(TAB + "Option x was found which isn't yet implemented. Thnx for supporting it anyway!");
 			        }
 			       
 				 
@@ -156,9 +136,9 @@ public class Run {
 			                
 			                
 			                if (IDENTITY.equals(sb.toString())) {
-			                	System.out.println(TAB + TAB + "Copyright: " + optionC);
+			                	System.out.println(TAB + TAB + "Copyright: " + optionC + " (validated cryptographically).");
 			                } else {
-			                	System.out.println(TAB + TAB + "Haha, you dunno know who the author is...");
+			                	System.out.println(TAB + TAB + "Seems you dunno know who the actual author is...");
 			                }
 			               
 			        }
@@ -167,32 +147,38 @@ public class Run {
 		        // More generic options (coefficients / parameters) to runtime
 		        
 		        if (cliOptions.has( "M" )) {
-		        	System.out.println(TAB + "Option M was given");
+		        	System.out.println(TAB + "Option M was found");
 		        	String optionValue = String.valueOf(cliOptions.valueOf("M"));
 		        	System.out.println(TAB + TAB + "and it had a suboption: " + optionValue); 
 		        }
 		        
 
 		        if (cliOptions.has( "R" )) {
-		        	System.out.println(TAB + "Option R was given");
+		        	System.out.println(TAB + "Option R was found");
 		        	String optionValue = String.valueOf(cliOptions.valueOf("R"));
 		        	System.out.println(TAB + TAB + "and it had a suboption: " + optionValue); 
 		        }
 		        
 		        if (cliOptions.has( "t" )) {
-		        	System.out.println(TAB + "Option t was given");
+		        	System.out.println(TAB + "Option t was found");
 		        	String optionValue = String.valueOf(cliOptions.valueOf("t"));
 		        	System.out.println(TAB + TAB + "and it had a suboption: " + optionValue); 
 		        }
 		        
 		        if (cliOptions.has( "c" )) {
-		        	System.out.println(TAB + "Option c was given");
+		        	System.out.println(TAB + "Option c was found");
 		        	String optionValue = (String)cliOptions.valueOf("c");
-		        	System.out.println(TAB + TAB + "and it had a suboption: " + optionValue); 
+		        	if (2 == optionValue.length()) {
+		        		System.out.println(TAB + TAB + "CountryCode is: " + optionValue); 
+		        	} else {
+		        		System.out.println(TAB + TAB + "Man, I deeply doubt *"
+		        				+ optionValue + "* is a CountryCode RIPE is aware of.");
+		        	}
+		    
 		        }
 		        
 		        if (cliOptions.has( "o" )) {
-		        	System.out.println(TAB + "Option o was given");
+		        	System.out.println(TAB + "Option o was found");
 		        	String optionValue = (String)cliOptions.valueOf("o");
 		        	System.out.println(TAB + TAB + "and it had a suboption: " + optionValue); 
 		        }
