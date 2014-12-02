@@ -89,7 +89,8 @@ import org.jsoup.select.*;
 	} //TRY
 	
 	// Funny thing seen at a source. Should we use it elsewhere?
-	// SRC: http://tutorials.jenkov.com/java-logging/logger.html
+	// SRC1: http://tutorials.jenkov.com/java-logging/logger.html
+	// SRC2: http://www.vogella.com/tutorials/Logging/article.html
 	catch (IOException ex) {
 	  Logger.getLogger(ParseGSBReputation.class.getName())
 	        .log(Level.SEVERE, null, ex);
