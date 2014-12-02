@@ -88,12 +88,27 @@ public class Run {
 				parser.acceptsAll(Arrays.asList("t", OPT_TIMEOUT), "Timeout between requests; default=2800 msecs or Google will block you").withRequiredArg().ofType(Integer.class);
 				parser.acceptsAll(Arrays.asList("v", OPT_VER), "Show version number");
 				parser.acceptsAll(Arrays.asList("x", OPT_XTRA), "Some extra functionality we possible implement later");
-			
+
+				
 		        // Currently we simulate (until we build the static program)
 				// WARNING, TRY-catch  from above needed!
-		        // OptionSet cliOptions = parser.parse("--country", "EE", "--copyright", "Some Name", "--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800", "-d", "7", "-M", "80000");
+		        OptionSet cliOptions = parser.parse("--country", "EE", "--copyright", "Some Name", "--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800", "-d", "7", "-M", "86400");
 		        // OptionSet cliOptions = parser.parse("-c", "EE", "-d", "5", "-M", "80000", "-n", "-o", "somefilename-001", "-R", "4", "-t", "2800");
-				OptionSet cliOptions = parser.parse("--help");
+				// OptionSet cliOptions = parser.parse("--help");
+
+				// ==============================================================0
+				
+		        DefaultParametersForRun RunTimes = new DefaultParametersForRun();
+		        // myObject.getText(...)
+
+		        // DefaultParametersForRun - MEMORY 
+//				int maxTimeToRunBeforeKilled = 80000000; // in milliseconds
+//				int minTimeBetweenGSBRequests = 2800; // in milliseconds
+//				int depthOfRecursion = 7;
+//				int debugLevel = 4;
+//				String countryCodeToWorkWith = "EE";
+//				String FilenameForOutput = "output";
+				
 				
 				// Somewhat special options FIRST
 				
@@ -195,6 +210,16 @@ public class Run {
 		        }
 
 
+		        // PRINTOUT of actual options
+		        
+//				int maxTimeToRunBeforeKilled = 80000000; // in milliseconds
+		        System.out.println("BigTimeout = " + RunTimes.getMaxTimeToRunBeforeKilled() );
+
+//				int minTimeBetweenGSBRequests = 2800; // in milliseconds
+//				int depthOfRecursion = 7;
+//				int debugLevel = 4;
+//				String countryCodeToWorkWith = "EE";
+//				String FilenameForOutput = "output";
 		
 //				System.exit(0);
 			}
