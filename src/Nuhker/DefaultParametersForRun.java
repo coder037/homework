@@ -24,17 +24,7 @@ public class DefaultParametersForRun {
     // as of 2014-12-02
 	
 
-	public enum countryCodes {
-		 AX, AL, AD, AM, AT, AZ, BH, BY, BE, BA,
-		 BG, HR, CY, CZ, DK, EE, FO, FI, FR, GE,
-		 DE, GI, GR, GL, GG, VA, HU, IS, IR, IQ,
-		 IE, IM, IL, IT, JE, JO, KZ, KW, KG, LV,
-		 LB, LI, LT, LU, MK, MT, MD, MC, ME, NL,
-		 NO, OM, PS, PL, PT, QA, RO, RU, SM, SA,
-		 RS, SK, SI, ES, SJ, SE, CH, SY, TJ, TR,
-		 TM, UA, AE, GB, UZ, YE;
-		}
-	
+
 //     =============== Theory ==============
 // -M, --max-running-time <Integer>  Max time in seconds we should run,     
 //     kill then; default=80000 secs        

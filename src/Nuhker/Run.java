@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import java.util.EnumSet;
+
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -41,6 +43,28 @@ public class Run {
 	private final static String VERSION = "0.3";
 	private final static String TAB = "\t";
 	
+	
+	public enum CountryCodes {
+		 AX, AL, AD, AM, AT, AZ, BH, BY, BE, BA,
+		 BG, HR, CY, CZ, DK, EE, FO, FI, FR, GE,
+		 DE, GI, GR, GL, GG, VA, HU, IS, IR, IQ,
+		 IE, IM, IL, IT, JE, JO, KZ, KW, KG, LV,
+		 LB, LI, LT, LU, MK, MT, MD, MC, ME, NL,
+		 NO, OM, PS, PL, PT, QA, RO, RU, SM, SA,
+		 RS, SK, SI, ES, SJ, SE, CH, SY, TJ, TR,
+		 TM, UA, AE, GB, UZ, YE;
+
+		public static boolean isKosher(String candidate) {
+			// Inspiration: http://stackoverflow.com/questions/4936819/java-check-if-enum-contains-a-given-string
+	        try {
+	            CountryCodes.valueOf(candidate);
+	            return true;
+	        } catch (Exception e) {
+	            return false;
+	        }
+		}
+	}
+
 	
 		// ToDo:
 		//    Candidates for separate methods:
@@ -141,7 +165,8 @@ public class Run {
 			    if (cliOptions.has( "c" )) {
 			        	System.out.println(TAB + "Option c was found");
 			        	String optionValue = (String)cliOptions.valueOf("c");
-			        	if (2 == optionValue.length()) {
+			        	if (CountryCodes.isKosher(optionValue)) {
+				        // if (2 == optionValue.length()) {
 			        		System.out.println(TAB + TAB + "CountryCode is: " + optionValue); 
 			        	} else {
 			        		System.out.println(TAB + TAB + "Man, I deeply doubt *"
