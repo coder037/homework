@@ -41,6 +41,12 @@ public class Run {
 	private final static String VERSION = "0.3";
 	private final static String TAB = "\t";
 	
+	
+		// ToDo:
+		//    Candidates for separate methods:
+		//		1. syntax check
+		// 		2. an overloaded method to set undefault arguments
+	
 		/**
 		 * @param args
 		 */
@@ -185,7 +191,9 @@ public class Run {
 		        if (cliOptions.has( "M" )) {
 		        	System.out.println(TAB + "Option M was found");
 		        	String optionValue = String.valueOf(cliOptions.valueOf("M"));
-		        	System.out.println(TAB + TAB + "and it had a suboption: " + optionValue); 
+		        	System.out.println(TAB + TAB + "and it had a suboption: " + optionValue);
+		        	RunTimes.setMaxTimeToRunBeforeKilled( Integer.parseInt(optionValue) ); //DONE!!!
+		        	// However, see reznic http://stackoverflow.com/questions/5585779/converting-string-to-int-in-java
 		        }
 		        
 
@@ -220,7 +228,14 @@ public class Run {
 //				int debugLevel = 4;
 //				String countryCodeToWorkWith = "EE";
 //				String FilenameForOutput = "output";
-		
+
+		        
+		        // HERE starts the ACTUAL LAUNCH CODE
+		        
+		        // Parse RIPE for that country
+		        // Call Tic-Tac(Options, Target)
+		        //
+		        
 //				System.exit(0);
 			}
 
