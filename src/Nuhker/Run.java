@@ -11,10 +11,9 @@ package Nuhker;
 
 
 
-
-
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +43,7 @@ public class Run {
 	private final static String TAB = "\t";
 	
 	
-	public enum CountryCodes {
+	public enum CountryCodesServedByRIPE {
 		 AX, AL, AD, AM, AT, AZ, BH, BY, BE, BA,
 		 BG, HR, CY, CZ, DK, EE, FO, FI, FR, GE,
 		 DE, GI, GR, GL, GG, VA, HU, IS, IR, IQ,
@@ -57,14 +56,66 @@ public class Run {
 		public static boolean isKosher(String candidate) {
 			// Inspiration: http://stackoverflow.com/questions/4936819/java-check-if-enum-contains-a-given-string
 	        try {
-	            CountryCodes.valueOf(candidate);
+	            CountryCodesServedByRIPE.valueOf(candidate);
 	            return true;
 	        } catch (Exception e) {
 	            return false;
 	        }
 		}
-	}
+	} //ENUM
 
+	
+	
+	public static boolean checkConformity (String [] arguments) {
+		OptionSet args = null; // declaration separated due to subsequent TRY clause
+		final OptionParser preParser = new OptionParser();
+		
+		// Woodoo, I need this object only in one place:
+		
+		preParser.acceptsAll(Arrays.asList("h", "?", "help"), "Show the help msg").forHelp();
+		preParser.acceptsAll(Arrays.asList("C", OPT_COPYRIGHT), "Formalism: requering for author's name").withRequiredArg().ofType(String.class);
+		preParser.acceptsAll(Arrays.asList("c", OPT_COUNTRY), "Enter country code to work with; default=EE").withRequiredArg().ofType(String.class);
+		// Alternative: .withOptionalArg().ofType( Level.class ); vs .withRequiredArg().ofType(Integer.class);
+		preParser.acceptsAll(Arrays.asList("d", "V", OPT_VERBOSE), "Debuglevel 0-7; default=4").withRequiredArg().ofType(Integer.class);
+		preParser.acceptsAll(Arrays.asList("M", OPT_MAXRUN), "Max time in seconds we should run, kill then; default=80000 secs").withRequiredArg().ofType(Integer.class);
+		// So far we do it with String.class identifier not File.Class one (guess why ;) )
+		preParser.acceptsAll(Arrays.asList("o", "filename", OPT_OUTPUT), "Name of the output file; default=output").withRequiredArg().ofType(String.class);
+		preParser.acceptsAll(Arrays.asList("R", OPT_RECURSIONLEVEL), "recursion depth; default=4").withRequiredArg().ofType(Integer.class);
+		preParser.acceptsAll(Arrays.asList("t", OPT_TIMEOUT), "Timeout between requests; default=2800 msecs or Google will block you").withRequiredArg().ofType(Integer.class);
+		preParser.acceptsAll(Arrays.asList("v", OPT_VER), "Show version number");
+		preParser.acceptsAll(Arrays.asList("x", OPT_XTRA), "Some extra functionality we possible implement later");
+		
+		// WARNING, NEXT 15 lines are not considered fully mine, but a neat trick from
+		// https://github.com/martinpaljak/GlobalPlatform/blob/master/src/openkms/gp/GPTool.java
+		// lines 133-147
+		try {
+			args = preParser.parse(arguments);
+			// Try to fetch all values so that their format is checked before actual usage
+			for (String s: preParser.recognizedOptions().keySet()) {args.valuesOf(s);}
+		} catch (OptionException e) {
+			if (e.getCause() != null) {
+				System.err.println("KOHT1");
+				System.err.println(e.getMessage() + ": " + e.getCause().getMessage());
+			} else {
+				System.err.println("KOHT2");
+				System.err.println(e.getMessage());
+			}
+			System.err.println();
+				// preParser.printHelpOn(System.err);
+			// END of foreign code
+			System.out.println("ERROR: Non-conformant options. Bailout");
+			System.exit(1);
+		}
+		// END of somebody's else code.
+		return true; // We reached this point, thus no bailout
+	}
+	
+	
+	public static boolean parseContent (String [] arguments) {
+		
+		return true;
+	}
+	
 	
 		// ToDo:
 		//    Candidates for separate methods:
@@ -76,55 +127,44 @@ public class Run {
 		 */
 			public static void main(String[] argv) throws Exception {
 
-				// Way 1
 				System.out.println(" ======= Start ===== ");
-
-				// Parse arguments
-				OptionSet args = null;
-				OptionParser parser = new OptionParser();
-			
-				// ToDo: to put this into a distinct method (argv+argv ;)
-				// WARNING, NEXT 15 lines are not of mine but from ELSEWHERE 
-				// Neat trick from https://github.com/martinpaljak/GlobalPlatform/blob/master/src/openkms/gp/GPTool.java
-				// lines 133-147
-
-				try {
-					args = parser.parse(argv);
-					// Try to fetch all values so that format is checked before usage
-					for (String s: parser.recognizedOptions().keySet()) {args.valuesOf(s);}
-				} catch (OptionException e) {
-					if (e.getCause() != null) {
-						System.err.println(e.getMessage() + ": " + e.getCause().getMessage());
-					} else {
-						System.err.println(e.getMessage());
-					}
-					System.err.println();
-					parser.printHelpOn(System.err);
-					System.exit(1);
-				}
-				// END of somebody's else code.
-				// START of my code again
-
-		        
-				parser.acceptsAll(Arrays.asList("h", "?", "help"), "Show the help msg").forHelp();
-				parser.acceptsAll(Arrays.asList("C", OPT_COPYRIGHT), "Formalism: requering for author's name").withRequiredArg().ofType(String.class);
-				parser.acceptsAll(Arrays.asList("c", OPT_COUNTRY), "Enter country code to work with; default=EE").withRequiredArg().ofType(String.class);
+				
+				OptionParser postParser = new OptionParser();
+				postParser.acceptsAll(Arrays.asList("h", "?", "help"), "Show the help msg").forHelp();
+				postParser.acceptsAll(Arrays.asList("C", OPT_COPYRIGHT), "Formalism: requering for author's name").withRequiredArg().ofType(String.class);
+				postParser.acceptsAll(Arrays.asList("c", OPT_COUNTRY), "Enter country code to work with; default=EE").withRequiredArg().ofType(String.class);
 				// Alternative: .withOptionalArg().ofType( Level.class ); vs .withRequiredArg().ofType(Integer.class);
-				parser.acceptsAll(Arrays.asList("d", "V", OPT_VERBOSE), "Debuglevel 0-7; default=4").withRequiredArg().ofType(Integer.class);
-				parser.acceptsAll(Arrays.asList("M", OPT_MAXRUN), "Max time in seconds we should run, kill then; default=80000 secs").withRequiredArg().ofType(Integer.class);
-				// So far we do it with String.class identifier not File.Class one (guess why ;) )
-				parser.acceptsAll(Arrays.asList("o", "filename", OPT_OUTPUT), "Name of the output file; default=output").withRequiredArg().ofType(String.class);
-				parser.acceptsAll(Arrays.asList("R", OPT_RECURSIONLEVEL), "recursion depth; default=4").withRequiredArg().ofType(Integer.class);
-				parser.acceptsAll(Arrays.asList("t", OPT_TIMEOUT), "Timeout between requests; default=2800 msecs or Google will block you").withRequiredArg().ofType(Integer.class);
-				parser.acceptsAll(Arrays.asList("v", OPT_VER), "Show version number");
-				parser.acceptsAll(Arrays.asList("x", OPT_XTRA), "Some extra functionality we possible implement later");
-
+				postParser.acceptsAll(Arrays.asList("d", "V", OPT_VERBOSE), "Debuglevel 0-7; default=4").withRequiredArg().ofType(Integer.class);
+				postParser.acceptsAll(Arrays.asList("M", OPT_MAXRUN), "Max time in seconds we should run, kill then; default=80000 secs").withRequiredArg().ofType(Integer.class);
+				// So far we do it with String.class identifier not File.Class one (guess why ;) )parser
+				postParser.acceptsAll(Arrays.asList("o", "filename", OPT_OUTPUT), "Name of the output file; default=output").withRequiredArg().ofType(String.class);
+				postParser.acceptsAll(Arrays.asList("R", OPT_RECURSIONLEVEL), "recursion depth; default=4").withRequiredArg().ofType(Integer.class);
+				postParser.acceptsAll(Arrays.asList("t", OPT_TIMEOUT), "Timeout between requests; default=2800 msecs or Google will block you").withRequiredArg().ofType(Integer.class);
+				postParser.acceptsAll(Arrays.asList("v", OPT_VER), "Show version number");
+				postParser.acceptsAll(Arrays.asList("x", OPT_XTRA), "Some extra functionality we possible implement later");
+				
 				
 		        // Currently we simulate (until we build the static program)
-				// WARNING, TRY-catch  from above needed!
-		        OptionSet cliOptions = parser.parse("--country", "EE", "--copyright", "Some Name", "--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800", "-d", "7", "-M", "86400");
+				String[] simulation1 = { "--country", "EE", "--copyright", "Some Name", "--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800", "-d", "7", "-M", "86400" };
+				String[] simulation2 = {"-c", "EE", "-d", "5", "-M", "80000", "-n", "-o", "somefilename-001", "-R", "4", "-t", "2800"};
+				String[] simulation3 = {"--help"};
+				
+				// OptionSet cliOptions = parser.parse(argv);
+				OptionSet cliOptions = postParser.parse(simulation1);
+				
+		        // OptionSet cliOptions = parser.parse("--country", "EE", "--copyright", "Some Name", "--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800", "-d", "7", "-M", "86400");
 		        // OptionSet cliOptions = parser.parse("-c", "EE", "-d", "5", "-M", "80000", "-n", "-o", "somefilename-001", "-R", "4", "-t", "2800");
 				// OptionSet cliOptions = parser.parse("--help");
+				
+				checkConformity(simulation1); // Else bailout
+				// parseContent(simulation1);
+				
+				// Parse arguments
+
+
+		        
+
+				
 
 				// ==============================================================0
 				
@@ -151,7 +191,7 @@ public class Run {
 				
 
 				if (cliOptions.has("help")) {
-					parser.printHelpOn(System.out);
+					postParser.printHelpOn(System.out);
 					System.exit(0);
 				}
 				
@@ -165,9 +205,9 @@ public class Run {
 			    if (cliOptions.has( "c" )) {
 			        	System.out.println(TAB + "Option c was found");
 			        	String optionValue = (String)cliOptions.valueOf("c");
-			        	if (CountryCodes.isKosher(optionValue)) {
+			        	if (CountryCodesServedByRIPE.isKosher(optionValue)) {
 				        // if (2 == optionValue.length()) {
-			        		System.out.println(TAB + TAB + "CountryCode is: " + optionValue); 
+			        		System.out.println(TAB + TAB + "CountryCode is kosher: " + optionValue); 
 			        	} else {
 			        		System.out.println(TAB + TAB + "Man, I deeply doubt *"
 			        				+ optionValue + "* is a CountryCode RIPE is aware of.");
