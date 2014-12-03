@@ -16,35 +16,14 @@ public class DefaultParametersForRun {
 	public long getStartTime() {
 		return startTime;
 	}
-	
-	// =====================================
-	
-	// Choice of possible country codes RIPE serves according
-	// http://www.ripe.net/lir-services/member-support/info/list-of-members/list-of-country-codes-and-rirs
-    // as of 2014-12-02
-	
-
-
-//     =============== Theory ==============
-// -M, --max-running-time <Integer>  Max time in seconds we should run,     
-//     kill then; default=80000 secs        
-// -R, --recursion-level <Integer>   recursion depth; default=4             
-// -V, -d, --verbose <Integer>       Debuglevel 0-7; default=4              
-// -c, --country                     Enter country code to work with;       
-//     default=EE                           
-// -o, --filename, --output          Name of the output file; default=output
-// -t, --timeout <Integer>           Timeout between requests; default=2800 
-//     msecs or Google will block you       
-
-	
-	// Default values for no commandline option given
+		
+	// Default values when commandline options given:
 	
 	private int maxTimeToRunBeforeKilled = 80000000; // in milliseconds
 	private int minTimeBetweenGSBRequests = 2800; // in milliseconds
 	private int depthOfRecursion = 7;
-	// most likely this should use LEVELS not int numbers .... however:
+	// actually this should use LEVELS not int numbers ... but :)
 	private int debugLevel = 4;
-	// should be enum
 	private String countryCodeToWorkWith = "EE";
 	private String FilenameForOutput = "output";
 
@@ -93,18 +72,5 @@ public class DefaultParametersForRun {
 	public void setFilenameForOutput(String filenameForOutput) {
 		FilenameForOutput = filenameForOutput;
 	}
-	
-
-	
-	
-	
-	
-//	/**
-//	 * @param args
-//	 */
-//	public static void main(String[] args) {
-//		// TODO Auto-generated method stub
-//
-//	}
 
 }

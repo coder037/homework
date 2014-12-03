@@ -30,9 +30,12 @@ import java.security.MessageDigest;
 public class Run {
 
     private final static String AUTHOR = "0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff";
-	private final static String VERSION = "0.3";
+	private final static String VERSION = "0.4";
 	private final static String TAB = "\t";
 	
+	// Choice of possible country codes RIPE serves according
+	// http://www.ripe.net/lir-services/member-support/info/list-of-members/list-of-country-codes-and-rirs
+    // as of 2014-12-02
 	
 	public enum CountryCodesServedByRIPE {
 		 AX, AL, AD, AM, AT, AZ, BH, BY, BE, BA,
@@ -47,7 +50,7 @@ public class Run {
 		public static boolean isKosher(String candidate) {
 			// Inspiration: http://stackoverflow.com/questions/4936819/java-check-if-enum-contains-a-given-string
 			System.out.println();
-		    System.out.println("========== CountryCode Kosherness Check ==========");
+		    System.out.println("==- CountryCode Kosherness Check");
 			try {
 	            CountryCodesServedByRIPE.valueOf(candidate);
 	            return true;
@@ -61,11 +64,11 @@ public class Run {
 	
 	public static boolean checkConformity (String [] arguments) {
 		OptionSet args = null; // declaration separated due to subsequent TRY clause
-		OptionParser preParser = ParserGrammar.main();
+		OptionParser preParser = OptionGrammar.main();
 		
 		System.out.println();
 	    System.out.println("========== Option Conformity Check ==========");
-		// WARNING, NEXT 15 lines are not considered fully mine, but a neat trick from
+		// ==== WARNING, NEXT 15 lines are not considered fully mine, but a neat trick from
 		// https://github.com/martinpaljak/GlobalPlatform/blob/master/src/openkms/gp/GPTool.java
 		// lines 133-147
 		try {
@@ -82,7 +85,7 @@ public class Run {
 			}
 			System.err.println();
 				// preParser.printHelpOn(System.err);
-			// END of foreign code
+			// ==== END of foreign code
 			System.out.println("ERROR: Non-conformant options. Bailout");
 			System.exit(1);
 		}
@@ -95,9 +98,9 @@ public class Run {
 		String message = "";
 		
 	       System.out.println();
-	       System.out.println("========== Authorship test ==========");
+	       System.out.println("==- Authorship test ==========");
 		MessageDigest hashhash = MessageDigest.getInstance("SHA-512");
-		// WARNING: NEXT 7 lines of code are of SOMEBODY'S ELSE authorship:
+		// === WARNING: NEXT 7 lines of code are of SOMEBODY'S ELSE authorship:
 		//Inspiration: http://stackoverflow.com/questions/3103652/hash-string-via-sha-256-in-java
 	    byte[] sha512bytes = hashhash.digest(argument.getBytes());
 	    //Inspiration: convert the byte to hex format http://www.mkyong.com/java/java-sha-hashing-example/
@@ -105,7 +108,7 @@ public class Run {
         for (int i = 0; i < sha512bytes.length; i++) {
           sb.append(Integer.toString((sha512bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
-        // END of the WARNING scope
+        // === END of the WARNING scope
         
         if (AUTHOR.equals(sb.toString())) {
         	message = TAB + TAB + "Copyright: " + argument + " (validated cryptographically).";
@@ -118,14 +121,24 @@ public class Run {
 	
 	
 	public static DefaultParametersForRun parseContent (String [] arguments) throws Exception {
-		OptionParser postParser = ParserGrammar.main();
+		OptionParser postParser = OptionGrammar.main();
 		OptionSet cliOptions = postParser.parse(arguments);
 		
         DefaultParametersForRun RunTimes = new DefaultParametersForRun();
     	
         System.out.println();
-        System.out.println("========== Option Parser ==========");
-        
+        System.out.println("========== Option Parser ==========");				
+    	
+
+		// OptionParser postParser = ParserGrammar.main();
+		// OptionSet cliOptions = parser.parse(argv);
+		// OptionSet cliOptions = postParser.parse(simulation1);
+		
+    	
+
+		// OptionParser postParser = ParserGrammar.main();
+		// OptionSet cliOptions = parser.parse(argv);
+		// OptionSet cliOptions = postParser.parse(simulation1);
 		// Somewhat special options FIRST
 		
 		if (cliOptions.has( "d" )) {
@@ -217,9 +230,8 @@ public class Run {
 	
 	
 		// ToDo:
-		//    Candidates for separate methods:
-		//		1. syntax check
-		// 		2. an overloaded method to set undefault arguments
+		//    Candidate for a separate method:
+		// 		* an overloaded method to set undefault arguments
 	
 	
 		/**
@@ -228,19 +240,14 @@ public class Run {
 			public static void main(String[] argv) throws Exception {
 
 				System.out.println(" ======= Start ===== ");
-				
-	
-
-				// OptionParser postParser = ParserGrammar.main();
-				// OptionSet cliOptions = parser.parse(argv);
-				// OptionSet cliOptions = postParser.parse(simulation1);
 
 		        // Currently we simulate (until we build the static CLI program)
 					String[] simulation1 = { "--country", "EE", "--copyright", "Some Name", "--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800", "-d", "7", "-M", "86400" };
 					String[] simulation2 = {"-c", "EE", "-d", "5", "-M", "80000", "-n", "-o", "somefilename-001", "-R", "4", "-t", "2800"};
 					String[] simulation3 = {"--help"};
 				
-					String[] effectiveOptions = simulation1;
+					String[] effectiveOptions = simulation1; // vs argv
+					
 				checkConformity(effectiveOptions); // Else bailout
 				DefaultParametersForRun FinalOptions = parseContent(effectiveOptions);
 				
@@ -250,9 +257,9 @@ public class Run {
 				System.out.println("===================  M A I N ==============");
 				System.out.println("MAIN: READY to attempt the actual launch...");
 				System.out.println(TAB + "Debuglevel has been set as: " + FinalOptions.getDebugLevel() + " of max 7");
-				System.out.println(TAB + "We seek Malwared Sites for country: " + FinalOptions.getCountryCodeToWorkWith());
-				System.out.println(TAB + "Recursion level has been limited to: " + FinalOptions.getDepthOfRecursion());
-				System.out.println(TAB + "Time allocated for the run is:      " + FinalOptions.getMaxTimeToRunBeforeKilled() + " millisecs");
+				System.out.println(TAB + "We seek for Malwarized Sites in country: " + FinalOptions.getCountryCodeToWorkWith());
+				System.out.println(TAB + "Recursion depth has been limited to: " + FinalOptions.getDepthOfRecursion());
+				System.out.println(TAB + "Time allocated for the run is: " + FinalOptions.getMaxTimeToRunBeforeKilled() + " millisecs");
 				System.out.println(TAB + "Start UNIX msec Epoch Time  was: " + FinalOptions.getStartTime());
 				System.out.println(TAB + "Time prognosis until the END is: " + ( FinalOptions.getStartTime() + FinalOptions.getMaxTimeToRunBeforeKilled()) );
 				System.out.println(TAB + "Guard time between any other GSB request is: " + FinalOptions.getMinTimeBetweenGSBRequests() + " millisecs");
