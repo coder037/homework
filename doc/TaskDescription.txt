@@ -23,6 +23,13 @@ However, after spending some time, provided this was your lucky day,
 you statistically will find some extra information.
 
 
+### Previous Art
+
+It is possible to parse GSB pages structurally.
+As an example, see the file Parsing-GSB-sitepages-010.pdf (dated 2010-06-30)
+which contains the relevant analysis.
+
+
 #### Design ideas
 
 The idea what the program shall do, is here:
