@@ -5,6 +5,7 @@ Some studium related stuff is located here. Nothing valuable.
 
    Initiated: 2014-11-18.
    Ready with the environment tuning, starting to write code.
+   Initiated the world once again - restruct of the paths 2014-11-23. 
    Json src file parsing mostly completed - 2014-11-27.
    Run.java code separated into methods, getter-setter bacchanalia introduced 2014-12-02. 
    Next task: write the recursion module.
