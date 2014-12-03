@@ -65,8 +65,8 @@ public class Run {
 
 		System.out.println();
 		System.out.println("========== Option Conformity Check ==========");
-		// ==== WARNING, NEXT 15 lines are not considered fully mine, but a neat
-		// trick from
+		// ==== WARNING, NEXT 25 lines are not considered fully mine, 
+		// but a neat trick from
 		// https://github.com/martinpaljak/GlobalPlatform/blob/master/src/openkms/gp/GPTool.java
 		// lines 133-147
 		try {
@@ -78,12 +78,12 @@ public class Run {
 			}
 		} catch (OptionException e) {
 			if (e.getCause() != null) {
-				System.err.println("PARSE ERROR discovered, REASON:");
+				System.err.println("PARSE ERROR discovered, REASON: ");
 				System.err.println(TAB + e.getMessage() + ": "
 						+ e.getCause().getMessage());
 			} else {
 				System.err
-						.println("PARSE ERROR discovered with UNEXPLAINED reason:");
+						.println("PARSE ERROR discovered with UNEXPLAINED reason: ");
 				System.err.println(TAB + e.getMessage());
 			}
 			System.err.println();
@@ -96,13 +96,13 @@ public class Run {
 		return true; // We reached this point, thus no bailout
 	}
 
-	public static String checkTheAuthorship(String argument) throws Exception {
-		String message = "";
-		// ToDo: separate hashing into a method
+	
+	public static String calculateHash(String argument) throws Exception {
+		String digest = null;
 		System.out.println();
 		System.out.println("==- Authorship test ==========");
 		MessageDigest hashhash = MessageDigest.getInstance("SHA-512");
-		// === WARNING: NEXT 7 lines of code are of SOMEBODY'S ELSE authorship:
+		// === WARNING: NEXT 10 lines of code are of SOMEBODY'S ELSE authorship:
 		// Inspiration:
 		// http://stackoverflow.com/questions/3103652/hash-string-via-sha-256-in-java
 		byte[] sha512bytes = hashhash.digest(argument.getBytes());
@@ -114,8 +114,13 @@ public class Run {
 					.substring(1));
 		}
 		// === END of the WARNING scope
-
-		if (AUTHOR.equals(sb.toString())) {
+		digest = sb.toString();
+		return digest;
+	}
+	
+	public static String checkTheAuthorship(String argument) throws Exception {
+		String message = null;
+		if (AUTHOR.equals(calculateHash(argument))) {
 			message = TAB + TAB + "Copyright: " + argument
 					+ " (validated cryptographically).";
 		} else {
@@ -125,6 +130,7 @@ public class Run {
 		return message;
 	}
 
+	
 	public static DefaultParametersForRun parseContent(String[] arguments)
 			throws Exception {
 		OptionParser postParser = OptionGrammar.main();
@@ -141,7 +147,7 @@ public class Run {
 			System.out.println(TAB + "Option d was found");
 			// Set the global DebugLevel from here
 		} else {
-			// or the DebugLEvel = Default;
+			// or the DebugLevel = Default;
 		}
 
 		if (cliOptions.has("help")) {
@@ -150,9 +156,7 @@ public class Run {
 		}
 
 		if (cliOptions.has("v")) {
-
 			System.out.println(TAB + "Nuhker version: " + VERSION);
-
 			System.exit(0);
 		}
 
@@ -160,13 +164,12 @@ public class Run {
 			System.out.println(TAB + "Option c was found");
 			String optionValue = (String) cliOptions.valueOf("c");
 			if (CountryCodesServedByRIPE.isKosher(optionValue)) {
-				// if (2 == optionValue.length()) {
 				System.out.println(TAB + TAB + "CountryCode is kosher: "
 						+ optionValue);
 			} else {
-				System.out.println(TAB + TAB + "Man, I deeply doubt *"
+				System.err.println(TAB + TAB + "Man, I deeply doubt *"
 						+ optionValue + "* is a CountryCode RIPE is aware of.");
-				System.out.println("BailOut");
+				System.err.println("BailOut");
 				System.exit(1);
 			}
 
