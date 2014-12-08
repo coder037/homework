@@ -31,33 +31,8 @@ public class Run {
 	private final static String VERSION = "0.4";
 	private final static String TAB = "\t";
 
-	// Choice of possible country codes RIPE serves according
-	// http://www.ripe.net/lir-services/member-support/info/list-of-members/list-of-country-codes-and-rirs
-	// as of 2014-12-02
-
-	public enum CountryCodesServedByRIPE {
-		AX, AL, AD, AM, AT, AZ, BH, BY, BE, BA, BG,
-		HR, CY, CZ, DK, EE, FO, FI, FR, GE, DE, GI,
-		GR, GL, GG, VA, HU, IS, IR, IQ, IE, IM, IL,
-		IT, JE, JO, KZ, KW, KG, LV, LB, LI, LT, LU,
-		MK, MT, MD, MC, ME, NL, NO, OM, PS, PL, PT,
-		QA, RO, RU, SM, SA, RS, SK, SI, ES, SJ, SE,
-		CH, SY, TJ, TR, TM, UA, AE, GB, UZ, YE;
-
-		public static boolean isKosher(String candidate) {
-			// Inspiration:
-			// http://stackoverflow.com/questions/4936819/java-check-if-enum-contains-a-given-string
-			System.out.println();
-			System.out.println("==- CountryCode Kosherness Check");
-			try {
-				CountryCodesServedByRIPE.valueOf(candidate);
-				return true;
-			} catch (Exception e) {
-				return false;
-			}
-		}
-	} // ENUM
-
+	// Here we first parse the argv line to be sure it is parsable nuff
+	
 	public static boolean checkConformity(String[] arguments) {
 		OptionSet args = null; // declaration separated due to subsequent TRY
 							  // clause
@@ -96,6 +71,8 @@ public class Run {
 		return true; // We reached this point, thus no bailout
 	}
 
+		// This method does some hashing with the string
+	    // The warning - never try to make crypto at home ;)
 	
 	public static String calculateHash(String argument) throws Exception {
 		String digest = null;
@@ -118,6 +95,7 @@ public class Run {
 		return digest;
 	}
 	
+		// This method is to Fourier the hash to the package author name
 	public static String checkTheAuthorship(String argument) throws Exception {
 		String message = null;
 		if (AUTHOR.equals(calculateHash(argument))) {
@@ -163,7 +141,7 @@ public class Run {
 		if (cliOptions.has("c")) {
 			System.out.println(TAB + "Option c was found");
 			String optionValue = (String) cliOptions.valueOf("c");
-			if (CountryCodesServedByRIPE.isKosher(optionValue)) {
+			if (CountryCode.cc.isKosher(optionValue)) {
 				System.out.println(TAB + TAB + "CountryCode is kosher: "
 						+ optionValue);
 			} else {
@@ -191,6 +169,7 @@ public class Run {
 					+ optionC);
 
 			System.out.println(checkTheAuthorship(optionC));
+			System.out.println(" Small portions of foreign copyleft noted as such in code, expressis verbis");
 
 		}
 
@@ -241,7 +220,7 @@ public class Run {
 
 		System.out.println(" ======= Start ===== ");
 
-		// Currently we simulate (until we build the static CLI program)
+		// Alternatives for simulation (until we build the static CLI program)
 		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
 				"--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800",
 				"-d", "7", "-M", "86400" };
