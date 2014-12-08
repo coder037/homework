@@ -229,7 +229,9 @@ public class Run {
 		String[] simulation3 = { "--help" };
 		String[] effectiveOptions = simulation1; // vs argv
 
+		// Formal check of command line options syntax
 		checkConformity(effectiveOptions); // Else bailout
+		// Parse RIPE for that country
 		DefaultParametersForRun FinalOptions = parseContent(effectiveOptions);
 
 		// printout of ACTUAL options
@@ -258,13 +260,15 @@ public class Run {
 
 		// HERE starts the ACTUAL LAUNCH CODE
 
-		// Parse RIPE for that country
-		// Call Tic-Tac(Options, Target)
+
+		// Call TicTac(FinalOptions);
 		//
 		System.out.println(" =======  END  ===== ");
 		// System.exit(0);
 	}
 
 	// ========================================================
+	
+	// ToDo: rename Nuhker nuhker
 
 }
