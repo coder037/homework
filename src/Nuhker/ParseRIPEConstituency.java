@@ -49,8 +49,9 @@ public class ParseRIPEConstituency {
 		// output goes there:
 		ByteArrayOutputStream httpResult = new ByteArrayOutputStream();
 
+		// FOREIGN COPYRIGHT WARNING
 		// Hello man, this is some best industry-standard method
-		// available in many textbooks. bufferlength = 1024 etc.
+		// available in many textbooks. G: bufferlength = 1024 etc.
 		// Me don't know who has written this code block ;)
 		// GOOGLE for "java streams byte[1024]"
 
@@ -63,6 +64,7 @@ public class ParseRIPEConstituency {
 		networkSource.close();
 		byteStream = httpResult.toByteArray();
 		// end of the weird industry-standard HTTP seduction method
+		// END of the FOREIGN COPYRIGHT WARNING
 		return byteStream;
 	}
 

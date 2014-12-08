@@ -261,7 +261,7 @@ public class Run {
 		// HERE starts the ACTUAL LAUNCH CODE
 
 
-		// Call TicTac(FinalOptions);
+		Nuhker.DataDiver.main(FinalOptions);
 		//
 		System.out.println(" =======  END  ===== ");
 		// System.exit(0);
