@@ -3,6 +3,8 @@
  */
 package Nuhker;
 
+import java.io.IOException;
+
 import joptsimple.OptionParser;
 
 /**
@@ -48,16 +50,24 @@ public class DataDiver {
 		
 			// #### Alternative 1 - upper level
 			if (upperLevel) { // RIPE thing
-				String[] targetASNs = null;
+				String[] targetList = null;
 				System.out.println(TAB + "This is the first level of the recursion");
 				System.out.println(TAB + "Country we work with: "
 						+ Current.getCountryCodeToWorkWith());
 
-//				String cc = "EE";
-//				String toBeParsed = grabCountryDescription(cc);
-//				String[] hasBeenParsed = asnJsonParser(toBeParsed);
-//				int countOfASNsObtained = hasBeenParsed.length;
-//
+
+				String toBeParsed = "";
+				try {
+					toBeParsed = ParseRIPEConstituency.grabCountryDescription(Current.getCountryCodeToWorkWith());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				String[] hasBeenParsed = ParseRIPEConstituency.asnJsonParser(toBeParsed);
+				int countOfASNsObtained = hasBeenParsed.length;
+				System.out.println("Count of ASNs in within the constituency: " + countOfASNsObtained);
+				//
 //				// Print it out to be very sure
 //				for (int k = 0; k < countOfASNsObtained; k++) {
 //					System.out.println(hasBeenParsed[k] + " ");
