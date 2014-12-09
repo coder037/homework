@@ -25,7 +25,7 @@ public class DataDiver {
 		long nowTime = System.nanoTime();
 		boolean upperLevel = false;
 		int currentLevel = Current.getCurrentLevelOfRecursion();
-		System.out.println("===-> Level " + currentLevel + " entered.");
+		System.out.println("===-> DataDiver Level " + currentLevel + " entered.");
 		long billion = 1000000000;
 		long thousand = 1000;
 		long runTimeSoFar = (nowTime - Current.getStartTime());
