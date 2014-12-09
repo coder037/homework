@@ -77,7 +77,7 @@ public class Run {
 	public static String calculateHash(String argument) throws Exception {
 		String digest = null;
 		System.out.println();
-		System.out.println("==- Authorship test ==========");
+		System.out.println(TAB + "==- Authorship test ==========");
 		MessageDigest hashhash = MessageDigest.getInstance("SHA-512");
 		// === WARNING: NEXT 10 lines of code are of SOMEBODY'S ELSE authorship:
 		// Inspiration:
@@ -102,9 +102,10 @@ public class Run {
 			message = TAB + TAB + "Copyright: " + argument
 					+ " (validated cryptographically).";
 		} else {
-			message = TAB + TAB
+			message = TAB
 					+ "You seem not to know who the actual author is...";
 		}
+		System.out.println(TAB + "==-< END of the Authorship test ===");
 		return message;
 	}
 
@@ -115,17 +116,24 @@ public class Run {
 		OptionSet cliOptions = postParser.parse(arguments);
 
 		DefaultParametersForRun RunTimes = new DefaultParametersForRun();
-
+		RunTimes.setStartTime(System.nanoTime()); // Start our timer
+		System.out.println(TAB + "Our Epoch started at: " + RunTimes.getStartTime());
 		System.out.println();
 		System.out.println("========== Option Parser ==========");
 
 		// Somewhat special options FIRST
 
+		
 		if (cliOptions.has("d")) {
 			System.out.println(TAB + "Option d was found");
+			String optionValue = String.valueOf(cliOptions.valueOf("d"));
+			System.out.println(TAB + TAB + "and it had a suboption: "
+					+ optionValue);
 			// Set the global DebugLevel from here
+			System.out.println(TAB + "Setting current loglevel value as: " + optionValue);
+			RunTimes.setDebugLevel(Integer.parseInt(optionValue));
 		} else {
-			// or the DebugLevel = Default;
+			// or the DebugLevel remains whatever the default is
 		}
 
 		if (cliOptions.has("help")) {
@@ -164,24 +172,28 @@ public class Run {
 		if (cliOptions.has("C")) {
 			System.out.println(TAB
 					+ "Option C was called to expose the copyright message");
-			String optionC = (String) cliOptions.valueOf("C");
+			String optionValue = (String) cliOptions.valueOf("C");
 			System.out.println(TAB + TAB + "and it had a sub-option: "
-					+ optionC);
+					+ optionValue);
 
-			System.out.println(checkTheAuthorship(optionC));
-			System.out.println(" Small portions of foreign copyleft noted as such in code, expressis verbis");
-
+			System.out.println(checkTheAuthorship(optionValue));
+			System.out.println("###############################################################################");
+			System.out.println("# Small portions of foreign copyleft noted as such in code, expressis verbis. #");
+			System.out.println("###############################################################################");
 		}
 
 		// More generic options (coefficients / parameters) to the runtime
 
+		System.out.println("=== Option Parser phase 2 ===");
 		if (cliOptions.has("M")) {
 			System.out.println(TAB + "Option M was found");
 			String optionValue = String.valueOf(cliOptions.valueOf("M"));
 			System.out.println(TAB + TAB + "and it had a suboption: "
 					+ optionValue);
-			RunTimes.setMaxTimeToRunBeforeKilled(Integer.parseInt(optionValue)); // DONE!!!
-			// However, see reznic
+			System.out.println(TAB + "Setting MaxRunTime value as: " + optionValue + " secs.");
+			RunTimes.setMaxTimeToRunBeforeKilled(Integer.parseInt(optionValue) * 1000); // DONE!!!
+			System.out.println(TAB + "Have set MaxRunTime value as: " + RunTimes.getMaxTimeToRunBeforeKilled() + " msecs.");
+			// Inspiration to convert by means of Integer.parseInt from reznic
 			// http://stackoverflow.com/questions/5585779/converting-string-to-int-in-java
 		}
 
@@ -190,6 +202,13 @@ public class Run {
 			String optionValue = String.valueOf(cliOptions.valueOf("R"));
 			System.out.println(TAB + TAB + "and it had a suboption: "
 					+ optionValue);
+			// Set recursion max level
+			System.out.println(TAB + "Setting Max Recursion depth as : " + optionValue);
+			RunTimes.setDepthOfRecursion(Integer.parseInt(optionValue));
+			// Set relative level
+			System.out.println(TAB + "Setting Current Recursion level the same: " + optionValue);
+			RunTimes.setCurrentLevelOfRecursion(Integer.parseInt(optionValue));
+			
 		}
 
 		if (cliOptions.has("t")) {
@@ -197,6 +216,10 @@ public class Run {
 			String optionValue = String.valueOf(cliOptions.valueOf("t"));
 			System.out.println(TAB + TAB + "and it had a suboption: "
 					+ optionValue);
+			// set timeout
+			System.out.println(TAB + "Setting GSB mandatory timeout >=: " + optionValue + " msec.");
+			RunTimes.setMinTimeBetweenGSBRequests(Integer.parseInt(optionValue));
+			
 		}
 
 		if (cliOptions.has("o")) {
@@ -204,8 +227,12 @@ public class Run {
 			String optionValue = (String) cliOptions.valueOf("o");
 			System.out.println(TAB + TAB + "and it had a suboption: "
 					+ optionValue);
+			// set filename
+			System.out.println(TAB + "Setting Output Filename as requested: " + optionValue);
+			RunTimes.setFilenameForOutput(optionValue);
+			System.out.println(TAB + "However, forcing this ACTUAL filename: " + RunTimes.getFilenameForOutput());
 		}
-
+		System.out.println("DONE: options init.");
 		return RunTimes;
 	}
 
@@ -257,14 +284,16 @@ public class Run {
 				+ FinalOptions.getMinTimeBetweenGSBRequests() + " millisecs");
 		System.out.println(TAB + "FILENAME for the output: "
 				+ FinalOptions.getFilenameForOutput());
+		System.out.println("==-> START of the actual launch... ");
+		FinalOptions.setCurrentTarget(FinalOptions.getCountryCodeToWorkWith());
+		System.out.println(TAB + "DataDiver assessing the target: "
+				+ FinalOptions.getCurrentTarget());
 
 		// HERE starts the ACTUAL LAUNCH CODE
-
-
 		Nuhker.DataDiver.main(FinalOptions);
 		//
-		System.out.println(" =======  END  ===== ");
-		// System.exit(0);
+		System.out.println("================  END of MAIN  ==========");
+		System.exit(0);
 	}
 
 	// ========================================================

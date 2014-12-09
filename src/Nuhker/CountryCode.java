@@ -10,7 +10,8 @@ package Nuhker;
  *
  */
 public class CountryCode {
-
+	private final static String TAB = "\t";
+	
 	public enum cc {
 		AX, AL, AD, AM, AT, AZ, BH, BY, BE, BA, BG,
 		HR, CY, CZ, DK, EE, FO, FI, FR, GE, DE, GI,
@@ -27,14 +28,16 @@ public class CountryCode {
 		public static boolean isKosher(String candidate) {
 			// Inspiration:
 			// http://stackoverflow.com/questions/4936819/java-check-if-enum-contains-a-given-string
-			System.out.println();
-			System.out.println("==- CountryCode Kosherness Check");
+			System.out.println(TAB + TAB + "==- CountryCode Kosherness Check");
 			try {
 				cc.valueOf(candidate);
-				System.out.println("	CC found to be kosher enough.");
+				System.out.println(TAB + TAB + "CC found to be kosher enough.");
+				System.out.println(TAB + TAB + "==-> CountryCode NORMAL EXIT");
 				return true;
+				
 			} catch (Exception e) {
-				System.err.println("	CC extends the bearable kosherness.");
+				System.err.println(TAB + TAB + "CC extends the bearable kosherness.");
+				System.out.println(TAB + TAB + "==-> CountryCode check UNSUXXESSFUL");
 				return false;
 			}
 		}
