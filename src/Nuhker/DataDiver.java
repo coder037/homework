@@ -20,46 +20,72 @@ public class DataDiver {
 	 * @param args
 	 */
 	public static void main(DefaultParametersForRun Current) {
-		System.out.println("===-> Level " + Current.getDepthOfRecursion() + " entered.");
+		boolean upperLevel = false;
+		int currentLevel = Current.getCurrentLevelOfRecursion();
+		System.out.println("===-> Level " + currentLevel + " entered.");
+		
+		if (Current.getDepthOfRecursion() == currentLevel) {
+			upperLevel = true;
+			System.out.println(TAB + "this is the UPPER level: " + currentLevel);
+		}
 
-		if (0 != Current.getDepthOfRecursion()) {
-			System.out.println(TAB + "Recursion level so far: "
-					+ Current.getDepthOfRecursion());
-			Current.setDepthOfRecursion((Current.getDepthOfRecursion() - 1));
-			System.out.println(TAB + "Recursion level for siblings: "
-					+ Current.getDepthOfRecursion());
-
-			if (Current.getDepthOfRecursion() == Current
-					.getCurrentLevelOfRecursion()) {
+		if (0 == currentLevel) { // Remaining depth = 0
+			System.out.println("==== --{The seabed has been reached}-- ====");
+			System.out.println(TAB + "RETURN from this tree.");
+			return;
+		}
+		
+		 { // Work to do, extra level(s) to dive
+			// Announcement and Decrement
+			System.out.println(TAB + "Recursion level so far was: "
+					+ currentLevel);
+			Current.setCurrentLevelOfRecursion(currentLevel - 1);
+			System.out.println(TAB + "Recursion level for siblings is: "
+					+ Current.getCurrentLevelOfRecursion());
+		}
+		
+		// Two alternatives - what kind of work to do.
+		
+			// #### Alternative 1 - upper level
+			if (upperLevel) { // RIPE thing
+				String[] targetASNs = null;
 				System.out.println(TAB + "This is the first level of the recursion");
 				System.out.println(TAB + "Country we work with: "
 						+ Current.getCountryCodeToWorkWith());
-				
-				// RIPE thing.
-				// call it and count the results
-				System.out.println("===-< calling the next level.");	
-				// call MYSELF for each argument found.
-				
-			} else {
-				// This is not the upper level
-				System.out.println(TAB + "AS or FQDN/URL?");
 
-				// Doing difference.
-				System.out.println("Here we should wait for: " + Current.getMinTimeBetweenGSBRequests() + " msec");
-				try {
-				    Thread.sleep(Current.getMinTimeBetweenGSBRequests());                 //1000 milliseconds is one second.
-				} catch(InterruptedException ex) {
-				    Thread.currentThread().interrupt();
-				}
-				System.out.println("===-< calling the next level.");
+//				String cc = "EE";
+//				String toBeParsed = grabCountryDescription(cc);
+//				String[] hasBeenParsed = asnJsonParser(toBeParsed);
+//				int countOfASNsObtained = hasBeenParsed.length;
+//
+//				// Print it out to be very sure
+//				for (int k = 0; k < countOfASNsObtained; k++) {
+//					System.out.println(hasBeenParsed[k] + " ");
+//				}
+				
+				// 
+				System.out.println("===-< calling the next level.");	
+				// call MYSELF for each argument found.	
+				main(Current); // RECURSIVELY CALLING OUT ITSELF
+		} else {
+			// Any other level except the upper
+			// #### Alternative 2 - normal AS/FQDN work
 			
-				// PARSE Reputation
-			main(Current); // RECURSIVELY CALLING OUT ITSELF
+			System.out.println(TAB + "AS or FQDN/URL?");
+
+			// Doing difference.
+			System.out.println("Here we should wait for: " + Current.getMinTimeBetweenGSBRequests() + " msec");
+			try {
+			    Thread.sleep(Current.getMinTimeBetweenGSBRequests());                 //1000 milliseconds is one second.
+			} catch(InterruptedException ex) {
+			    Thread.currentThread().interrupt();
 			}
-		} else { // Remaining Depth = 0
-			System.out.println("==== --{The seabed has been reached}-- ====");
-			System.out.println(TAB + "RETURN from this tree.");
-		}
+			System.out.println("===-< calling the next level.");
+		
+			// PARSE Reputation
+		main(Current); // RECURSIVELY CALLING OUT ITSELF
+			
+		} 
 		return;
 
 	}
