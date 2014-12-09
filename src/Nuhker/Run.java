@@ -28,7 +28,7 @@ import java.security.MessageDigest;
 public class Run {
 
 	private final static String AUTHOR = "0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff";
-	private final static String VERSION = "0.4";
+	private final static String VERSION = "0.5";
 	private final static String TAB = "\t";
 
 	// Here we first parse the argv line to be sure it is parsable nuff
@@ -39,7 +39,7 @@ public class Run {
 		OptionParser preParser = OptionGrammar.main();
 
 		System.out.println();
-		System.out.println("========== Option Conformity Check ==========");
+		System.out.println("===* Option Conformity Check");
 		// ==== WARNING, NEXT 25 lines are not considered fully mine, 
 		// but a neat trick from
 		// https://github.com/martinpaljak/GlobalPlatform/blob/master/src/openkms/gp/GPTool.java
@@ -68,6 +68,7 @@ public class Run {
 			System.exit(1);
 		}
 		// END of somebody's else code.
+		System.out.println("===~ DONE: Option Conformity");
 		return true; // We reached this point, thus no bailout
 	}
 
@@ -117,7 +118,7 @@ public class Run {
 
 		DefaultParametersForRun RunTimes = new DefaultParametersForRun();
 		System.out.println();
-		System.out.println("========== Option Parser ==========");
+		System.out.println("===-( CLI Option Parser");
 
 		// Somewhat special options FIRST
 
@@ -175,14 +176,15 @@ public class Run {
 					+ optionValue);
 
 			System.out.println(checkTheAuthorship(optionValue));
-			System.out.println("###############################################################################");
-			System.out.println("# Small portions of foreign copyleft noted as such in code, expressis verbis. #");
-			System.out.println("###############################################################################");
+			System.out.println(TAB + "###############################################################################");
+			System.out.println(TAB + "# Small portions of foreign copyleft noted as such in code, expressis verbis. #");
+			System.out.println(TAB + "###############################################################################");
+			System.out.println("===-) END of Option Parser");
 		}
 
 		// More generic options (coefficients / parameters) to the runtime
 
-		System.out.println("=== Option Parser phase 2 ===");
+		System.out.println("===-( Option Parser phase 2");
 		if (cliOptions.has("M")) {
 			System.out.println(TAB + "Option M was found");
 			String optionValue = String.valueOf(cliOptions.valueOf("M"));
@@ -230,7 +232,9 @@ public class Run {
 			RunTimes.setFilenameForOutput(optionValue);
 			System.out.println(TAB + "However, forcing this ACTUAL filename: " + RunTimes.getFilenameForOutput());
 		}
-		System.out.println("DONE: options init.");
+		
+		System.out.println("===-) END of Option Parser, phase 2");
+		System.out.println(TAB + "options init DONE according to the CLI values.");
 		return RunTimes;
 	}
 
@@ -244,12 +248,12 @@ public class Run {
 	public static void main(String[] argv) throws Exception {
 		long firstVariable = System.nanoTime();
 		
-		System.out.println(" ======= Start ===== ");
+		System.out.println("0--------={Start}=--------0");
 
 		// Alternatives for simulation (until we build the static CLI program)
 		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
 				"--xtra", "-o", "somefilename-001", "-R", "4", "-t", "2800",
-				"-d", "7", "-M", "86400" };
+				"-d", "7", "-M", "500" };
 		String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000", "-n",
 				"-o", "somefilename-001", "-R", "4", "-t", "2800" };
 		String[] simulation3 = { "--help" };
@@ -264,7 +268,7 @@ public class Run {
 		// printout of ACTUAL options
 		System.out.println();
 		System.out.println("===================  M A I N ==============");
-		System.out.println(">>>>>>> " + "Our Epoch started at: " + FinalOptions.getStartTime());
+		System.out.println("~~~~~~~~ " + "Our Epoch started at: " + FinalOptions.getStartTime());
 		System.out.println("MAIN: READY to attempt the actual launch...");
 		System.out.println(TAB + "Debuglevel has been set as: "
 				+ FinalOptions.getDebugLevel() + " of max 7");
@@ -294,7 +298,7 @@ public class Run {
 		Nuhker.DataDiver.main(FinalOptions);
 		//
 		long duration = (System.nanoTime() - FinalOptions.getStartTime() );
-		System.out.println("<<<<<<< " + "Our Epoch lasted: " + (duration / 1000000000) + " secs.");
+		System.out.println("<<<<<<< " + "The Epoch lasted: " + (duration / 1000000000) + " secs.");
 		System.out.println("================  END of MAIN  ==========");
 		System.exit(0);
 	}

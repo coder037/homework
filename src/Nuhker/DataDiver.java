@@ -22,9 +22,16 @@ public class DataDiver {
 	 * @param args
 	 */
 	public static void main(DefaultParametersForRun Current) {
+		long nowTime = System.nanoTime();
 		boolean upperLevel = false;
 		int currentLevel = Current.getCurrentLevelOfRecursion();
 		System.out.println("===-> Level " + currentLevel + " entered.");
+		long billion = 1000000000;
+		long thousand = 1000;
+		long runTimeSoFar = (nowTime - Current.getStartTime());
+		long remainedSecs= (Current.getMaxTimeToRunBeforeKilled() / thousand - (runTimeSoFar / billion));
+		System.out.println(TAB + "Runtime so far: " + (runTimeSoFar / billion)+ " sec(s), remained: "  + (remainedSecs) + " sec(s) until killed.");
+		// System.out.println(TAB + "Time remained until the KILL: " + (remainedSecs)  + " sec(s)");
 		
 		if (Current.getDepthOfRecursion() == currentLevel) {
 			upperLevel = true;
@@ -70,7 +77,7 @@ public class DataDiver {
 
 				String[] hasBeenParsed = ParseRIPEConstituency.asnJsonParser(toBeParsed);
 				int countOfASNsObtained = hasBeenParsed.length;
-				System.out.println("Count of ASNs in within the constituency: " + countOfASNsObtained);
+				System.out.println(TAB + "DataDiver: Count of ASNs in within the constituency: " + countOfASNsObtained);
 				//
 //				// Print it out to be very sure
 //				for (int k = 0; k < countOfASNsObtained; k++) {
