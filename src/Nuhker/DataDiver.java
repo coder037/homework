@@ -45,7 +45,12 @@ public class DataDiver {
 				System.out.println(TAB + "AS or FQDN/URL?");
 
 				// Doing difference.
-				
+				System.out.println("Here we should wait for: " + Current.getMinTimeBetweenGSBRequests() + " msec");
+				try {
+				    Thread.sleep(Current.getMinTimeBetweenGSBRequests());                 //1000 milliseconds is one second.
+				} catch(InterruptedException ex) {
+				    Thread.currentThread().interrupt();
+				}
 				System.out.println("===-< calling the next level.");
 			
 				// PARSE Reputation
@@ -53,6 +58,7 @@ public class DataDiver {
 			}
 		} else { // Remaining Depth = 0
 			System.out.println("==== --{The seabed has been reached}-- ====");
+			System.out.println(TAB + "RETURN from this tree.");
 		}
 		return;
 

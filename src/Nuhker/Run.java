@@ -116,8 +116,6 @@ public class Run {
 		OptionSet cliOptions = postParser.parse(arguments);
 
 		DefaultParametersForRun RunTimes = new DefaultParametersForRun();
-		RunTimes.setStartTime(System.nanoTime()); // Start our timer
-		System.out.println(TAB + "Our Epoch started at: " + RunTimes.getStartTime());
 		System.out.println();
 		System.out.println("========== Option Parser ==========");
 
@@ -193,7 +191,7 @@ public class Run {
 			System.out.println(TAB + "Setting MaxRunTime value as: " + optionValue + " secs.");
 			RunTimes.setMaxTimeToRunBeforeKilled(Integer.parseInt(optionValue) * 1000); // DONE!!!
 			System.out.println(TAB + "Have set MaxRunTime value as: " + RunTimes.getMaxTimeToRunBeforeKilled() + " msecs.");
-			// Inspiration to convert by means of Integer.parseInt from reznic
+			// Inspiration to convert by means of Integer.parseInt from reznic		System.out.println(TAB + "Our Epoch started at: " + FinalOptions.getStartTime());
 			// http://stackoverflow.com/questions/5585779/converting-string-to-int-in-java
 		}
 
@@ -244,7 +242,8 @@ public class Run {
 	 * @param args
 	 */
 	public static void main(String[] argv) throws Exception {
-
+		long firstVariable = System.nanoTime();
+		
 		System.out.println(" ======= Start ===== ");
 
 		// Alternatives for simulation (until we build the static CLI program)
@@ -260,10 +259,12 @@ public class Run {
 		checkConformity(effectiveOptions); // Else bailout
 		// Parse RIPE for that country
 		DefaultParametersForRun FinalOptions = parseContent(effectiveOptions);
+		FinalOptions.setStartTime(firstVariable); // Start our timer
 
 		// printout of ACTUAL options
 		System.out.println();
 		System.out.println("===================  M A I N ==============");
+		System.out.println(">>>>>>> " + "Our Epoch started at: " + FinalOptions.getStartTime());
 		System.out.println("MAIN: READY to attempt the actual launch...");
 		System.out.println(TAB + "Debuglevel has been set as: "
 				+ FinalOptions.getDebugLevel() + " of max 7");
@@ -273,7 +274,7 @@ public class Run {
 				+ FinalOptions.getDepthOfRecursion());
 		System.out.println(TAB + "Time allocated for the run is: "
 				+ FinalOptions.getMaxTimeToRunBeforeKilled() + " millisecs");
-		System.out.println(TAB + "Start UNIX msec Epoch Time  was: "
+		System.out.println(TAB + "Start UNIX nsec Epoch Time  was: "
 				+ FinalOptions.getStartTime());
 		System.out.println(TAB
 				+ "Time prognosis until the END is: "
@@ -292,6 +293,8 @@ public class Run {
 		// HERE starts the ACTUAL LAUNCH CODE
 		Nuhker.DataDiver.main(FinalOptions);
 		//
+		long duration = (System.nanoTime() - FinalOptions.getStartTime() );
+		System.out.println("<<<<<<< " + "Our Epoch lasted: " + (duration / 1000000000) + " secs.");
 		System.out.println("================  END of MAIN  ==========");
 		System.exit(0);
 	}
