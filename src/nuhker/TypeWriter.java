@@ -1,7 +1,7 @@
 /**
  * 
  */
-package Nuhker;
+package nuhker;
 
 /**
  * @author n0ne

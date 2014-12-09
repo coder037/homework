@@ -1,7 +1,7 @@
 /**
  * created: Nov 23, 2014 12:44:46 AM
  */
-package Nuhker;
+package nuhker;
 
 /**
  * @author coder037@xyz.ee
@@ -122,7 +122,6 @@ public class Run {
 
 		// Somewhat special options FIRST
 
-		
 		if (cliOptions.has("d")) {
 			System.out.println(TAB + "Option d was found");
 			String optionValue = String.valueOf(cliOptions.valueOf("d"));
@@ -293,7 +292,7 @@ public class Run {
 				+ FinalOptions.getCurrentTarget());
 
 		// HERE starts the ACTUAL LAUNCH CODE
-		Nuhker.DataDiver.main(FinalOptions);
+		nuhker.DataDiver.main(FinalOptions);
 		//
 		long duration = (System.nanoTime() - FinalOptions.getStartTime() );
 		System.out.println("<<<<<<< " + "The Epoch lasted: " + (duration / 1000000000) + " secs.");

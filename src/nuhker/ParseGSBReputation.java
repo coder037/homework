@@ -1,7 +1,7 @@
 /**
  * created: Nov 28, 2014 8:56:32 AM
  */
-package Nuhker;
+package nuhker;
 
 import java.io.IOException;
 import java.util.logging.*;

@@ -1,7 +1,7 @@
 /**
  * created: Dec 8, 2014 11:42:54 PM
  */
-package Nuhker;
+package nuhker;
 
 import java.io.IOException;
 
@@ -65,7 +65,7 @@ public class DataDiver {
 				System.out.println(TAB + "Country we work with: "
 						+ Current.getCountryCodeToWorkWith());
 
-				Nuhker.TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + Current.getCountryCodeToWorkWith() + " ***");
+				nuhker.TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + Current.getCountryCodeToWorkWith() + " ***");
 				String toBeParsed = "";
 				try {
 					toBeParsed = ParseRIPEConstituency.grabCountryDescription(Current.getCountryCodeToWorkWith());

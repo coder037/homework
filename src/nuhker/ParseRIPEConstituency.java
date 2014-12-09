@@ -1,7 +1,7 @@
 /**
  * created: Nov 26, 2014 11:18:09 PM
  */
-package Nuhker;
+package nuhker;
 
 /**
  * @author coder037@xyz.ee

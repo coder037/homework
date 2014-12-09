@@ -1,7 +1,7 @@
 /**
  * created: Dec 8, 2014 11:12:05 PM
  */
-package Nuhker;
+package nuhker;
 
 
 /**
