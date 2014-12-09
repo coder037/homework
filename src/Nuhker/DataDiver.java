@@ -103,7 +103,9 @@ public class DataDiver {
 			}
 			System.out.println("===-< calling the next level.");
 		
-			// PARSE Reputation
+			// FOREACH argument
+				// TypeWriter(toWhere,whatLine);
+				// PARSE Reputation
 		main(Current); // RECURSIVELY CALLING OUT ITSELF
 			
 		} 
