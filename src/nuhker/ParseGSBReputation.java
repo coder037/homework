@@ -85,8 +85,7 @@ public class ParseGSBReputation {
 	
 	
 	static String[] badReputation (String source) {
-		ArrayList validSites = new ArrayList();
-		String [] validTargets;
+		ArrayList<String> validSites = new ArrayList<String>();
 		String workspace = "";
 
 		// Put this try/catch BS into a static String[] badReputation (String source)
@@ -95,8 +94,10 @@ public class ParseGSBReputation {
 
 		try {
 			String url = source;
-			System.out.println("===+ START ParseGSBReputation.main ");
-			System.out.println( TAB + TAB + url);
+			System.out.println("===+ START badReputation");
+			System.out.println( TAB + "URL: " + url);
+			System.out.println();
+			
 			Document doc = Jsoup.connect(url).get();
 			Elements meaningfulSections = doc.select("a");
 			// keep only memes with meaningful FQDNs / AS's.
@@ -106,31 +107,33 @@ public class ParseGSBReputation {
 
 				// Exclude promo targets
 				if (!(isNonsense(workspace))) {
-
+					
 					if (workspace.contains(AS)) {
 						System.out.println(TAB + "AS info: " + workspace);
-						// PoC
-						as2ASN(asn2Colon(workspace));
-						// ADD to list
+
+						// as2ASN(asn2Colon(workspace));
+						validSites.add(asn2Colon(workspace));
 
 					} else {
 						System.out.println(TAB + "New Malwaresite: "
 								+ workspace);
+						validSites.add(workspace);
 						System.out.println();
-						// ADD to list
-
 					} //ELSE
 				} //FI
-			}
-
-		}
+			} // FOR
+		} // TRY
 		catch (IOException ex) {
 			System.out.println("!!!WARNING!!! Some connectivity glitch against GSB");
 			System.out.println(TAB + "should we act somehow?");
 		}
-		validTargets = new String[5];
+		String checkout = validSites.toString();
+		System.out.println(TAB + "badReputation found: " + checkout);
 		
-		return validTargets;
+		String[] validTargets = new String[validSites.size()];
+		validTargets = validSites.toArray(validTargets);
+		System.out.println("===- END badReputation ");
+ 		return validTargets;
 	}
 
 	
@@ -140,10 +143,13 @@ public class ParseGSBReputation {
 		String url2 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=AS:8728";
 		String url3 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=AS:12757";
 		
-		String needToDive[] = badReputation(url1);
-		
-		// PRINTOUT
-
+		System.out.println("=== MAIN ===");
+		String needToDive[] = badReputation(url2);
+		System.out.println("=== MAIN Printout: ");
+		for(String s : needToDive) {
+		    System.out.println(TAB + TAB + s);
+		}
+		    System.out.println("=== End of MAIN");
 	} // MAIN
 		
 } // CLASS

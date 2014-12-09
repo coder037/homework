@@ -18,6 +18,16 @@ public class DataDiver {
 
 	private final static String TAB = "\t";
 
+	public static void waitFor(DefaultParametersForRun thisCopy) {
+		long waitTime = thisCopy.getMinTimeBetweenGSBRequests();
+		System.out.println("Here we should wait for: " + waitTime + " msec");
+		try {
+		    Thread.sleep(waitTime); //msecs
+		} catch (InterruptedException enough) {
+		    Thread.currentThread().interrupt();
+		}
+	}
+	
 	/**
 	 * @param args
 	 */
@@ -80,39 +90,35 @@ public class DataDiver {
 
 				String[] hasBeenParsed = ParseRIPEConstituency.asnJsonParser(toBeParsed);
 				int countOfASNsObtained = hasBeenParsed.length;
-				System.out.println(TAB + "DataDiver: Count of ASNs in within the constituency: " + countOfASNsObtained);
-				//
-//				// Print it out to be very sure
-//				for (int k = 0; k < countOfASNsObtained; k++) {
-//					System.out.println(hasBeenParsed[k] + " ");
-//				}
+				System.out.println(TAB + "DataDiver: Need to check: " + countOfASNsObtained + " ASNs");
+
+				for(String target : hasBeenParsed) {
+				    System.out.println(TAB + TAB + target);
+				    Current.setCurrentTarget(ParseGSBReputation.asn2Colon(target));
+				    waitFor(Current);
+				    System.out.println("===-< calling the next level.");
+				    main(Current); // RECURSIVELY foreach argument
+				}
 				
-				// 
-				System.out.println("===-< calling the next level.");	
-				// call MYSELF for each argument found.	
-				main(Current); // RECURSIVELY CALLING OUT ITSELF
 		} else {
 			// Any other level except the upper
 			// #### Alternative 2 - normal AS/FQDN work
 			
+			System.out.println("Target is: " + Current.getCurrentTarget() );
 			System.out.println(TAB + "AS or FQDN/URL?");
 
 			// Doing difference.
-			System.out.println("Here we should wait for: " + Current.getMinTimeBetweenGSBRequests() + " msec");
-			try {
-			    Thread.sleep(Current.getMinTimeBetweenGSBRequests());                 //1000 milliseconds is one second.
-			} catch(InterruptedException ex) {
-			    Thread.currentThread().interrupt();
-			}
+
 			System.out.println("===-< calling the next level.");
 		
-			
+			// THIS IS WHERE WE ARE : ToDo! 
 			
 			// FOREACH argument
-			// Nuhker.TypeWriter.main(outputFileName, argument);
+			// nuhker.TypeWriter.main(outputFileName, argument);
 
 				// PARSE Reputation
-		main(Current); // RECURSIVELY CALLING OUT ITSELF
+			waitFor(Current);
+			main(Current); // RECURSIVELY CALLING OUT ITSELF
 			
 		} 
 		return;
