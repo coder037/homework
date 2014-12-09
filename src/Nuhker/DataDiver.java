@@ -61,7 +61,11 @@ public class DataDiver {
 					toBeParsed = ParseRIPEConstituency.grabCountryDescription(Current.getCountryCodeToWorkWith());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
+					System.err.println("Unable to parse constituency. RIPE connection error. BAILOUT");
 					e.printStackTrace();
+					System.err.println("ABNORMAL Bailout.");
+					System.exit(66);
+					// http://www.opensource.apple.com/source/Libc/Libc-320/include/sysexits.h
 				}
 
 				String[] hasBeenParsed = ParseRIPEConstituency.asnJsonParser(toBeParsed);

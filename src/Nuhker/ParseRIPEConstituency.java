@@ -36,10 +36,13 @@ import java.util.ArrayList;
 
 public class ParseRIPEConstituency {
 
+	private final static String TAB = "\t";
+	
 	public static byte[] downLoader(String urlToDL) throws IOException {
 		byte[] byteStream = null;
 		URL urlToVisit = new URL(urlToDL);
-		System.out.println("downLoader: URL: " + urlToVisit);
+		System.out.println("===* RIPE Downloader");
+		System.out.println(TAB + "URL: " + urlToVisit);
 
 		// Open a network stream to the resource
 		// and record the answer.
@@ -79,7 +82,7 @@ public class ParseRIPEConstituency {
 
 		// 2. Open a network stream from the resource and read it in
 		byte[] response = downLoader(fullUrl);
-		System.out.println("Chars in the array: " + response.length);
+		System.out.println(TAB + "Chars in the array: " + response.length);
 		jsonDataObtained = new String(response);
 		// DEBUG System.out.println("BlobString: " + passToParse);
 
@@ -102,9 +105,9 @@ public class ParseRIPEConstituency {
 			JSONObject jsonObject1 = (JSONObject) outerObject;
 
 			String status = (String) jsonObject1.get("status");
-			System.out.println("Status: " + status);
+			System.out.println(TAB + "Query Status: " + status);
 			String time = (String) jsonObject1.get("time");
-			System.out.println("Time: " + time);
+			System.out.println(TAB + "Response Time: " + time);
 
 			// Hierarhy Level 2 - "data" keyword
 			Object midObject = (jsonObject1.get("data")); // everything inside
@@ -113,7 +116,7 @@ public class ParseRIPEConstituency {
 			JSONObject jsonObject2 = (JSONObject) midObject;
 
 			String timeValue = (String) jsonObject2.get("query_time");
-			System.out.println("Data was valid at that particular time: "
+			System.out.println(TAB + "Data claimed valid at: "
 					+ timeValue);
 
 			// Hierarchy Level 3 - ASN record list from "resources"
@@ -129,17 +132,18 @@ public class ParseRIPEConstituency {
 			ArrayList<String> outputList = new ArrayList<String>(asn);
 			int arraySize = outputList.size();
 
-			System.out.println("Size is: " + arraySize);
+			System.out.println(TAB + "AS count obtained: " + arraySize);
 			arrayedASNList = (String[]) outputList
 					.toArray(new String[arraySize]);
 
 			// Actually there are yet IPv4 and IPv6 lists available
 			// but we are not interested in these just now
+			System.out.println("===~ END of RIPE parsing method.");
 
 		} catch (ParseException e) {
-			System.out
-					.println("Parsing exception made Boo-boo during asnJsonParser method,");
-			System.out.println("        that's all I know currently...");
+			System.err
+					.println("Parsing exception made a Boo-boo during asnJsonParser method,");
+			System.err.println("        that's all I know currently...");
 			e.printStackTrace();
 		}
 
@@ -155,7 +159,7 @@ public class ParseRIPEConstituency {
 
 		// Print it out to be very sure
 		for (int k = 0; k < countOfASNsObtained; k++) {
-			System.out.println(hasBeenParsed[k] + " ");
+			System.out.println(TAB + TAB + hasBeenParsed[k] + " ");
 		}
 
 		// ToDo: json status field: if not OK or no data, then errmsg
