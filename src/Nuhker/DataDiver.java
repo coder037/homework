@@ -26,6 +26,9 @@ public class DataDiver {
 		boolean upperLevel = false;
 		int currentLevel = Current.getCurrentLevelOfRecursion();
 		System.out.println("===-> DataDiver Level " + currentLevel + " entered.");
+		String outputFileName =  Current.getFilenameForOutput();
+		System.out.println("===----> Results to be appended to: " + outputFileName);
+		
 		long billion = 1000000000;
 		long thousand = 1000;
 		long runTimeSoFar = (nowTime - Current.getStartTime());
@@ -62,7 +65,7 @@ public class DataDiver {
 				System.out.println(TAB + "Country we work with: "
 						+ Current.getCountryCodeToWorkWith());
 
-
+				Nuhker.TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + Current.getCountryCodeToWorkWith() + " ***");
 				String toBeParsed = "";
 				try {
 					toBeParsed = ParseRIPEConstituency.grabCountryDescription(Current.getCountryCodeToWorkWith());
@@ -103,8 +106,11 @@ public class DataDiver {
 			}
 			System.out.println("===-< calling the next level.");
 		
+			
+			
 			// FOREACH argument
-				// TypeWriter(toWhere,whatLine);
+			// Nuhker.TypeWriter.main(outputFileName, argument);
+
 				// PARSE Reputation
 		main(Current); // RECURSIVELY CALLING OUT ITSELF
 			

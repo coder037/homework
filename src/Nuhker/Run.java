@@ -228,9 +228,8 @@ public class Run {
 			System.out.println(TAB + TAB + "and it had a suboption: "
 					+ optionValue);
 			// set filename
-			System.out.println(TAB + "Setting Output Filename as requested: " + optionValue);
+			System.out.println(TAB + "Setting Base Filename as requested: " + optionValue);
 			RunTimes.setFilenameForOutput(optionValue);
-			System.out.println(TAB + "However, forcing this ACTUAL filename: " + RunTimes.getFilenameForOutput());
 		}
 		
 		System.out.println("===-) END of Option Parser, phase 2");

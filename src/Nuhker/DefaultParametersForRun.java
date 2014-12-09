@@ -12,7 +12,7 @@ package Nuhker;
 public class DefaultParametersForRun {
 
 	// http://stackoverflow.com/questions/351565/system-currenttimemillis-vs-system-nanotime
-	private long startTime = 0000000;
+	private long startTime = 0;
 
 
 
