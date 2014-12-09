@@ -161,9 +161,8 @@ public class Run {
 		}
 
 		if (cliOptions.has("x")) {
-			System.out
-					.println(TAB
-							+ "Option x was found which isn't yet implemented. Anyway, thnx for supporting it!");
+			System.out.println(TAB + "Option x was found which isn't yet implemented.");
+			System.out.println(TAB + TAB + "Anyway, thnx for supporting it!");
 		}
 
 		// Special copyright phuck
