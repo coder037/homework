@@ -10,8 +10,10 @@ import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 
 import java.util.regex.*; 
+import java.util.ArrayList;
 
-//INSPIRATION http://stackoverflow.com/questions/12361925/html-parsing-with-jsoup
+//INSPIRATION got from M.M. 
+//    & http://stackoverflow.com/questions/12361925/html-parsing-with-jsoup
 
 /**
  * @author coder037@xyz.ee
@@ -26,10 +28,12 @@ public class ParseGSBReputation {
 	private final static String TAB = "\t";
 	
 	public static boolean isNonsense(String suspect) {
-		// This method checks for Google promo links
+		// This method marks Google promo links
 		System.out.println(TAB + "---> isNonsense");
-		String[] googleCrap = { "Webmaster Help Center", "Webmaster Tools",
-				"Return to the previous page.", "Google Home" };
+		String[] googleCrap = { "Webmaster Help Center",
+							"Webmaster Tools",
+							"Return to the previous page.",
+							"Google Home" };
 		boolean whetherToDiscard = false;
 
 		virginity: for (int i = 0; i < googleCrap.length; i++) {
@@ -55,6 +59,7 @@ public class ParseGSBReputation {
 		System.out.println(TAB + TAB + "MID: " + destination);
 		destination = destination.replaceAll("^AS", "");
 		System.out.println(TAB + TAB + "DST: " + destination);
+		// To be extremely sure:
 		int sourceNo = Integer.parseInt(destination);
 		destination = Integer.toString(sourceNo);
 		destination = (AS + COLON + destination);
@@ -71,7 +76,7 @@ public class ParseGSBReputation {
 		String destination = source.replaceAll("^AS", "");
 		destination = destination.replaceAll(":", "");
 		System.out.println(TAB + TAB + destination);
-		// to be very sure
+		// to be extremely sure:
 		int sourceNo = Integer.parseInt(destination);
 		destination = Integer.toString(sourceNo);
 		System.out.println(TAB + "---< as2ASN");
@@ -79,29 +84,27 @@ public class ParseGSBReputation {
 	}
 	
 	
-	// ToDo: method: public static String[] grabGSBReputation (String fqdnOrAsn)
-
-	public static void main(String[] args) {
-		String url1 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=delfi.ee/";
-		String url2 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=AS:8728";
-		String url3 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=AS:12757";
-		
+	static String[] badReputation (String source) {
+		ArrayList validSites = new ArrayList();
+		String [] validTargets;
 		String workspace = "";
 
+		// Put this try/catch BS into a static String[] badReputation (String source)
+		// CALL it badReputation(String)
+		// and it returns a String array of the further shit
 
 		try {
-			String url = url2;
+			String url = source;
 			System.out.println("===+ START ParseGSBReputation.main ");
 			System.out.println( TAB + TAB + url);
 			Document doc = Jsoup.connect(url).get();
 			Elements meaningfulSections = doc.select("a");
-			// need to find memes that contain meaningful FQDNs.
+			// keep only memes with meaningful FQDNs / AS's.
 			for (Element fqdnCandidate : meaningfulSections) {
-
 				workspace = fqdnCandidate.text();
 				// System.out.println(workspace);
 
-				// Excluse nonsense memes (promo)
+				// Exclude promo targets
 				if (!(isNonsense(workspace))) {
 
 					if (workspace.contains(AS)) {
@@ -123,8 +126,25 @@ public class ParseGSBReputation {
 		}
 		catch (IOException ex) {
 			System.out.println("!!!WARNING!!! Some connectivity glitch against GSB");
+			System.out.println(TAB + "should we act somehow?");
 		}
+		validTargets = new String[5];
+		
+		return validTargets;
+	}
+
+	
+	
+	public static void main(String[] args) {
+		String url1 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=delfi.ee/";
+		String url2 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=AS:8728";
+		String url3 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=AS:12757";
+		
+		String needToDive[] = badReputation(url1);
+		
+		// PRINTOUT
 
 	} // MAIN
+		
 } // CLASS
 
