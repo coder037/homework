@@ -49,12 +49,12 @@ public class DataDiver {
 		
 		if (Current.getDepthOfRecursion() == currentLevel) {
 			upperLevel = true;
-			System.out.println(TAB + "this is the UPPER level: " + currentLevel);
+			System.out.println(TAB + "this is the FIRST call of the DataDiver, Level : " + currentLevel);
 		}
 
 		if (0 == currentLevel) { // Remaining depth = 0
-			System.out.println("==== --{The seabed has been reached}-- ====");
-			System.out.println(TAB + "RETURN from this tree.");
+			System.out.println("==== --{Recursion DEPTH has been reached}-- ====");
+			// System.out.println(TAB + "RETURN from this tree.");
 			return;
 		}
 		
@@ -63,21 +63,26 @@ public class DataDiver {
 			System.out.println(TAB + "Recursion level so far was: "
 					+ currentLevel);
 			Current.setCurrentLevelOfRecursion(currentLevel - 1);
-			System.out.println(TAB + "Recursion level for siblings is: "
-					+ Current.getCurrentLevelOfRecursion());
+			System.out.println(TAB + "Setting Recursion level"
+					+ Current.getCurrentLevelOfRecursion()
+					+ "for siblings.");
+
 		}
-		
+		 
+		// ================================================
 		// Two alternatives - what kind of work to do.
 		
 			// #### Alternative 1 - upper level
 			if (upperLevel) { // RIPE thing
 				String[] targetList = null;
-				System.out.println(TAB + "The Uppest level of the recursion");
-				System.out.println(TAB + "Country we work with: "
+				System.out.println(TAB + "We only do this ONCE (ALT1)");
+				System.out.println(TAB + TAB + "for a country called: "
 						+ Current.getCountryCodeToWorkWith());
-
+				
+				// Our primitive Logger called
 				nuhker.TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + Current.getCountryCodeToWorkWith() + " ***");
 				String toBeParsed = "";
+				
 				try {
 					toBeParsed = ParseRIPEConstituency.grabCountryDescription(Current.getCountryCodeToWorkWith());
 				} catch (IOException e) {
@@ -89,29 +94,33 @@ public class DataDiver {
 					// http://www.opensource.apple.com/source/Libc/Libc-320/include/sysexits.h
 				}
 
-				String[] hasBeenParsed = ParseRIPEConstituency.asnJsonParser(toBeParsed);
-				int countOfASNsObtained = hasBeenParsed.length;
+				String[] resultOfFirstParsing = ParseRIPEConstituency.asnJsonParser(toBeParsed);
+				int countOfASNsObtained = resultOfFirstParsing.length;
 				System.out.println(TAB + "DataDiver: Need to check: " + countOfASNsObtained + " ASNs");
 
-				for(String target : hasBeenParsed) {
-				    System.out.println(TAB + TAB + "One more AS to check: " + target);
+				for(String target : resultOfFirstParsing) {
+				    System.out.println(TAB + TAB + "Yet another AS to check for: " + target);
 				    Current.setCurrentTarget(ParseGSB.asn2Colon(target));
 				    waitFor(Current);
 				    System.out.println("===-< calling the next level.");
 				    main(Current); // RECURSIVELY foreach argument
-				    System.out.println("===-! DONE withAll arguments");
+				    System.out.println("===-! DONE withAll arguments for the country: " + toBeParsed);
 				}
 				
-				System.out.println("===-< end of UPPER level.");
+				System.out.println("===-< end of the UPPER level.");
 		} // END of Upper Level
 			
-			else {
-			// #### Alternative 2 - any other level
-			System.out.println("===+===-> regular AS/FQDN parsing.");
-			String target2Dive = Current.getCurrentTarget();
-			System.out.println("Target is: " + Current.getCurrentTarget() );
+			else { // #### Alternative 2 
+					// 		- any other level except the upper one
 
+			System.out.println("===+===-> regular AS/FQDN parsing (ALT2).");
+			String target2Dive = Current.getCurrentTarget();
+			System.out.println(TAB + "Target is: " + target2Dive );
+			System.out.println(TAB + "+===+ Calling ParseGSB for : " + target2Dive );
 			String lowerTargets[] = ParseGSB.badReputation(target2Dive);
+			int countOfTargetsOnThisLevel = lowerTargets.length;
+			System.out.println(TAB + "+===+ Got " + countOfTargetsOnThisLevel + "subtargets to check under this target: " + target2Dive);
+
 			
 			for(String target : lowerTargets) {
 			    System.out.println(TAB + TAB + target);
@@ -119,13 +128,15 @@ public class DataDiver {
 			    // in case of AS: prepend "AS:" particle
 			   
 			    if (target.contains(AS)) {
-					System.out.println(TAB + "AS info: " + target);
+					System.out.println(TAB + "ASN needs an AS: particle to be prepended : " + target);
 					target = (ParseGSB.asn2Colon(target));
 				}
-			    // however: in case of FQDN/URL: pass transparently:
-			    waitFor(Current);
+			    // however: in case of FQDN/URL: pass arg transparently.
+			    
+			    System.out.println(TAB + TAB + "An actual string to pass down is: " + target);
 			    Current.setCurrentTarget(target);
-			    System.out.println("===-< calling the next level.");
+			    waitFor(Current);
+			    System.out.println("===-< Going down, Mr Demon");
 			    main(Current); // RECURSIVELY foreach argument
 			    // nuhker.TypeWriter.main(outputFileName, argument);
 			}

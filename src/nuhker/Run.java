@@ -288,7 +288,7 @@ public class Run {
 				+ FinalOptions.getFilenameForOutput());
 		System.out.println("==-> START of the actual launch... ");
 		FinalOptions.setCurrentTarget(FinalOptions.getCountryCodeToWorkWith());
-		System.out.println(TAB + "DataDiver assessing the target: "
+		System.out.println(TAB + "asking DataDiver for this constituency: "
 				+ FinalOptions.getCurrentTarget());
 
 		// HERE starts the ACTUAL LAUNCH CODE
