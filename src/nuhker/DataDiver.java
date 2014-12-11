@@ -16,6 +16,7 @@ import joptsimple.OptionParser;
 
 public class DataDiver {
 
+	private final static String AS = "AS";
 	private final static String TAB = "\t";
 
 	public static void waitFor(DefaultParametersForRun thisCopy) {
@@ -71,7 +72,7 @@ public class DataDiver {
 			// #### Alternative 1 - upper level
 			if (upperLevel) { // RIPE thing
 				String[] targetList = null;
-				System.out.println(TAB + "This is the first level of the recursion");
+				System.out.println(TAB + "The Uppest level of the recursion");
 				System.out.println(TAB + "Country we work with: "
 						+ Current.getCountryCodeToWorkWith());
 
@@ -93,34 +94,44 @@ public class DataDiver {
 				System.out.println(TAB + "DataDiver: Need to check: " + countOfASNsObtained + " ASNs");
 
 				for(String target : hasBeenParsed) {
-				    System.out.println(TAB + TAB + target);
+				    System.out.println(TAB + TAB + "One more AS to check: " + target);
 				    Current.setCurrentTarget(ParseGSB.asn2Colon(target));
 				    waitFor(Current);
 				    System.out.println("===-< calling the next level.");
 				    main(Current); // RECURSIVELY foreach argument
+				    System.out.println("===-! DONE withAll arguments");
 				}
 				
-		} else {
-			// Any other level except the upper
-			// #### Alternative 2 - normal AS/FQDN work
+				System.out.println("===-< end of UPPER level.");
+		} // END of Upper Level
 			
+			else {
+			// #### Alternative 2 - any other level
+			System.out.println("===+===-> regular AS/FQDN parsing.");
+			String target2Dive = Current.getCurrentTarget();
 			System.out.println("Target is: " + Current.getCurrentTarget() );
-			System.out.println(TAB + "AS or FQDN/URL?");
 
-			// Doing difference.
-
-			System.out.println("===-< calling the next level.");
-		
-			// THIS IS WHERE WE ARE : ToDo! 
+			String lowerTargets[] = ParseGSB.badReputation(target2Dive);
 			
-			// FOREACH argument
-			// nuhker.TypeWriter.main(outputFileName, argument);
-
-				// PARSE Reputation
-			waitFor(Current);
-			main(Current); // RECURSIVELY CALLING OUT ITSELF
-			
+			for(String target : lowerTargets) {
+			    System.out.println(TAB + TAB + target);
+			    
+			    // in case of AS: prepend "AS:" particle
+			   
+			    if (target.contains(AS)) {
+					System.out.println(TAB + "AS info: " + target);
+					target = (ParseGSB.asn2Colon(target));
+				}
+			    // however: in case of FQDN/URL: pass transparently:
+			    waitFor(Current);
+			    Current.setCurrentTarget(target);
+			    System.out.println("===-< calling the next level.");
+			    main(Current); // RECURSIVELY foreach argument
+			    // nuhker.TypeWriter.main(outputFileName, argument);
+			}
+			System.out.println("===+===-! DONE withAll arguments");
 		} 
+		System.out.println("===+===-< out of this parsing dive");
 		return;
 
 	}

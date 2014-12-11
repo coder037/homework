@@ -18,6 +18,14 @@ public class TypeWriter {
 	 * @param fileName to write, lineToWrite to that file
 	 */
 	
+	public static boolean isOfProperConstituency(String candidate) {
+		boolean returnValue = false;
+		// Regexp: Only pass if contains ".ee/" string
+		
+		return returnValue;
+	}
+	
+	
 	// This is a non-threaded and very SIMPLE logger.
 	
 	public static void main(String fileName, String lineToWrite) {

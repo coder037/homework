@@ -87,13 +87,13 @@ public class ParseGSB {
 	static String[] badReputation (String source) {
 		ArrayList<String> validSites = new ArrayList<String>();
 		String workspace = "";
-
+		String baseURL = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=";
 		// Put this try/catch BS into a static String[] badReputation (String source)
 		// CALL it badReputation(String)
 		// and it returns a String array of the further shit
 
 		try {
-			String url = source;
+			String url = (baseURL + source);
 			System.out.println("===+ START badReputation");
 			System.out.println( TAB + "URL: " + url);
 			System.out.println();
@@ -112,7 +112,7 @@ public class ParseGSB {
 						System.out.println(TAB + "AS info: " + workspace);
 
 						// as2ASN(asn2Colon(workspace));
-						validSites.add(asn2Colon(workspace));
+						// *** NB NB NB *** validSites.add(asn2Colon(workspace));
 
 					} else {
 						System.out.println(TAB + "New Malwaresite: "
@@ -139,17 +139,17 @@ public class ParseGSB {
 	
 	
 	public static void main(String[] args) {
-		String url1 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=delfi.ee/";
-		String url2 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=AS:8728";
-		String url3 = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=AS:12757";
+		String target1 = "delfi.ee/";
+		String target2 = "AS:8728";
+		String target3 = "AS:12757";
 		
-		System.out.println("=== MAIN ===");
-		String needToDive[] = badReputation(url2);
+		System.out.println("=== ParseGSB MAIN ===");
+		String needToDive[] = badReputation(target1);
 		System.out.println("=== MAIN Printout: ");
 		for(String s : needToDive) {
 		    System.out.println(TAB + TAB + s);
 		}
-		    System.out.println("=== End of MAIN");
+		    System.out.println("=== End of ParseGSB MAIN");
 	} // MAIN
 		
 } // CLASS
