@@ -136,6 +136,8 @@ public class DataDiver {
 			    
 			    // ToDo: is it already on the list? If not, then put.
 			    
+			    // nuhker.DataBase.add(target);
+			    
 			    Current.setCurrentTarget(target);
 				nuhker.TypeWriter.main(outputFileName, target);
 

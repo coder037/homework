@@ -14,13 +14,20 @@ import java.util.ArrayList;
  */
 public class DataBase {
 
-	private ArrayList<String> knownSites = new ArrayList<String>();
+	// Ideas - http://stackoverflow.com/questions/16462163/java-how-to-access-an-arraylist-of-another-class
 
-  // interface of DataBase :
+	private ArrayList<String> knownSites;
+	
+	// interface of DataBase :
 	// boolean isPresent(String argument)
 	// int count()
 	// void add(String argument)
-
+	
+	public void add(String argument) {
+		this.knownSites.add(argument);
+		return;
+	}
+	
 	public boolean isPresent(String argument) {
 		boolean indeed = false;
 		if (knownSites.contains(argument)) {
@@ -33,11 +40,6 @@ public class DataBase {
 	public int count() {
 		int thisMuch = knownSites.size();
 		return thisMuch;
-	}
-	
-	public void add(String argument) {
-		knownSites.add(argument);
-		return;
 	}
 
 }
