@@ -113,12 +113,15 @@ public class DataDiver {
 			// boolean isPresent(String argument)
 			// int count()
 			// void add(String argument)
+			// See: http://stackoverflow.com/questions/4969171/cannot-make-static-reference-to-non-static-method
 			
 			
 			else { // #### Alternative 2 
 					// 		- any other level except the upper one
 
-			
+			// First PRINTout how much entries are there on the list
+			// ToDo
+				
 			System.out.println("===+===-> regular AS/FQDN parsing (ALT2).");
 			String target2Dive = Current.getCurrentTarget();
 			System.out.println(TAB + "Target is: " + target2Dive );
@@ -130,6 +133,9 @@ public class DataDiver {
 						
 			for(String target : subTargets) {
 			    System.out.println(TAB + TAB + "An actual string to pass down is: " + target);
+			    
+			    // ToDo: is it already on the list? If not, then put.
+			    
 			    Current.setCurrentTarget(target);
 				nuhker.TypeWriter.main(outputFileName, target);
 
