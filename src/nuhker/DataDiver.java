@@ -109,7 +109,12 @@ public class DataDiver {
 		} // END of Upper Level
 			
 			
-		
+			  // interface of DataBase :
+			// boolean isPresent(String argument)
+			// int count()
+			// void add(String argument)
+			
+			
 			else { // #### Alternative 2 
 					// 		- any other level except the upper one
 
