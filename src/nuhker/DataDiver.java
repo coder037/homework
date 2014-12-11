@@ -94,7 +94,7 @@ public class DataDiver {
 
 				for(String target : hasBeenParsed) {
 				    System.out.println(TAB + TAB + target);
-				    Current.setCurrentTarget(ParseGSBReputation.asn2Colon(target));
+				    Current.setCurrentTarget(ParseGSB.asn2Colon(target));
 				    waitFor(Current);
 				    System.out.println("===-< calling the next level.");
 				    main(Current); // RECURSIVELY foreach argument
