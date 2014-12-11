@@ -39,7 +39,7 @@ public class DataDiver {
 		int nextLevel = (currentLevel - 1);
 		System.out.println("===-> DataDiver Level " + currentLevel + " entered.");
 		String outputFileName =  Current.getFilenameForOutput();
-		System.out.println("===----> Results to be appended to: " + outputFileName);
+		// DEBUG System.out.println("===----> Results to be appended to: " + outputFileName);
 		
 		long billion = 1000000000;
 		long thousand = 1000;
