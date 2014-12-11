@@ -14,7 +14,8 @@ public class DataBase {
 
 	// ArrayList<String> knownSites = new ArrayList<String>();
 
-	
+	// void putOnTheList(name);
+	// boolean isOnTheList(name)?
 	
 	/**
 	 * This is the Global Database of targets.
