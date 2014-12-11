@@ -25,7 +25,7 @@ public class DataDiver {
 	// but seems - it works ;)
 
 	
-	public static void waitFor(DefaultParms thisCopy) {
+	public static void delay(DefaultParms thisCopy) {
 		long waitTime = thisCopy.getMinTimeBetweenGSBRequests();
 		System.out.println("Here we should wait for: " + waitTime + " msec");
 		try {
@@ -107,7 +107,7 @@ public class DataDiver {
 				for(String targetASN : resultOfFirstParsing) {
 				    System.out.println(TAB + TAB + "Yet another AS to check for: " + targetASN);
 				    Current.setCurrentTarget(ParseGSB.asn2Colon(targetASN));
-				    waitFor(Current);
+				    delay(Current);
 
 				    int nextLevel = (currentLevel - 1);
 				    System.out.println("===-< Descending from level: " + currentLevel + " to level "+ nextLevel);
@@ -146,7 +146,7 @@ public class DataDiver {
 			    	   int nextLevel = (currentLevel - 1);
 			    	   System.out.println("===-< Going down, Mr Demon, from " + currentLevel + " to level " + nextLevel );
 			    	   Current.setCurrentLevelOfRecursion(nextLevel);
-			    	   waitFor(Current);
+			    	   delay(Current);
 			    	   main(Current); // RECURSIVELY foreach argument
 			        } else {
 			        	System.out.println("---+---+---+---+---> Target " + target + " already KNOWN!");

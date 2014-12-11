@@ -52,8 +52,8 @@ public class ParseRIPE {
 		// output goes there:
 		ByteArrayOutputStream httpResult = new ByteArrayOutputStream();
 
-		// FOREIGN COPYRIGHT WARNING
-		// Hello man, this is some best industry-standard method
+		// FOREIGN COPYRIGHT WARNING - next 15 lines
+		// #### START OF SOME industry-standard method
 		// available in many textbooks. G: bufferlength = 1024 etc.
 		// Me don't know who has written this code block ;)
 		// GOOGLE for "java streams byte[1024]"
@@ -162,8 +162,6 @@ public class ParseRIPE {
 			System.out.println(TAB + TAB + hasBeenParsed[k] + " ");
 		}
 
-		// ToDo: json status field: if not OK or no data, then errmsg
-		// this will happen if wrong country code asked from RIPE
 		// ToDo: web timeout
 
 	} // MAIN

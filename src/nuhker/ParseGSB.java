@@ -96,7 +96,6 @@ public class ParseGSB {
 			String url = (baseURL + source);
 			System.out.println("===+ START badReputation");
 			System.out.println( TAB + "URL: " + url);
-			System.out.println();
 			
 			Document doc = Jsoup.connect(url).get();
 			Elements meaningfulSections = doc.select("a");
@@ -111,8 +110,6 @@ public class ParseGSB {
 					if (workspace.contains(AS)) {
 						System.out.println(TAB + "AS info: " + workspace);
 
-						// as2ASN(asn2Colon(workspace));
-						// *** NB NB NB *** validSites.add(asn2Colon(workspace));
 
 					} else {
 						// DEBUG System.out.println(TAB + "New Malwaresite: "+ workspace);
