@@ -29,7 +29,7 @@ public class ParseGSB {
 	
 	public static boolean isNonsense(String suspect) {
 		// This method marks Google promo links
-		System.out.println(TAB + "---> isNonsense");
+		// DEBUG System.out.println(TAB + "---> isNonsense");
 		String[] googleCrap = { "Webmaster Help Center",
 							"Webmaster Tools",
 							"Return to the previous page.",
@@ -39,11 +39,11 @@ public class ParseGSB {
 		virginity: for (int i = 0; i < googleCrap.length; i++) {
 			if (googleCrap[i].equals(suspect)) {
 				whetherToDiscard = true;
-				System.out.println(TAB + TAB + "Discard: " + suspect);
+				// DEBUG System.out.println(TAB + TAB + "Discard: " + suspect);
 				break virginity; // at first match
 			}
 		} // FOR
-		System.out.println(TAB + "---< isNonsense");
+		// DEBUG System.out.println(TAB + "---< isNonsense");
 		return whetherToDiscard;
 	}
 
@@ -53,18 +53,18 @@ public class ParseGSB {
 		 * @param String 12345 -> AS:12345
 		 */
 		String destination = "";
-		System.out.println(TAB + "---> asn2Colon");
-		System.out.println(TAB + TAB + "SRC: " + source);
+		// DEBUG System.out.println(TAB + "---> asn2Colon");
+		// DEBUG System.out.println(TAB + TAB + "SRC: " + source);
 		destination = source.replaceAll(" .*$", "");
-		System.out.println(TAB + TAB + "MID: " + destination);
+		// DEBUG System.out.println(TAB + TAB + "MID: " + destination);
 		destination = destination.replaceAll("^AS", "");
-		System.out.println(TAB + TAB + "DST: " + destination);
+		// DEBUG System.out.println(TAB + TAB + "DST: " + destination);
 		// To be extremely sure:
 		int sourceNo = Integer.parseInt(destination);
 		destination = Integer.toString(sourceNo);
 		destination = (AS + COLON + destination);
-		System.out.println(TAB + TAB + "FIN: " + destination);
-		System.out.println(TAB + "---< asn2Colon");
+		// DEBUG System.out.println(TAB + TAB + "FIN: " + destination);
+		// DEBUG System.out.println(TAB + "---< asn2Colon");
 		return destination;
 	}
 	
@@ -115,10 +115,9 @@ public class ParseGSB {
 						// *** NB NB NB *** validSites.add(asn2Colon(workspace));
 
 					} else {
-						System.out.println(TAB + "New Malwaresite: "
-								+ workspace);
+						// DEBUG System.out.println(TAB + "New Malwaresite: "+ workspace);
 						validSites.add(workspace);
-						System.out.println();
+						// DEBUG System.out.println();
 					} //ELSE
 				} //FI
 			} // FOR

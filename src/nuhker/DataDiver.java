@@ -36,6 +36,7 @@ public class DataDiver {
 		long nowTime = System.nanoTime();
 		boolean upperLevel = false;
 		int currentLevel = Current.getCurrentLevelOfRecursion();
+		int nextLevel = (currentLevel - 1);
 		System.out.println("===-> DataDiver Level " + currentLevel + " entered.");
 		String outputFileName =  Current.getFilenameForOutput();
 		System.out.println("===----> Results to be appended to: " + outputFileName);
@@ -57,28 +58,26 @@ public class DataDiver {
 			// System.out.println(TAB + "RETURN from this tree.");
 			return;
 		}
+		else {
 		
-		 { // Work to do, extra level(s) to dive
+		// Work to do, extra level(s) to dive
 			// Announcement and Decrement
-			System.out.println(TAB + "Recursion level so far was: "
-					+ currentLevel);
-			Current.setCurrentLevelOfRecursion(currentLevel - 1);
-			System.out.println(TAB + "Setting Recursion level"
-					+ Current.getCurrentLevelOfRecursion()
-					+ "for siblings.");
-
+			System.out.println(TAB + "====¤ Recursion level "
+					+ currentLevel + " changed to " + nextLevel);
+			Current.setCurrentLevelOfRecursion(nextLevel);
 		}
+
+
 		 
 		// ================================================
 		// Two alternatives - what kind of work to do.
 		
 			// #### Alternative 1 - upper level
 			if (upperLevel) { // RIPE thing
-				String[] targetList = null;
 				String cc = Current.getCountryCodeToWorkWith();
 				String toBeParsed = "";
-				System.out.println(TAB + "We only do this ONCE (ALT1)");
-				System.out.println(TAB + TAB + "for a country called: " + cc);
+				System.out.println(TAB + "We only call this ONCE (ALT1)");
+				System.out.println(TAB + TAB + "for a country: " + cc);
 				
 				// Our primitive Logger called
 				nuhker.TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + cc + " ***");
@@ -103,12 +102,15 @@ public class DataDiver {
 				    Current.setCurrentTarget(ParseGSB.asn2Colon(target));
 				    waitFor(Current);
 				    System.out.println("===-< calling the next level.");
+
 				    main(Current); // RECURSIVELY foreach argument
-				    System.out.println("===-! DONE withAll arguments for the country: " + cc);
+				    
 				}
-				
-				System.out.println("===-< end of the UPPER level.");
+				System.out.println("===-! DONE withAll arguments for the country: " + cc);
+				System.out.println(TAB + "===-< end of the UPPER level.");
 		} // END of Upper Level
+			
+			
 			
 			else { // #### Alternative 2 
 					// 		- any other level except the upper one
@@ -128,19 +130,21 @@ public class DataDiver {
 			    
 			    // in case of AS: prepend "AS:" particle
 			   
-			    if (target.contains(AS)) {
-					System.out.println(TAB + "ASN needs an AS: particle to be prepended : " + target);
-					subTarget = (ParseGSB.asn2Colon(target));
-				} else {
+//			    if (target.contains(AS)) {
+//					System.out.println(TAB + "ASN needs an AS: particle to be prepended : " + target);
+//					subTarget = (ParseGSB.asn2Colon(target));
+//				} else {
 			    // however: in case of FQDN/URL: pass arg transparently.
-					subTarget = target;
-				}
-			    System.out.println(TAB + TAB + "An actual string to pass down is: " + subTarget);
-			    Current.setCurrentTarget(subTarget);
+//					subTarget = target;
+//				}
+			    System.out.println(TAB + TAB + "An actual string to pass down is: " + target);
+			    Current.setCurrentTarget(target);
 			    waitFor(Current);
-			    System.out.println("===-< Going down, Mr Demon");
-				nuhker.TypeWriter.main(outputFileName, "");
+			    System.out.println("===-< Going down, Mr Demon, from level " + currentLevel + " to level " + nextLevel );
+				nuhker.TypeWriter.main(outputFileName, target);
 				String toBeParsed = "";
+				// BS but:
+				// Current.setCurrentLevelOfRecursion(currentLevel - 1);
 			    main(Current); // RECURSIVELY foreach argument
 			    // nuhker.TypeWriter.main(outputFileName, argument);
 			}

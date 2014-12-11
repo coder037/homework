@@ -14,6 +14,7 @@ import java.util.logging.Logger;
  */
 public class TypeWriter {
 
+	private final static String TAB = "\t";
 	/**
 	 * @param fileName to write, lineToWrite to that file
 	 */
@@ -31,7 +32,7 @@ public class TypeWriter {
 	public static void main(String fileName, String lineToWrite) {
 	
 		System.out.println("===-> Writing another line to " + fileName);
-		System.out.println(lineToWrite);
+		System.out.println(TAB + lineToWrite);
 		// try-catch
 		System.out.println("        succesfully.");
 		return;
