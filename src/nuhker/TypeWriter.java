@@ -31,10 +31,10 @@ public class TypeWriter {
 	
 	public static void main(String fileName, String lineToWrite) {
 	
-		System.out.println("===-> Writing another line to " + fileName);
-		System.out.println(TAB + lineToWrite);
+		// DEBUG System.out.println("===-> Writing another line to " + fileName);
+		// DEBUG System.out.println(TAB + lineToWrite);
 		// try-catch
-		System.out.println("        succesfully.");
+		// DEBUG System.out.println("        succesfully.");
 		return;
 	}
 

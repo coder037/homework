@@ -49,7 +49,7 @@ public class DataDiver {
 		System.out.println(TAB + "Runtime so far: " + (runTimeSoFar / billion)+ " sec(s), remained: "  + (remainedSecs) + " sec(s) until killed.");
 		
 		if (0 > remainedSecs) {
-			System.out.println("==== TIMEOUT REACHED - Killing the Program ==========");
+			System.out.println("==== TIMEOUT REACHED - End Forced ===");
 			System.exit(0);
 		}
 		
@@ -122,41 +122,16 @@ public class DataDiver {
 			int countOfTargetsOnThisLevel = subTargets.length;
 			System.out.println(TAB + "+===+ Got " + countOfTargetsOnThisLevel + " subtargets to check under this target: " + target2Dive);
 			
-			
-//			// Announcement and Decrement
-//			System.out.println(TAB + "====¤ Recursion level "
-//					+ currentLevel + " changed to " + nextLevel);
-//			Current.setCurrentLevelOfRecursion(nextLevel);
-			
-			
-			
-			String subTarget = "";
-			
+						
 			for(String target : subTargets) {
-			    System.out.println(TAB + TAB + target);
-			    
-			    // in case of AS: prepend "AS:" particle  
-//			    if (target.contains(AS)) {
-//					System.out.println(TAB + "ASN needs an AS: particle to be prepended : " + target);
-//					subTarget = (ParseGSB.asn2Colon(target));
-//				} else {
-			    // however: in case of FQDN/URL: pass arg transparently.
-//					subTarget = target;
-//				}
-			    
 			    System.out.println(TAB + TAB + "An actual string to pass down is: " + target);
 			    Current.setCurrentTarget(target);
-
-
-
 				nuhker.TypeWriter.main(outputFileName, target);
-				String toBeParsed = "";
-				// BS but:
-				// Current.setCurrentLevelOfRecursion(currentLevel - 1);
-			    waitFor(Current);
+
 			    int nextLevel = (currentLevel - 1);
-			    System.out.println("===-< Going down, Mr Demon, from level " + currentLevel + " to level " + nextLevel );
+			    System.out.println("===-< Going down, Mr Demon, from " + currentLevel + " to level " + nextLevel );
 			    Current.setCurrentLevelOfRecursion(nextLevel);
+			    waitFor(Current);
 			    main(Current); // RECURSIVELY foreach argument
 
 			}
