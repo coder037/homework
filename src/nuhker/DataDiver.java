@@ -75,16 +75,16 @@ public class DataDiver {
 			// #### Alternative 1 - upper level
 			if (upperLevel) { // RIPE thing
 				String[] targetList = null;
+				String cc = Current.getCountryCodeToWorkWith();
+				String toBeParsed = "";
 				System.out.println(TAB + "We only do this ONCE (ALT1)");
-				System.out.println(TAB + TAB + "for a country called: "
-						+ Current.getCountryCodeToWorkWith());
+				System.out.println(TAB + TAB + "for a country called: " + cc);
 				
 				// Our primitive Logger called
-				nuhker.TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + Current.getCountryCodeToWorkWith() + " ***");
-				String toBeParsed = "";
+				nuhker.TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + cc + " ***");
 				
 				try {
-					toBeParsed = ParseRIPEConstituency.grabCountryDescription(Current.getCountryCodeToWorkWith());
+					toBeParsed = ParseRIPEConstituency.grabCountryDescription(cc);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					System.err.println("Unable to parse constituency. RIPE connection error. BAILOUT");
@@ -104,7 +104,7 @@ public class DataDiver {
 				    waitFor(Current);
 				    System.out.println("===-< calling the next level.");
 				    main(Current); // RECURSIVELY foreach argument
-				    System.out.println("===-! DONE withAll arguments for the country: " + toBeParsed);
+				    System.out.println("===-! DONE withAll arguments for the country: " + cc);
 				}
 				
 				System.out.println("===-< end of the UPPER level.");
@@ -119,8 +119,9 @@ public class DataDiver {
 			System.out.println(TAB + "+===+ Calling ParseGSB for : " + target2Dive );
 			String lowerTargets[] = ParseGSB.badReputation(target2Dive);
 			int countOfTargetsOnThisLevel = lowerTargets.length;
-			System.out.println(TAB + "+===+ Got " + countOfTargetsOnThisLevel + "subtargets to check under this target: " + target2Dive);
-
+			System.out.println(TAB + "+===+ Got " + countOfTargetsOnThisLevel + " subtargets to check under this target: " + target2Dive);
+			
+			String subTarget = "";
 			
 			for(String target : lowerTargets) {
 			    System.out.println(TAB + TAB + target);
@@ -129,14 +130,17 @@ public class DataDiver {
 			   
 			    if (target.contains(AS)) {
 					System.out.println(TAB + "ASN needs an AS: particle to be prepended : " + target);
-					target = (ParseGSB.asn2Colon(target));
-				}
+					subTarget = (ParseGSB.asn2Colon(target));
+				} else {
 			    // however: in case of FQDN/URL: pass arg transparently.
-			    
-			    System.out.println(TAB + TAB + "An actual string to pass down is: " + target);
-			    Current.setCurrentTarget(target);
+					subTarget = target;
+				}
+			    System.out.println(TAB + TAB + "An actual string to pass down is: " + subTarget);
+			    Current.setCurrentTarget(subTarget);
 			    waitFor(Current);
 			    System.out.println("===-< Going down, Mr Demon");
+				nuhker.TypeWriter.main(outputFileName, "");
+				String toBeParsed = "";
 			    main(Current); // RECURSIVELY foreach argument
 			    // nuhker.TypeWriter.main(outputFileName, argument);
 			}
