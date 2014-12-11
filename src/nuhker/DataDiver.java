@@ -25,7 +25,7 @@ public class DataDiver {
 	// but seems - it works ;)
 
 	
-	public static void waitFor(DefaultParametersForRun thisCopy) {
+	public static void waitFor(DefaultParms thisCopy) {
 		long waitTime = thisCopy.getMinTimeBetweenGSBRequests();
 		System.out.println("Here we should wait for: " + waitTime + " msec");
 		try {
@@ -38,11 +38,11 @@ public class DataDiver {
 	/**
 	 * @param args
 	 */
-	public static void main(DefaultParametersForRun LevelVariables) {
+	public static void main(DefaultParms LevelVariables) {
 
 		
 		
-		DefaultParametersForRun Current = LevelVariables;
+		DefaultParms Current = LevelVariables;
 		long nowTime = System.nanoTime();
 		boolean upperLevel = false;
 		int currentLevel = Current.getCurrentLevelOfRecursion();
@@ -58,7 +58,7 @@ public class DataDiver {
 		System.out.println(TAB + "Runtime so far: " + (runTimeSoFar / billion)+ " sec(s), remained: "  + (remainedSecs) + " sec(s) until killed.");
 		
 		if (0 > remainedSecs) {
-			System.out.println("==== DB SIZE before killed: " + DataBase.knownSites.size() + " records");
+			System.out.println("==== DB SIZE before killed: " + DBze.knownSites.size() + " records");
 			System.out.println("==== TIMEOUT REACHED - End Forced ===");
 			System.exit(0);
 		}
@@ -90,7 +90,7 @@ public class DataDiver {
 				TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + cc + " ***");
 				
 				try {
-					toBeParsed = ParseRIPEConstituency.grabCountryDescription(cc);
+					toBeParsed = ParseRIPE.grabCountryDescription(cc);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					System.err.println("Unable to parse constituency. RIPE connection error. BAILOUT");
@@ -100,7 +100,7 @@ public class DataDiver {
 					// http://www.opensource.apple.com/source/Libc/Libc-320/include/sysexits.h
 				}
 
-				String[] resultOfFirstParsing = ParseRIPEConstituency.asnJsonParser(toBeParsed);
+				String[] resultOfFirstParsing = ParseRIPE.asnJsonParser(toBeParsed);
 				int countOfASNsObtained = resultOfFirstParsing.length;
 				System.out.println(TAB + "DataDiver: Need to check: " + countOfASNsObtained + " ASNs");
 
@@ -123,7 +123,7 @@ public class DataDiver {
 					// 		- any other level except the upper one
 
 			// First PRINTout how much entries are there on the list
-				System.out.println("===---===---===--- SIZE: " + DataBase.knownSites.size() + " records");
+				System.out.println("===---===---===--- SIZE: " + DBze.knownSites.size() + " records");
 				
 			System.out.println("===+===-> regular AS/FQDN parsing (ALT2).");
 			String target2Dive = Current.getCurrentTarget();
@@ -137,8 +137,8 @@ public class DataDiver {
 			for(String target : subTargets) {
 			    System.out.println(TAB + TAB + "An actual string to pass down is: " + target);
 
-			     if (! DataBase.knownSites.contains(target)) {
-			    	   DataBase.knownSites.add(target);
+			     if (! DBze.knownSites.contains(target)) {
+			    	   DBze.knownSites.add(target);
 
 			    	   Current.setCurrentTarget(target);
 			    	   TypeWriter.main(outputFileName, target);

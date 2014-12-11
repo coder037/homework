@@ -34,7 +34,7 @@ import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 
-public class ParseRIPEConstituency {
+public class ParseRIPE {
 
 	private final static String TAB = "\t";
 	

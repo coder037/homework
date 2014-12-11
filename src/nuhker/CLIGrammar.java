@@ -14,7 +14,7 @@ import java.util.Arrays;
 // import joptsimple.OptionSet;
 import joptsimple.OptionParser;
 
-public class OptionGrammar extends OptionParser {
+public class CLIGrammar extends OptionParser {
 
 	private final static String OPT_COPYRIGHT = "copyright";
 	private final static String OPT_COUNTRY = "country";

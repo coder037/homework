@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Once here, we will not spend the time to ask site reputation twice
  * 
  */
-public interface DataBase {
+public interface DBze {
 
 	// We keep it as an EXTERNAL reference
 	// to use through multiple recursions.

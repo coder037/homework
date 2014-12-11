@@ -36,7 +36,7 @@ public class Run {
 	public static boolean checkConformity(String[] arguments) {
 		OptionSet args = null; // declaration separated due to subsequent TRY
 							  // clause
-		OptionParser preParser = OptionGrammar.main();
+		OptionParser preParser = CLIGrammar.main();
 
 		System.out.println();
 		System.out.println("===* Option Conformity Check");
@@ -111,12 +111,12 @@ public class Run {
 	}
 
 	
-	public static DefaultParametersForRun parseContent(String[] arguments)
+	public static DefaultParms parseContent(String[] arguments)
 			throws Exception {
-		OptionParser postParser = OptionGrammar.main();
+		OptionParser postParser = CLIGrammar.main();
 		OptionSet cliOptions = postParser.parse(arguments);
 
-		DefaultParametersForRun RunTimes = new DefaultParametersForRun();
+		DefaultParms RunTimes = new DefaultParms();
 		System.out.println();
 		System.out.println("===-( CLI Option Parser");
 
@@ -147,7 +147,7 @@ public class Run {
 		if (cliOptions.has("c")) {
 			System.out.println(TAB + "Option c was found");
 			String optionValue = (String) cliOptions.valueOf("c");
-			if (CountryCode.cc.isKosher(optionValue)) {
+			if (CC.cc.isKosher(optionValue)) {
 				System.out.println(TAB + TAB + "CountryCode is kosher: "
 						+ optionValue);
 			} else {
@@ -246,8 +246,8 @@ public class Run {
 
 		// Alternatives for simulation (until we build the static CLI program)
 		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
-				"--xtra", "-o", "output", "-R", "4", "-t", "2850",
-				"-d", "7", "-M", "1800" };
+				"--xtra", "-o", "output", "-R", "5", "-t", "2750",
+				"-d", "7", "-M", "15000" };
 		String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000", "-n",
 				"-o", "somefilename-001", "-R", "4", "-t", "2800" };
 		String[] simulation3 = { "--help" };
@@ -256,7 +256,7 @@ public class Run {
 		// Formal check of command line options syntax
 		checkConformity(effectiveOptions); // Else bailout
 		// Parse RIPE for that country
-		DefaultParametersForRun FinalOptions = parseContent(effectiveOptions);
+		DefaultParms FinalOptions = parseContent(effectiveOptions);
 		FinalOptions.setStartTime(firstVariable); // Start our timer
 
 		// printout of ACTUAL options
