@@ -12,34 +12,12 @@ import java.util.ArrayList;
  * Once here, we will not spend the time to ask site reputation twice
  * 
  */
-public class DataBase {
+public interface DataBase {
 
-	// Ideas - http://stackoverflow.com/questions/16462163/java-how-to-access-an-arraylist-of-another-class
+	// We keep it as an EXTERNAL reference
+	// to use through multiple recursions.
 
-	private ArrayList<String> knownSites;
-	
-	// interface of DataBase :
-	// boolean isPresent(String argument)
-	// int count()
-	// void add(String argument)
-	
-	public void add(String argument) {
-		this.knownSites.add(argument);
-		return;
-	}
-	
-	public boolean isPresent(String argument) {
-		boolean indeed = false;
-		if (knownSites.contains(argument)) {
-		    indeed = true;
-		} 
-		return indeed;
-	}
+	ArrayList<String> knownSites = new ArrayList<String>();
 
-	
-	public int count() {
-		int thisMuch = knownSites.size();
-		return thisMuch;
-	}
 
 }

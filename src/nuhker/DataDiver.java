@@ -4,6 +4,7 @@
 package nuhker;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import joptsimple.OptionParser;
 
@@ -14,11 +15,16 @@ import joptsimple.OptionParser;
  * 
  */
 
+
 public class DataDiver {
 
 	private final static String AS = "AS";
 	private final static String TAB = "\t";
 
+	// I am not saying I fully understand how an interface works.
+	// but seems - it works ;)
+
+	
 	public static void waitFor(DefaultParametersForRun thisCopy) {
 		long waitTime = thisCopy.getMinTimeBetweenGSBRequests();
 		System.out.println("Here we should wait for: " + waitTime + " msec");
@@ -33,6 +39,9 @@ public class DataDiver {
 	 * @param args
 	 */
 	public static void main(DefaultParametersForRun LevelVariables) {
+
+		
+		
 		DefaultParametersForRun Current = LevelVariables;
 		long nowTime = System.nanoTime();
 		boolean upperLevel = false;
@@ -49,6 +58,7 @@ public class DataDiver {
 		System.out.println(TAB + "Runtime so far: " + (runTimeSoFar / billion)+ " sec(s), remained: "  + (remainedSecs) + " sec(s) until killed.");
 		
 		if (0 > remainedSecs) {
+			System.out.println("==== DB SIZE before killed: " + DataBase.knownSites.size() + " records");
 			System.out.println("==== TIMEOUT REACHED - End Forced ===");
 			System.exit(0);
 		}
@@ -77,7 +87,7 @@ public class DataDiver {
 				System.out.println(TAB + TAB + "for a country: " + cc);
 				
 				// Our primitive Logger called
-				nuhker.TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + cc + " ***");
+				TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + cc + " ***");
 				
 				try {
 					toBeParsed = ParseRIPEConstituency.grabCountryDescription(cc);
@@ -108,19 +118,12 @@ public class DataDiver {
 				System.out.println(TAB + "===-< end of the UPPER level.");
 		} // END of Upper Level
 			
-			
-			  // interface of DataBase :
-			// boolean isPresent(String argument)
-			// int count()
-			// void add(String argument)
-			// See: http://stackoverflow.com/questions/4969171/cannot-make-static-reference-to-non-static-method
-			
-			
+	
 			else { // #### Alternative 2 
 					// 		- any other level except the upper one
 
 			// First PRINTout how much entries are there on the list
-			// ToDo
+				System.out.println("===---===---===--- SIZE: " + DataBase.knownSites.size() + " records");
 				
 			System.out.println("===+===-> regular AS/FQDN parsing (ALT2).");
 			String target2Dive = Current.getCurrentTarget();
@@ -133,26 +136,29 @@ public class DataDiver {
 						
 			for(String target : subTargets) {
 			    System.out.println(TAB + TAB + "An actual string to pass down is: " + target);
-			    
-			    // ToDo: is it already on the list? If not, then put.
-			    
-			    // nuhker.DataBase.add(target);
-			    
-			    Current.setCurrentTarget(target);
-				nuhker.TypeWriter.main(outputFileName, target);
 
-			    int nextLevel = (currentLevel - 1);
-			    System.out.println("===-< Going down, Mr Demon, from " + currentLevel + " to level " + nextLevel );
-			    Current.setCurrentLevelOfRecursion(nextLevel);
-			    waitFor(Current);
-			    main(Current); // RECURSIVELY foreach argument
+			     if (! DataBase.knownSites.contains(target)) {
+			    	   DataBase.knownSites.add(target);
 
+			    	   Current.setCurrentTarget(target);
+			    	   TypeWriter.main(outputFileName, target);
+
+			    	   int nextLevel = (currentLevel - 1);
+			    	   System.out.println("===-< Going down, Mr Demon, from " + currentLevel + " to level " + nextLevel );
+			    	   Current.setCurrentLevelOfRecursion(nextLevel);
+			    	   waitFor(Current);
+			    	   main(Current); // RECURSIVELY foreach argument
+			        } else {
+			        	System.out.println("---+---+---+---+---> Target " + target + " already KNOWN!");
+			        }
 			}
-			System.out.println("===+===-! DONE withAll arguments");
+			System.out.println("===+===-! DONE with All arguments");
 		} 
 		System.out.println("===+===-< out of this parsing dive");
 		return;
 
 	}
+
+
 
 }

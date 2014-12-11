@@ -235,9 +235,6 @@ public class Run {
 		return RunTimes;
 	}
 
-	// ToDo:
-	// Candidate for a separate method:
-	// * an overloaded method to set un-default arguments
 
 	/**
 	 * @param args
@@ -249,8 +246,8 @@ public class Run {
 
 		// Alternatives for simulation (until we build the static CLI program)
 		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
-				"--xtra", "-o", "output", "-R", "3", "-t", "2850",
-				"-d", "7", "-M", "600" };
+				"--xtra", "-o", "output", "-R", "4", "-t", "2850",
+				"-d", "7", "-M", "1800" };
 		String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000", "-n",
 				"-o", "somefilename-001", "-R", "4", "-t", "2800" };
 		String[] simulation3 = { "--help" };
