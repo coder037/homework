@@ -229,7 +229,7 @@ public class Run {
 			System.out.println(TAB + "Setting Base Filename as requested: " + optionValue);
 			RunTimes.setFilenameForOutput(optionValue);
 		}
-		
+
 		System.out.println("===-) END of Option Parser, phase 2");
 		System.out.println(TAB + "options init DONE according to the CLI values.");
 		return RunTimes;
@@ -246,10 +246,10 @@ public class Run {
 
 		// Alternatives for simulation (until we build the static CLI program)
 		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
-				"--xtra", "-o", "output", "-R", "5", "-t", "2750",
-				"-d", "7", "-M", "15000" };
+				"--xtra", "-o", "output", "-R", "6", "-t", "2780",
+				"-d", "7", "-M", "20000" };
 		String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000", "-n",
-				"-o", "somefilename-001", "-R", "4", "-t", "2800" };
+				"-o", "somefilename-001", "-R", "6", "-t", "2800" };
 		String[] simulation3 = { "--help" };
 		String[] effectiveOptions = simulation1; // vs argv
 
