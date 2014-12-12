@@ -148,6 +148,10 @@ public class ParseGSB {
 		String workspace = "";
 		String baseURL = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=";
 
+			// ToDo: how to handle network layer ERRORS?
+			// either cycle with (false) until no Exception
+			// or dismiss errors (faster recovery)
+		
 		try {
 			String url = (baseURL + source);
 			System.out.println("===+ START badReputation");
