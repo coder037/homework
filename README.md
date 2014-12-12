@@ -3,12 +3,13 @@
 
 Some studium related stuff is located here. Nothing valuable.
 
-   Initiated: 2014-11-18.
+   Trying to set up Eclipse - around 2014-11-15.
+   Git initiated: 2014-11-18 using an unsuitable directory structure.
    Ready with the environment tuning, starting to write code.
    Initiated the world once again - restruct of the paths 2014-11-23. 
    Json src file parsing mostly completed - 2014-11-27.
    Run.java code separated into methods, getter-setter bacchanalia introduced 2014-12-02. 
-   Next task: write the recursion module.
+   Recursion module finalized 2014-12-14. Copyleft written and comments converte to JavaDoc style - 2012-12-12.
 
 
 ### Identities

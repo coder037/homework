@@ -1,5 +1,6 @@
  // created: Nov 20, 2014 12:20:39 AM
  // amended  Nov 27, 2014 03:35:00 AM 
+ // reviewed Dec 12, 2014 02:30:00 PM
 
 Below is the technical task I am trying to accomplish.
 
@@ -100,6 +101,7 @@ Status - mostly DONE.
 
 Module: C - dual (interleaved) recursion thingy.
 		- prehistorical credits to H.A. for the algorithm
+Status: no dual idea any more. It was possible to manage vi a unified routine.
 
 Module: D - possible IP reverse lookout
 
