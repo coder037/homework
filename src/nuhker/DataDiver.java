@@ -97,7 +97,7 @@ public class DataDiver {
 		System.out.println(TAB + "Runtime so far: " + (runTimeSoFar / billion)+ " sec(s), remained: "  + (remainedSecs) + " sec(s) until killed.");
 		
 		if (0 > remainedSecs) {
-			System.out.println("==== DB SIZE before killed: " + DBze.knownSites.size() + " records");
+			Func.publicizeStatistics();
 			System.out.println("==== TIMEOUT REACHED - End Forced ===");
 			System.exit(0);
 		}
@@ -160,8 +160,8 @@ public class DataDiver {
 			else { // #### Alternative 2 
 					// 		- any other level except the upper one
 
-			// First PRINTout how much entries are there on the list
-				System.out.println("===---===---===--- SIZE: " + DBze.knownSites.size() + " records");
+			// First PRINTout how much entries are there on the list xN
+				Func.publicizeStatistics();
 				
 			System.out.println("===+===-> regular AS/FQDN parsing (ALT2).");
 			String target2Dive = Current.getCurrentTarget();

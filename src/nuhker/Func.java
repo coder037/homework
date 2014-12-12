@@ -47,11 +47,11 @@ public class Func {
 	 * requests, not to overload the services used.
 	 * 
 	 * For conspirative reasons, the delay is non-static
-	 * and varies a little bit.
+	 * and varies a little bit each time.
 	 * 
-	 * @param long milliSeconds to variate a little bit 
+	 * @param  base time in millisecs to variate a little bit 
 	 */
-	public static int normalizedValue (int base) {
+	public static int variateTheTime (int base) {
 	Random generator = new Random();
 	int empiricTambovConstant = 1800 ;
 	int value = generator.nextInt(empiricTambovConstant);
@@ -62,14 +62,14 @@ public class Func {
 	
 	
 	/**
-	 * Method delay(long milliSeconds) introduces
-	 * a couple of seconds delay between the internet
-	 * requests, not to overload the services used.
+	 * Method delay (int milliseconds) keeps
+	 * internet requests a couple of seconds apart.
+	 * This is in order not to abuse services.
 	 * 
 	 * @param long milliSeconds to wait
 	 */
 	public static void delay(int someNumber) {
-		int kiikingNumber = normalizedValue(someNumber);
+		int kiikingNumber = variateTheTime(someNumber);
 		System.out.println("Here we should wait for: " + kiikingNumber + " msec");
 		try {
 		    Thread.sleep(someNumber);
@@ -81,12 +81,13 @@ public class Func {
 	
 	/**
 	 * 
-	 * The method eliminates Google promo links from actual data. There are 4
-	 * previously known links. We compare the argument with these. On the first
-	 * found, break the cycle and return a signal to the calling program
+	 * The method recognizes Google promotional links and removes
+	 * these from actual data. There are 4 previously known links.
+	 * We compare the argument with these found. On the firstfound,
+	 * we break the cycle and return a flag to the calling program.
 	 * 
-	 * @param suspect a "link"/sitename to discard as invalid data
-	 * @return a decision whether to discard the initial parameter
+	 * @param - a "link"/sitename to discard as invalid data
+	 * @return - the decision whether to discard the initial parameter
 	 */
 	public static boolean isSensible(String suspect) {
 
@@ -108,6 +109,7 @@ public class Func {
 		return whetherToKeep;
 	}
 
+	
 	public static void doSomeBookkeepingOnThe(String suspect) {
 		// ArrayList<String> validSites = new ArrayList<String>();
 		
@@ -121,6 +123,10 @@ public class Func {
 			System.out.println(TAB + "Badsite  found: "+ suspect);
 
 		} // ELSE
+		
+		// ToDo: there exist a rare case when the suspect is numeric,
+		// probably should it be reverse-resolved or compared
+		// to the ASN list of the constituency?
 		
 		return;
 	}
@@ -163,7 +169,7 @@ public class Func {
 		// DEBUG System.out.println(TAB + TAB + "MID: " + destination);
 		destination = destination.replaceAll("^AS", "");
 		// DEBUG System.out.println(TAB + TAB + "DST: " + destination);
-		// To be extremely sure put it through the cobra's penis
+		// To be extremely sure press it through the cobra's penis
 		int sourceNo = Integer.parseInt(destination);
 		destination = Integer.toString(sourceNo);
 		destination = (AS + COLON + destination);
@@ -171,6 +177,18 @@ public class Func {
 		// DEBUG System.out.println(TAB + "---< asn2Colon");
 		return destination;
 	}
+	
+	/**
+	 * The method will publicize some status data otherwise kept in the DBze.
+	 * E.g. we call it before killing the program and elsewhere
+	 * @param none
+	 * @return nothing but prints interesting thingz to StdOut.
+	 */
+	public static void publicizeStatistics() {
+		System.out.println("===---===---===--- SIZE: " + DBze.knownSites.size() + " records");
+		return;
+	}
+	
 	
 	/**
 	 * This is the wrapper class to check the Autorship. It does nothing except
