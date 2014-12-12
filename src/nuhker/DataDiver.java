@@ -19,9 +19,7 @@
  *  readers earn with the help of that code, things might be different.
  */
 
-/**
- * created: Dec 8, 2014 11:42:54 PM
- */
+
 package nuhker;
 
 import java.io.IOException;
@@ -30,22 +28,36 @@ import java.util.ArrayList;
 import joptsimple.OptionParser;
 
 /**
+ * DataDiver is the class that does the actual recursion.
+ * For each targeted FQDN, it will launch some OSI on the net
+ * and record the parsed results.
+ * Then it will recursively call itself for all results found.
+ * The permitted depth of the recursion is defined by CLI option
+ * -R (an integer).
+ * 
+ * created: Dec 8, 2014 11:42:54 PM
  * @author coder037@xyz.ee
  * @identity 0f
  *           a1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff
  * 
  */
-
-
 public class DataDiver {
 
 	private final static String AS = "AS";
 	private final static String TAB = "\t";
 
-	// I am not saying I fully understand how an interface works.
-	// but seems - it works ;)
-
 	
+	/**
+	 * Method delay(DefaultParms thisCopy) introduces
+	 * a couple of seconds delay between the internet
+	 * requests not to overload the services used.
+	 * 
+	 * For a reason or two, the numeric parameter for the
+	 * waittime is not given directly as a long int, but
+	 * passed as a structure od default runtime parameters
+	 * (of DefaultParms type) 
+	 * @param DefaultParms
+	 */
 	public static void delay(DefaultParms thisCopy) {
 		long waitTime = thisCopy.getMinTimeBetweenGSBRequests();
 		System.out.println("Here we should wait for: " + waitTime + " msec");
@@ -57,20 +69,46 @@ public class DataDiver {
 	}
 	
 	/**
-	 * @param args
+	 * The MAIN logic of the whole package - an actual recursion.
+	 * 
+	 * This method is invoked with a copy of previously initialized
+	 * structure of DefaultParms type.
+	 * 
+	 * @param DefaultParms
+	 * 
+	 * Several parameters are passed between down the recursion levels
+	 * including these:
+	 *    - target - whom to OSI
+	 *    - depth level - (which level I am on)
+	 *    - max depth of the recursion 
+	 *    - max working time, after which the program will stop itself.
+	 *  
+	 * Parameters are driven via getters setters interface of the
+	 * DefaultParms class
+	 * 
+	 * There are two main flows:
+	 *    on the UPPER level, a country code is transformed into a
+	 *    corresponding array of ASNs belonging to that country.
+	 *    This is done calling ParseRIPE.grabCountryDescription(cc)
+	 *    
+	 *    in the remaining levels, ParseGSB.badReputation(target2Dive)
+	 *    is called which returns an array of String[] subtargets
+	 * 
+	 * A scrupulous care has been excercised to pass both ASNs and
+	 * FFQDNs via the same methods (and this will need some back-and-
+	 * -forth translation between 12345 <--> AS:12345 forms.  
 	 */
 	public static void main(DefaultParms LevelVariables) {
 
-		
-		
 		DefaultParms Current = LevelVariables;
 		long nowTime = System.nanoTime();
 		boolean upperLevel = false;
 		int currentLevel = Current.getCurrentLevelOfRecursion();
 
+		// Introductory part - safeguards and calculations
+		
 		System.out.println("===-> DataDiver Level " + currentLevel + " entered.");
 		String outputFileName =  Current.getFilenameForOutput();
-
 		
 		long billion = 1000000000;
 		long thousand = 1000;

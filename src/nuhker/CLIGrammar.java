@@ -19,22 +19,23 @@
  *  readers earn with the help of that code, things might be different.
  */
 
-/**
- * created: Dec 02, 2014 08:00:00 AM
- */
 package nuhker;
 
+
+import java.util.Arrays;
+import joptsimple.OptionParser;
+//import joptsimple.OptionException;
+//import joptsimple.OptionSet;
+
 /**
+ * This class is depending on the joptsimple library and is used
+ * to describe the grammar of CLI options that Run.java takes.
+ * 
+ * created: Dec 02, 2014 08:00:00 AM
  * @author coder037@xyz.ee
  * @identity 0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff
  *
  */
-import java.util.Arrays;
-
-// import joptsimple.OptionException;
-// import joptsimple.OptionSet;
-import joptsimple.OptionParser;
-
 public class CLIGrammar extends OptionParser {
 
 	private final static String OPT_COPYRIGHT = "copyright";
@@ -61,8 +62,10 @@ public class CLIGrammar extends OptionParser {
 				.acceptsAll(Arrays.asList("c", OPT_COUNTRY),
 						"Enter country code to work with; default=EE")
 				.withRequiredArg().ofType(String.class);
-		// Alternative: .withOptionalArg().ofType( Level.class ); vs
-		// .withRequiredArg().ofType(Integer.class):
+		
+		// Warning: the next option is a dummy option so far.
+		// ToDo: use Java Logger verboseness semantics, not numbers
+
 		preParser
 				.acceptsAll(Arrays.asList("d", "V", OPT_VERBOSE),
 						"Debuglevel 0-7; default=4").withRequiredArg()
@@ -71,6 +74,7 @@ public class CLIGrammar extends OptionParser {
 				.acceptsAll(Arrays.asList("M", OPT_MAXRUN),
 						"Max time in seconds we should run, kill then; default=80000 secs")
 				.withRequiredArg().ofType(Integer.class);
+		
 		// So far we do it with String.class identifier not File.Class
 		// (guess why ;) ) :
 		preParser
@@ -89,7 +93,11 @@ public class CLIGrammar extends OptionParser {
 				.acceptsAll(Arrays.asList("v", OPT_VER), "Show version number");
 		preParser.acceptsAll(Arrays.asList("x", OPT_XTRA),
 				"Some extra functionality we possible implement later");
-
+		
+		// These are some examples of the joptsimple power: 
+		// .withOptionalArg().ofType( Level.class ); vs
+		// .withRequiredArg().ofType(Integer.class):
+		
 		return preParser;
 	}
 }

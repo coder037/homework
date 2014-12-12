@@ -28,9 +28,9 @@
  * Nuhkima - is the Estonian verb "to covertly obtain intelligence".
  * Nuhker - is the tool doing so.
  * 
- * This package is meant as an educational object to excercise
- * with the Java language. Very obviously, the algorithms used
- * as well as the knowledge domain was previously known to me.
+ * This package is meant to be an educational object to excercise
+ * within the Java language. Very obviously, the algorithms used
+ * as well as the knowledge domain were previously known.
  * 
  * Launch it from CLI and it will gather some Open Source Intelligence
  * about malware sites being noticed within your TLD (top-level-domain).

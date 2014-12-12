@@ -19,23 +19,30 @@
  *  readers earn with the help of that code, things might be different.
  */
 
-/**
- * created: Dec 1, 2014 2:33:48 AM
- */
 package nuhker;
 
 /**
- * @author coder037@xyz.ee
- * @identity 0f
- *           a1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff
+ * This class keeps important runtime parameters that the business
+ * logic has to consider at any time.
  * 
+ * The parameters are mostly set while parsing the CLI options, this
+ * is described in CLIGrammar class.
+ * 
+ * Some of the parameters are later manipulated between recursion
+ * levels by DataDiver.main method.
+ *           
+ * created: Dec 1, 2014 2:33:48 AM
+ * 
+ * @author coder037@xyz.ee
+ * @identity 0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff
+ * 
+
  */
 public class DefaultParms {
 
+	// An idea about nanotime:
 	// http://stackoverflow.com/questions/351565/system-currenttimemillis-vs-system-nanotime
 	private long startTime = 0;
-
-
 
 	// Default values when commandline options given:
 
@@ -43,23 +50,23 @@ public class DefaultParms {
 	private int minTimeBetweenGSBRequests = 2800; // in milliseconds
 	private int depthOfRecursion = 7; // How deep we intend to go?
 	private int currentLevelOfRecursion = 7; // How deep we are?
-	
-	// actually this should use LEVELS not int numbers ... but :)
+
+	// actually this should use LEVELS not int numbers ... but later:)
 	private int debugLevel = 4;
 	private String countryCodeToWorkWith = "EE";
 	private String filenameForOutput = "output";
 	private String currentTarget = "";
 
 	// Auto-generated getters-setters by Eclipse.
-	
+
 	public long getStartTime() {
 		return startTime;
 	}
-	
+
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
-	
+
 	public int getMaxTimeToRunBeforeKilled() {
 		return maxTimeToRunBeforeKilled;
 	}
@@ -95,6 +102,7 @@ public class DefaultParms {
 	public void setCurrentLevelOfRecursion(int currentLevelOfRecursion) {
 		this.currentLevelOfRecursion = currentLevelOfRecursion;
 	}
+
 	//
 	public int getDebugLevel() {
 		return debugLevel;
@@ -112,7 +120,8 @@ public class DefaultParms {
 	public void setCountryCodeToWorkWith(String countryCodeToWorkWith) {
 		this.countryCodeToWorkWith = countryCodeToWorkWith;
 	}
-	// Not a way to generate the filenames :)
+
+	// Generally not a way to generate the filenames :)
 	public String getFilenameForOutput() {
 		return (filenameForOutput + "-" + startTime + ".txt");
 	}

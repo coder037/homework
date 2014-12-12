@@ -19,7 +19,6 @@
  *  readers earn with the help of that code, things might be different.
  */
 
-
 package nuhker;
 
 import java.io.File;
@@ -39,27 +38,46 @@ import joptsimple.OptionSet;
 import java.security.MessageDigest;
 
 /**
+ * 
+ * No multi-threading at all. This is the runnable class intended to be launched
+ * from CLI
+ * 
+ * It takes CLI Grammar, stores it in a data class and then calls
+ * DataDiver.main(DefaultParms modified) to do the actual work
+ * 
  * created: Nov 23, 2014 12:44:46 AM
+ * 
  * @author coder037@xyz.ee
  * @identity 0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff
- *
+ * @version 0.7.2 so far
  */
 public class Run {
 
 	private final static String AUTHOR = "0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff";
-	private final static String VERSION = "0.5";
+	private final static String VERSION = "0.7.2";
 	private final static String TAB = "\t";
 
 	// Here we first parse the argv line to be sure it is parsable nuff
-	
+
+	/**
+	 * Depends on the jopt-simple library Makes a copy of the CLIGrammar and
+	 * then validates CLI options. No attempt is made to understand the options
+	 * - this is the preliminar pass. It it seems to the library that options
+	 * are correct and adhere to the Grammar, then returns Boolean true,
+	 * otherwise false.
+	 * 
+	 * @param String
+	 *            [] arguments a copy of CLI option to be validated
+	 * @return boolean decision whether the conformancy was true or false
+	 */
 	public static boolean checkConformity(String[] arguments) {
 		OptionSet args = null; // declaration separated due to subsequent TRY
-							  // clause
+								// clause
 		OptionParser preParser = CLIGrammar.main();
 
 		System.out.println();
 		System.out.println("===* Option Conformity Check");
-		// ==== WARNING, NEXT 25 lines are not considered fully mine, 
+		// ==== WARNING, NEXT 25 lines are not considered fully mine,
 		// but a neat trick from
 		// https://github.com/martinpaljak/GlobalPlatform/blob/master/src/openkms/gp/GPTool.java
 		// lines 133-147
@@ -91,9 +109,22 @@ public class Run {
 		return true; // We reached this point, thus no bailout
 	}
 
-		// This method does some hashing with the string
-	    // The warning - never try to make crypto at home ;)
-	
+	// This method does some hashing with the string
+	// The warning - never try to make crypto at home ;)
+
+	/**
+	 * Because the general warning by NSA is - never make crypto at home - I
+	 * used this method to mark SOMEBODY'S ELSE COPYRIGHT on hash calculation
+	 * routines.
+	 * 
+	 * I actually need hashes to conceal my identity ;)
+	 * 
+	 * @param argument
+	 *            Name of the Author to be checked cryptographically
+	 * @return String hash digest
+	 * @throws Exception
+	 *             which is marked but not actually used
+	 */
 	public static String calculateHash(String argument) throws Exception {
 		String digest = null;
 		System.out.println();
@@ -114,22 +145,45 @@ public class Run {
 		digest = sb.toString();
 		return digest;
 	}
-	
-		// This method is to Fourier the hash to the package author name
+
+	/**
+	 * This is the wrapper class to check the Autorship. It does nothing except
+	 * taking the proposed author's name and calling a cryptographic validation
+	 * calculateHash(String argument) of that.
+	 * 
+	 * The idea is that if you PREVIOUSLY know the author's name, you can prove
+	 * it but if you don't know it, the program will not share its authors name,
+	 * too.
+	 * 
+	 * @param argument
+	 *            Author's name or what you think it is
+	 * @return String message whether you guessed it or not
+	 * @throws Exception
+	 */
 	public static String checkTheAuthorship(String argument) throws Exception {
 		String message = null;
 		if (AUTHOR.equals(calculateHash(argument))) {
 			message = TAB + TAB + "Copyright: " + argument
 					+ " (validated cryptographically).";
 		} else {
-			message = TAB
-					+ "You seem not to know who the actual author is...";
+			message = TAB + "You seem not to know who the actual author is...";
 		}
 		System.out.println(TAB + "==-< END of the Authorship test ===");
 		return message;
 	}
 
-	
+	/**
+	 * This is the most important method of the class. IT parses CLI options
+	 * depending on the jopt-simple library and a predefined in class
+	 * DefaultParms options.
+	 * 
+	 * @param arguments
+	 *            to be parsed as options, taken straight from CLI
+	 * @return an object Runtimes of type DefaultParameter that all DataDiver
+	 *         recursions will be called with
+	 * @throws Exception
+	 *             which has left mostly unhandled. The reason - a PoC code.
+	 */
 	public static DefaultParms parseContent(String[] arguments)
 			throws Exception {
 		OptionParser postParser = CLIGrammar.main();
@@ -147,7 +201,8 @@ public class Run {
 			System.out.println(TAB + TAB + "and it had a suboption: "
 					+ optionValue);
 			// Set the global DebugLevel from here
-			System.out.println(TAB + "Setting current loglevel value as: " + optionValue);
+			System.out.println(TAB + "Setting current loglevel value as: "
+					+ optionValue);
 			RunTimes.setDebugLevel(Integer.parseInt(optionValue));
 		} else {
 			// or the DebugLevel remains whatever the default is
@@ -179,7 +234,8 @@ public class Run {
 		}
 
 		if (cliOptions.has("x")) {
-			System.out.println(TAB + "Option x was found which isn't yet implemented.");
+			System.out.println(TAB
+					+ "Option x was found which isn't yet implemented.");
 			System.out.println(TAB + TAB + "Anyway, thnx for supporting it!");
 		}
 
@@ -193,9 +249,15 @@ public class Run {
 					+ optionValue);
 
 			System.out.println(checkTheAuthorship(optionValue));
-			System.out.println(TAB + "###############################################################################");
-			System.out.println(TAB + "# Small portions of foreign copyleft noted as such in code, expressis verbis. #");
-			System.out.println(TAB + "###############################################################################");
+			System.out
+					.println(TAB
+							+ "###############################################################################");
+			System.out
+					.println(TAB
+							+ "# Small portions of foreign copyleft noted as such in code, expressis verbis. #");
+			System.out
+					.println(TAB
+							+ "###############################################################################");
 			System.out.println("===-) END of Option Parser");
 		}
 
@@ -207,10 +269,14 @@ public class Run {
 			String optionValue = String.valueOf(cliOptions.valueOf("M"));
 			System.out.println(TAB + TAB + "and it had a suboption: "
 					+ optionValue);
-			System.out.println(TAB + "Setting MaxRunTime value as: " + optionValue + " secs.");
+			System.out.println(TAB + "Setting MaxRunTime value as: "
+					+ optionValue + " secs.");
 			RunTimes.setMaxTimeToRunBeforeKilled(Integer.parseInt(optionValue) * 1000); // DONE!!!
-			System.out.println(TAB + "Have set MaxRunTime value as: " + RunTimes.getMaxTimeToRunBeforeKilled() + " msecs.");
-			// Inspiration to convert by means of Integer.parseInt from reznic		System.out.println(TAB + "Our Epoch started at: " + FinalOptions.getStartTime());
+			System.out.println(TAB + "Have set MaxRunTime value as: "
+					+ RunTimes.getMaxTimeToRunBeforeKilled() + " msecs.");
+			// Inspiration to convert by means of Integer.parseInt from reznic
+			// System.out.println(TAB + "Our Epoch started at: " +
+			// FinalOptions.getStartTime());
 			// http://stackoverflow.com/questions/5585779/converting-string-to-int-in-java
 		}
 
@@ -220,12 +286,15 @@ public class Run {
 			System.out.println(TAB + TAB + "and it had a suboption: "
 					+ optionValue);
 			// Set recursion max level
-			System.out.println(TAB + "Setting Max Recursion depth as : " + optionValue);
+			System.out.println(TAB + "Setting Max Recursion depth as : "
+					+ optionValue);
 			RunTimes.setDepthOfRecursion(Integer.parseInt(optionValue));
 			// Set relative level
-			System.out.println(TAB + "Setting Current Recursion level the same: " + optionValue);
+			System.out.println(TAB
+					+ "Setting Current Recursion level the same: "
+					+ optionValue);
 			RunTimes.setCurrentLevelOfRecursion(Integer.parseInt(optionValue));
-			
+
 		}
 
 		if (cliOptions.has("t")) {
@@ -234,9 +303,10 @@ public class Run {
 			System.out.println(TAB + TAB + "and it had a suboption: "
 					+ optionValue);
 			// set timeout
-			System.out.println(TAB + "Setting GSB mandatory timeout >=: " + optionValue + " msec.");
+			System.out.println(TAB + "Setting GSB mandatory timeout >=: "
+					+ optionValue + " msec.");
 			RunTimes.setMinTimeBetweenGSBRequests(Integer.parseInt(optionValue));
-			
+
 		}
 
 		if (cliOptions.has("o")) {
@@ -245,28 +315,36 @@ public class Run {
 			System.out.println(TAB + TAB + "and it had a suboption: "
 					+ optionValue);
 			// set filename
-			System.out.println(TAB + "Setting Base Filename as requested: " + optionValue);
+			System.out.println(TAB + "Setting Base Filename as requested: "
+					+ optionValue);
 			RunTimes.setFilenameForOutput(optionValue);
 		}
 
 		System.out.println("===-) END of Option Parser, phase 2");
-		System.out.println(TAB + "options init DONE according to the CLI values.");
+		System.out.println(TAB
+				+ "options init DONE according to the CLI values.");
 		return RunTimes;
 	}
 
-
 	/**
-	 * @param args
+	 * The main routine Takes CLI options from the command line argv and passes
+	 * these. Has some commented out Strings to simulate and debug various CLI
+	 * options.
+	 * 
+	 * @param argv
+	 *            CLI options passed to other methods
+	 * @throws Exception
+	 *             which left properly unhandled - b/c this is a PoC code.
 	 */
 	public static void main(String[] argv) throws Exception {
 		long firstVariable = System.nanoTime();
-		
+
 		System.out.println("0--------={Start}=--------0");
 
 		// Alternatives for simulation (until we build the static CLI program)
 		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
-				"--xtra", "-o", "output", "-R", "6", "-t", "2780",
-				"-d", "7", "-M", "20000" };
+				"--xtra", "-o", "output", "-R", "6", "-t", "2780", "-d", "7",
+				"-M", "20000" };
 		String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000", "-n",
 				"-o", "somefilename-001", "-R", "6", "-t", "2800" };
 		String[] simulation3 = { "--help" };
@@ -281,7 +359,8 @@ public class Run {
 		// printout of ACTUAL options
 		System.out.println();
 		System.out.println("===================  M A I N ==============");
-		System.out.println("~~~~~~~~ " + "Our Epoch started at: " + FinalOptions.getStartTime());
+		System.out.println("~~~~~~~~ " + "Our Epoch started at: "
+				+ FinalOptions.getStartTime());
 		System.out.println("MAIN: READY to attempt the actual launch...");
 		System.out.println(TAB + "Debuglevel has been set as: "
 				+ FinalOptions.getDebugLevel() + " of max 7");
@@ -310,14 +389,11 @@ public class Run {
 		// HERE starts the ACTUAL LAUNCH CODE
 		nuhker.DataDiver.main(FinalOptions);
 		//
-		long duration = (System.nanoTime() - FinalOptions.getStartTime() );
-		System.out.println("<<<<<<< " + "The Epoch lasted: " + (duration / 1000000000) + " secs.");
+		long duration = (System.nanoTime() - FinalOptions.getStartTime());
+		System.out.println("<<<<<<< " + "The Epoch lasted: "
+				+ (duration / 1000000000) + " secs.");
 		System.out.println("================  END of MAIN  ==========");
 		System.exit(0);
 	}
-
-	// ========================================================
-	
-	// ToDo: rename Nuhker nuhker
 
 }

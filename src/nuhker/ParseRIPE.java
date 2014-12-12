@@ -19,22 +19,15 @@
  *  readers earn with the help of that code, things might be different.
  */
 
-/**
- * created: Nov 26, 2014 11:18:09 PM
- */
 package nuhker;
 
-/**
- * @author coder037@xyz.ee
- * @identity 0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff
- * Tag Comments: @version @param @return @deprecated @since @throws @exception @see
- */
+
 
 // Inspiration sources:
 //    API PRINCIPLES: https://stat.ripe.net/docs/data_api
 //    Inspiration: http://runnable.com/Uu83dm5vSScIAACw/download-a-file-from-the-web-for-java-files-and-save
 //    Inspiration: http://www.mkyong.com/java/json-simple-example-read-and-write-json/
-// SOLVED MYSELF: how to parse hierarchical JSON (have seen no public example to follow)
+// SOLVED MYSELF: how to parse hierarchical JSON (still have seen no public example to follow)
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -55,12 +48,31 @@ import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 
+/**
+ * The ParseRIPE class is to raise an argument against RIPE
+ * public interface to return the constituency (extent of IP
+ * networks) of a country.
+ * 
+ * created: Nov 26, 2014 11:18:09 PM
+ * @author coder037@xyz.ee
+ * @identity 0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff
+ * 
+ */
 public class ParseRIPE {
-
+	// Some like Chopin, me like constants.
 	private final static String TAB = "\t";
-	
+
+	/**
+	 * This is web downloader for a specific purpose.
+	 * NB! The code *MOSTLY* is the industry standard textbook example
+	 * The code is put into a separate subroutine because NO KNOWN copyright
+	 * 
+	 * @param urlToDL download link at RIPE
+	 * @return byteArray[] to further convert into a String
+	 * @throws IOException if socket transfer to/from the RIPE failed
+	 */
 	public static byte[] downLoader(String urlToDL) throws IOException {
-		byte[] byteStream = null;
+		byte[] byteArray = null;
 		URL urlToVisit = new URL(urlToDL);
 		System.out.println("===* RIPE Downloader");
 		System.out.println(TAB + "URL: " + urlToVisit);
@@ -86,12 +98,21 @@ public class ParseRIPE {
 		}
 		httpResult.close();
 		networkSource.close();
-		byteStream = httpResult.toByteArray();
+		byteArray = httpResult.toByteArray();
 		// end of the weird industry-standard HTTP seduction method
 		// END of the FOREIGN COPYRIGHT WARNING
-		return byteStream;
+		return byteArray;
 	}
 
+	/**
+	 * This is the wrapper method around downLoader method.
+	 * It basically does nothing except converting byte[] array
+	 * into a String
+	 * 
+	 * @param countryCode - two letter ISO 3166-1 code
+	 * @return String with the constituency extent of that particular country described
+	 * @throws IOException
+	 */
 	public static String grabCountryDescription(String countryCode)
 			throws IOException {
 		String jsonDataObtained = "{\"status\": \"not OK\"}";
@@ -113,6 +134,20 @@ public class ParseRIPE {
 		return jsonDataObtained;
 	}
 
+	/**
+	 * This is the most important method of the class.
+	 * It takes the description of a country's Internet obtained from
+	 * RIPE and parses it into a usable form.
+	 * 
+	 * Depends on external json-simple library.
+	 * 
+	 * Currently we only use AS numbers out of the RIPE description.
+	 * There are yet IPv4 and IPv6 lists available
+	 * which we are currently not interested.
+	 * 
+	 * @param jsonedASNList - A JSONPArser object with data structures
+	 * @return String[] array with all ASNs (int) nicely listed 
+	 */
 	public static String[] asnJsonParser(String jsonedASNList) {
 		String[] arrayedASNList = null;
 		// We parse a 3-level json hierarchy here
@@ -157,8 +192,6 @@ public class ParseRIPE {
 			arrayedASNList = (String[]) outputList
 					.toArray(new String[arraySize]);
 
-			// Actually there are yet IPv4 and IPv6 lists available
-			// but we are not interested in these just now
 			System.out.println("===~ END of RIPE parsing method.");
 
 		} catch (ParseException e) {
@@ -171,6 +204,12 @@ public class ParseRIPE {
 		return arrayedASNList;
 	} // METHOD
 
+	/**
+	 * Main method has been kept to enable simple debugging.
+	 * No actual use, other classes do not call this.
+	 * @param args not used
+	 * @throws IOException actually ignored :)
+	 */
 	public static void main(String[] args) throws IOException {
 
 		String cc = "EE";
