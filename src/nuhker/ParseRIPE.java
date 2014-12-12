@@ -53,10 +53,8 @@ import java.util.ArrayList;
  * public interface to return the constituency (extent of IP
  * networks) of a country.
  * 
- * created: Nov 26, 2014 11:18:09 PM
+ * @created Nov 26, 2014 11:18:09 PM
  * @author coder037@xyz.ee
- * @identity 0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff
- * 
  */
 public class ParseRIPE {
 	// Some like Chopin, me like constants.

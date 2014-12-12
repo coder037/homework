@@ -28,17 +28,17 @@ import java.util.logging.Logger;
 /**
  * This class is NOT READY yet. Currently it does next to nothing. We consider
  * whether OR NOT it should implement file logging interface. Reason: the code
- * working with files, most probably has some foreign copyright
+ * working with files, usually has some foreign copyright
+ * @created Dec 10, 2014 11:18:09 AM
+ * @author coder037@xyz.ee
  */
 public class TypeWriter {
 
 	private final static String TAB = "\t";
 
 	/**
-	 * @param fileName
-	 *            to write, lineToWrite to that file
+	 * @param message to be written into file
 	 */
-
 	public static boolean isOfProperConstituency(String candidate) {
 		boolean returnValue = false;
 		// Regexp: Only pass if contains ".ee/" string

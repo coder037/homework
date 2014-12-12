@@ -46,10 +46,8 @@ import java.security.MessageDigest;
  * It takes CLI Grammar, stores it in a data class and then calls
  * DataDiver.main(DefaultParms modified) to do the actual work
  * 
- * created: Nov 23, 2014 12:44:46 AM
- * 
+ * @created Nov 23, 2014 12:44:46 AM
  * @author coder037@xyz.ee
- * @identity 0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff
  * @version 0.8 so far
  */
 public class Run {
@@ -66,7 +64,7 @@ public class Run {
 	 * are correct and adhere to the Grammar, then returns Boolean true,
 	 * otherwise false.
 	 * 
-	 * @param String a copy of CLI option to be validated
+	 * @param a copy of CLI option to be validated
 	 * @return boolean decision whether the conformancy was true or false
 	 */
 	public static boolean checkConformity(String[] arguments) {

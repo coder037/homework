@@ -40,9 +40,8 @@ import java.util.ArrayList;
  * This particular exercise ignores dates; "listed on GSB" means - has been
  * contaminated by malware within last 90 days".
  * 
- * @created: Nov 28, 2014 8:56:32 AM
+ * @created Nov 28, 2014 8:56:32 AM
  * @author coder037@xyz.ee
- * @identity 0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff
  */
 public class ParseGSB {
 
@@ -53,16 +52,15 @@ public class ParseGSB {
 	 * is being checked against the Google SafeBrowsing Interface (a reputation
 	 * service).
 	 * 
-	 * @param a
-	 *            target which reputation is to be checked could be 1 of 3: a
+	 * @param target which reputation is to be checked could be 1 of 3: a
 	 *            FQDN (xyz.ee/) or URL (xyz.ee/X/) or ASN (AS:12345)
-	 * @return a String[] array containing references to the badness. Should be
+	 * @return array containing references to the badness. Should be
 	 *         clear that this is not we inventing badness. This is what Google
 	 *         thinks.
 	 * 
 	 *         We are not too precise within this experiment, we are satisfied
 	 *         with the 90 last days precision offered.
-	 * @see doc/Parsing-GSB-sitepages-010 for a much more thorough assessment of
+	 * @link doc/Parsing-GSB-sitepages-010.pdf for a much more thorough assessment of
 	 *      the topic.
 	 * @exception There
 	 *                are chances that Google will modify the page format. If
@@ -130,7 +128,6 @@ public class ParseGSB {
 	 * 
 	 * @param args
 	 *            none expected
-	 * @return nothing. Only print some debug info.
 	 */
 	public static void main(String[] args) {
 		String target1 = "delfi.ee/";
