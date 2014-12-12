@@ -149,7 +149,7 @@ public class ParseGSB {
 		String baseURL = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=";
 
 			// ToDo: how to handle network layer ERRORS?
-			// either cycle with (false) until no Exception
+			// either a cycle with (false) until no Exception
 			// or dismiss errors (faster recovery)
 		
 		try {
