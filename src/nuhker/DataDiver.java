@@ -77,7 +77,7 @@ public class DataDiver {
 	 * FFQDNs via the same methods (and this will need some back-and-
 	 * -forth translation between 12345 <--> AS:12345 forms.  
 	 */
-	public static void main(DefaultParms LevelVariables) {
+	public static void entryPoint(DefaultParms LevelVariables) {
 
 		DefaultParms Current = LevelVariables;
 		long nowTime = System.nanoTime();
@@ -150,7 +150,7 @@ public class DataDiver {
 				    int nextLevel = (currentLevel - 1);
 				    System.out.println("===-< Descending from level: " + currentLevel + " to level "+ nextLevel);
 				    Current.setCurrentLevelOfRecursion(nextLevel);
-				    main(Current); // RECURSIVELY foreach argument  
+				    entryPoint(Current); // RECURSIVELY foreach argument  
 				}
 				System.out.println("===-! DONE withAll arguments for the country: " + cc);
 				System.out.println(TAB + "===-< end of the UPPER level.");
@@ -185,7 +185,7 @@ public class DataDiver {
 			    	   System.out.println("===-< Going down, Mr Demon, from " + currentLevel + " to level " + nextLevel );
 			    	   Current.setCurrentLevelOfRecursion(nextLevel);
 			    	   Func.delay(waitTime);
-			    	   main(Current); // RECURSIVELY foreach argument
+			    	   entryPoint(Current); // RECURSIVELY foreach argument
 			        } else {
 			        	System.out.println("---+---+---+---+---> Target " + target + " already KNOWN!");
 			        }

@@ -36,7 +36,7 @@ import java.util.*;
 public class Func {
 
 	// I like constants, somebody might like Chopin.
-	
+	private final static String AUTHOR = "0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff";
 	private final static String AS = "AS";
 	private final static String COLON = ":";
 	private final static String TAB = "\t";
@@ -172,6 +172,31 @@ public class Func {
 		return destination;
 	}
 	
+	/**
+	 * This is the wrapper class to check the Autorship. It does nothing except
+	 * taking the proposed author's name and calling a cryptographic validation
+	 * calculateHash(String argument) of that.
+	 * 
+	 * The idea is that if you PREVIOUSLY know the author's name, you can prove
+	 * it but if you don't know it, the program will not share its authors name,
+	 * too.
+	 * 
+	 * @param argument
+	 *            Author's name or what you think it is
+	 * @return String message whether you guessed it or not
+	 * @throws Exception
+	 */
+	public static String checkTheAuthorship(String argument) throws Exception {
+		String message = null;
+		if (AUTHOR.equals(ForeignCode.calculateHash(argument))) {
+			message = TAB + TAB + "Copyright: " + argument
+					+ " (validated cryptographically).";
+		} else {
+			message = TAB + "You seem not to know who the actual author is...";
+		}
+		System.out.println(TAB + "==-< END of the Authorship test ===");
+		return message;
+	}
 	
 	// I doubt we need main here ;)
 	/**

@@ -103,7 +103,7 @@ public class ParseGSB {
 		}
 		// Who likes Chopin, but I like String[] array returns
 		// much more than ArrayLists<>. Dancing between the datatypes
-		// could be considered as fuzzing and reveals bugs. ;)
+		// should be considered as fuzzing and thus reveals bugs. ;)
 
 		int count = vettedBadness.size();
 		String[] someTargets = new String[count];
@@ -123,8 +123,7 @@ public class ParseGSB {
 
 	}
 
-	// ================ Here ends the program
-	// and starts some experimental test ===========
+	// ================ Main class is left for debugging only
 
 	/**
 	 * main method is mostly kept here for debugging purposes.

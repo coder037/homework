@@ -50,12 +50,11 @@ import java.security.MessageDigest;
  * 
  * @author coder037@xyz.ee
  * @identity 0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff
- * @version 0.7.2 so far
+ * @version 0.8 so far
  */
 public class Run {
 
-	private final static String AUTHOR = "0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff";
-	private final static String VERSION = "0.7.2";
+	private final static String VERSION = "0.8";
 	private final static String TAB = "\t";
 
 	// Here we first parse the argv line to be sure it is parsable nuff
@@ -67,8 +66,7 @@ public class Run {
 	 * are correct and adhere to the Grammar, then returns Boolean true,
 	 * otherwise false.
 	 * 
-	 * @param String
-	 *            [] arguments a copy of CLI option to be validated
+	 * @param String a copy of CLI option to be validated
 	 * @return boolean decision whether the conformancy was true or false
 	 */
 	public static boolean checkConformity(String[] arguments) {
@@ -110,68 +108,8 @@ public class Run {
 		return true; // We reached this point, thus no bailout
 	}
 
-	// This method does some hashing with the string
-	// The warning - never try to make crypto at home ;)
 
-	/**
-	 * Because the general warning by NSA is - never make crypto at home - I
-	 * used this method to mark SOMEBODY'S ELSE COPYRIGHT on hash calculation
-	 * routines.
-	 * 
-	 * I actually need hashes to conceal my identity ;)
-	 * 
-	 * @param argument
-	 *            Name of the Author to be checked cryptographically
-	 * @return String hash digest
-	 * @throws Exception
-	 *             which is marked but not actually used
-	 */
-	public static String calculateHash(String argument) throws Exception {
-		String digest = null;
-		System.out.println();
-		System.out.println(TAB + "==- Authorship test ==========");
-		MessageDigest hashhash = MessageDigest.getInstance("SHA-512");
-		// === WARNING: NEXT 10 lines of code are of SOMEBODY'S ELSE authorship:
-		// Inspiration:
-		// http://stackoverflow.com/questions/3103652/hash-string-via-sha-256-in-java
-		byte[] sha512bytes = hashhash.digest(argument.getBytes());
-		// Inspiration: convert the byte to hex format
-		// http://www.mkyong.com/java/java-sha-hashing-example/
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < sha512bytes.length; i++) {
-			sb.append(Integer.toString((sha512bytes[i] & 0xff) + 0x100, 16)
-					.substring(1));
-		}
-		// === END of the WARNING scope
-		digest = sb.toString();
-		return digest;
-	}
 
-	/**
-	 * This is the wrapper class to check the Autorship. It does nothing except
-	 * taking the proposed author's name and calling a cryptographic validation
-	 * calculateHash(String argument) of that.
-	 * 
-	 * The idea is that if you PREVIOUSLY know the author's name, you can prove
-	 * it but if you don't know it, the program will not share its authors name,
-	 * too.
-	 * 
-	 * @param argument
-	 *            Author's name or what you think it is
-	 * @return String message whether you guessed it or not
-	 * @throws Exception
-	 */
-	public static String checkTheAuthorship(String argument) throws Exception {
-		String message = null;
-		if (AUTHOR.equals(calculateHash(argument))) {
-			message = TAB + TAB + "Copyright: " + argument
-					+ " (validated cryptographically).";
-		} else {
-			message = TAB + "You seem not to know who the actual author is...";
-		}
-		System.out.println(TAB + "==-< END of the Authorship test ===");
-		return message;
-	}
 
 	/**
 	 * This is the most important method of the class. IT parses CLI options
@@ -240,7 +178,7 @@ public class Run {
 			System.out.println(TAB + TAB + "Anyway, thnx for supporting it!");
 		}
 
-		// Special copyright phuck
+		// Special copyright copulation
 
 		if (cliOptions.has("C")) {
 			System.out.println(TAB
@@ -249,7 +187,7 @@ public class Run {
 			System.out.println(TAB + TAB + "and it had a sub-option: "
 					+ optionValue);
 
-			System.out.println(checkTheAuthorship(optionValue));
+			System.out.println(Func.checkTheAuthorship(optionValue));
 			System.out
 					.println(TAB
 							+ "###############################################################################");
@@ -387,8 +325,8 @@ public class Run {
 		System.out.println(TAB + "asking DataDiver for this constituency: "
 				+ FinalOptions.getCurrentTarget());
 
-		// HERE starts the ACTUAL LAUNCH CODE
-		nuhker.DataDiver.main(FinalOptions);
+		// HERE starts the ACTUAL LAUNCH CODEwe launch the business logic
+		nuhker.DataDiver.entryPoint(FinalOptions);
 		//
 		long duration = (System.nanoTime() - FinalOptions.getStartTime());
 		System.out.println("<<<<<<< " + "The Epoch lasted: "

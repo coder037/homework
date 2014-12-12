@@ -165,6 +165,10 @@ public class ParseRIPE {
 		return arrayedASNList;
 	} // METHOD
 
+	
+	// ===========================================
+	// Main method is intended for debugging only.
+	
 	/**
 	 * Main method has been kept to enable simple debugging.
 	 * No actual use, other classes do not call this.
