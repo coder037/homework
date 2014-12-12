@@ -179,6 +179,7 @@ public class Func {
 	/**
 	 * The method will publicize some status data otherwise kept in the DBze.
 	 * E.g. we call it before killing the program and elsewhere
+	 * 
 	 * @param none
 	 * @return nothing but prints interesting thingz to StdOut.
 	 */
@@ -213,14 +214,4 @@ public class Func {
 		System.out.println(TAB + "==-< END of the Authorship test ===");
 		return message;
 	}
-	
-	// I doubt we need main here ;)
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
