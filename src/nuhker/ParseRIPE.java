@@ -62,47 +62,6 @@ public class ParseRIPE {
 	// Some like Chopin, me like constants.
 	private final static String TAB = "\t";
 
-	/**
-	 * This is web downloader for a specific purpose.
-	 * NB! The code *MOSTLY* is the industry standard textbook example
-	 * The code is put into a separate subroutine because NO KNOWN copyright
-	 * 
-	 * @param urlToDL download link at RIPE
-	 * @return byteArray[] to further convert into a String
-	 * @throws IOException if socket transfer to/from the RIPE failed
-	 */
-	public static byte[] downLoader(String urlToDL) throws IOException {
-		byte[] byteArray = null;
-		URL urlToVisit = new URL(urlToDL);
-		System.out.println("===* RIPE Downloader");
-		System.out.println(TAB + "URL: " + urlToVisit);
-
-		// Open a network stream to the resource
-		// and record the answer.
-		// input comes from here:
-		InputStream networkSource = new BufferedInputStream(
-				urlToVisit.openStream());
-		// output goes there:
-		ByteArrayOutputStream httpResult = new ByteArrayOutputStream();
-
-		// FOREIGN COPYRIGHT WARNING - next 15 lines
-		// #### START OF SOME industry-standard method
-		// available in many textbooks. G: bufferlength = 1024 etc.
-		// Me don't know who has written this code block ;)
-		// GOOGLE for "java streams byte[1024]"
-
-		byte[] queueBuffer = new byte[1024];
-		int n = 0;
-		while (-1 != (n = networkSource.read(queueBuffer))) {
-			httpResult.write(queueBuffer, 0, n);
-		}
-		httpResult.close();
-		networkSource.close();
-		byteArray = httpResult.toByteArray();
-		// end of the weird industry-standard HTTP seduction method
-		// END of the FOREIGN COPYRIGHT WARNING
-		return byteArray;
-	}
 
 	/**
 	 * This is the wrapper method around downLoader method.
@@ -123,7 +82,7 @@ public class ParseRIPE {
 		String fullUrl = QueryBaseLink + parameterToURL;
 
 		// 2. Open a network stream from the resource and read it in
-		byte[] response = downLoader(fullUrl);
+		byte[] response = ForeignCode.downLoader(fullUrl);
 		System.out.println(TAB + "Chars in the array: " + response.length);
 		jsonDataObtained = new String(response);
 		// DEBUG System.out.println("BlobString: " + passToParse);
@@ -150,6 +109,8 @@ public class ParseRIPE {
 	 */
 	public static String[] asnJsonParser(String jsonedASNList) {
 		String[] arrayedASNList = null;
+		System.out.println("===~ STARTing RIPE parsing method.");
+		
 		// We parse a 3-level json hierarchy here
 		// and obtain asn names from the 4-th level
 
@@ -212,17 +173,17 @@ public class ParseRIPE {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		String cc = "EE";
+		String cc = "LV";
 		String toBeParsed = grabCountryDescription(cc);
 		String[] hasBeenParsed = asnJsonParser(toBeParsed);
 		int countOfASNsObtained = hasBeenParsed.length;
 
+		System.out.println("===~===~=== ParseRIPE.main debug");
 		// Print it out to be very sure
 		for (int k = 0; k < countOfASNsObtained; k++) {
-			System.out.println(TAB + TAB + hasBeenParsed[k] + " ");
+			System.out.println(TAB + hasBeenParsed[k] + " ");
 		}
-
-		// ToDo: web timeout
+		System.out.println("===~===~=== end of the ParseRIPE.main");
 
 	} // MAIN
 

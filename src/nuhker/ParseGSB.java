@@ -46,45 +46,42 @@ import java.util.ArrayList;
  */
 public class ParseGSB {
 
-	private final static String AS = "AS";
-	private final static String COLON = ":";
 	private final static String TAB = "\t";
 
-
 	/**
-	 * The method is axial to the whole package. The name
-	 * of a network resource is being checked against the
-	 * Google SafeBrowsing Interface (a reputation service).
+	 * The method is axial to the whole package. The name of a network resource
+	 * is being checked against the Google SafeBrowsing Interface (a reputation
+	 * service).
 	 * 
-	 * @param a target which reputation is to be checked
-	 * could be 1 of 3: a FQDN (xyz.ee/) or URL (xyz.ee/X/)
-	 *  or ASN (AS:12345) 
-	 * @return a String[] array containing references to
-	 * the badness. Should be clear that this is not we
-	 * inventing badness. This is what Google thinks.
+	 * @param a
+	 *            target which reputation is to be checked could be 1 of 3: a
+	 *            FQDN (xyz.ee/) or URL (xyz.ee/X/) or ASN (AS:12345)
+	 * @return a String[] array containing references to the badness. Should be
+	 *         clear that this is not we inventing badness. This is what Google
+	 *         thinks.
 	 * 
-	 * We are not too precise within this experiment, we
-	 * are satisfied with the 90 last days precision offered.
-	 * @see doc/Parsing-GSB-sitepages-010 for a much more
-	 * thorough assessment of the topic.
-	 * @exception There are chances that Google will modify
-	 * the page format. If so, hopefully this exception
-	 * remembers us about the possibility.
+	 *         We are not too precise within this experiment, we are satisfied
+	 *         with the 90 last days precision offered.
+	 * @see doc/Parsing-GSB-sitepages-010 for a much more thorough assessment of
+	 *      the topic.
+	 * @exception There
+	 *                are chances that Google will modify the page format. If
+	 *                so, hopefully this exception remembers us about the
+	 *                possibility.
 	 */
 	static String[] badReputation(String source) {
 		String candidate = "";
 		String baseURL = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=";
 		ArrayList<String> vettedBadness = new ArrayList<String>();
 
-		
 		try {
 			String url = (baseURL + source);
-			System.out.println("===+ START badReputation");	
+			System.out.println("===+ START badReputation");
 			System.out.println(TAB + "URL visited: " + url);
-			
+
 			Document doc = Jsoup.connect(url).get();
 			Elements meaningfulSections = doc.select("a");
-			
+
 			// Some chemical laundry for the elements we don't need
 			for (Element found : meaningfulSections) {
 				candidate = found.text();
@@ -94,37 +91,41 @@ public class ParseGSB {
 				if (Func.isSensible(candidate)) {
 					vettedBadness.add(candidate);
 					Func.doSomeBookkeepingOnThe(candidate);
-				} 
+				}
 			} // FOR
 		} // TRY
 		catch (IOException ex) {
 			System.out
 					.println("!!!WARNING!!! NETWORK glitch against GSB discovered!");
-			System.out.println(TAB + "We probably should act somehow but we are too lazy for that");
+			System.out
+					.println(TAB
+							+ "We probably should act somehow but we are too lazy for that");
 		}
 		// Who likes Chopin, but I like String[] array returns
 		// much more than ArrayLists<>. Dancing between the datatypes
-		// could be  considered as fuzzing and reveals bugs. ;)
+		// could be considered as fuzzing and reveals bugs. ;)
 
 		int count = vettedBadness.size();
 		String[] someTargets = new String[count];
 		someTargets = vettedBadness.toArray(someTargets);
-		
+
 		if (count == 0) {
-			System.out.println("---= Uncopulatingbelieveable ... no badness discovered under " + source);
+			System.out
+					.println("---= Uncopulatingbelieveable ... no badness discovered under "
+							+ source);
 		} else {
-			System.out.println("---= Normal business: badness count under " + source + " is " + count);
+			System.out.println("---= Normal business: badness count under "
+					+ source + " is " + count);
 		}
-			
+
 		System.out.println("===- END badReputation ");
 		return someTargets;
 
 	}
 
-	
 	// ================ Here ends the program
 	// and starts some experimental test ===========
-	
+
 	/**
 	 * main method is mostly kept here for debugging purposes.
 	 * 
