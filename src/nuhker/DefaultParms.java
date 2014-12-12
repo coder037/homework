@@ -47,7 +47,7 @@ public class DefaultParms {
 	// Default values when commandline options given:
 
 	private int maxTimeToRunBeforeKilled = 80000000; // in milliseconds
-	private int minTimeBetweenGSBRequests = 2800; // in milliseconds
+	private int minTimeBetweenGSBRequests = 2500; // in milliseconds
 	private int depthOfRecursion = 7; // How deep we intend to go?
 	private int currentLevelOfRecursion = 7; // How deep we are?
 

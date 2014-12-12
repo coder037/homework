@@ -30,7 +30,7 @@ import org.jsoup.select.*;
 import java.util.regex.*;
 import java.util.ArrayList;
 
-// INSPIRATION to use jsoup  got from M.M. 
+// INSPIRATION to use jsoup got from M.M. 
 // technical hints obtained: http://stackoverflow.com/questions/12361925/html-parsing-with-jsoup
 
 /**
@@ -50,149 +50,81 @@ public class ParseGSB {
 	private final static String COLON = ":";
 	private final static String TAB = "\t";
 
-	/**
-	 * 
-	 * The method eliminates Google promo links from actual data. There are 4
-	 * previously known links. We compare the argument with these. On the first
-	 * found, break the cycle and return a signal to the calling program
-	 * 
-	 * @param suspect
-	 *            - a link to discard as not a valid data
-	 * @return boolean decision whether to discard the argument
-	 */
-	public static boolean isNonsense(String suspect) {
-
-		// DEBUG System.out.println(TAB + "---> isNonsense");
-		String[] googleCrap = { "Webmaster Help Center", "Webmaster Tools",
-				"Return to the previous page.", "Google Home" };
-		boolean whetherToDiscard = false;
-
-		virginity: for (int i = 0; i < googleCrap.length; i++) {
-			if (googleCrap[i].equals(suspect)) {
-				whetherToDiscard = true;
-				// DEBUG System.out.println(TAB + TAB + "Discard: " + suspect);
-				break virginity; // at first match
-			}
-		} // FOR
-			// DEBUG System.out.println(TAB + "---< isNonsense");
-		return whetherToDiscard;
-	}
 
 	/**
-	 * A formal conversion method 12345 -> AS:12345. Several checks and
-	 * consequential format conversions are included to be VERY SURE about our
-	 * assumptions how Google uses its data at GSB
+	 * The method is axial to the whole package. The name
+	 * of a network resource is being checked against the
+	 * Google SafeBrowsing Interface (a reputation service).
 	 * 
-	 * @param source
-	 *            The number or an ASN in numeric form (12345)
-	 * @param source
-	 * @return this ASN with "AS:" prepended -> AS:12345 to be directly usable
-	 *         against GSB
-	 */
-	static String asn2Colon(String source) {
-		/**
-		 * @param String
-		 *            12345 -> AS:12345
-		 */
-		String destination = "";
-		// DEBUG System.out.println(TAB + "---> asn2Colon");
-		// DEBUG System.out.println(TAB + TAB + "SRC: " + source);
-		destination = source.replaceAll(" .*$", "");
-		// DEBUG System.out.println(TAB + TAB + "MID: " + destination);
-		destination = destination.replaceAll("^AS", "");
-		// DEBUG System.out.println(TAB + TAB + "DST: " + destination);
-		// To be extremely sure:
-		int sourceNo = Integer.parseInt(destination);
-		destination = Integer.toString(sourceNo);
-		destination = (AS + COLON + destination);
-		// DEBUG System.out.println(TAB + TAB + "FIN: " + destination);
-		// DEBUG System.out.println(TAB + "---< asn2Colon");
-		return destination;
-	}
-
-	/**
-	 * A formal conversion method AS:12345 -> 12345. Several checks and
-	 * consequential format transformations included to be VERY SURE about our
-	 * assumptions how Google uses its data at GSB.
+	 * @param a target which reputation is to be checked
+	 * could be 1 of 3: a FQDN (xyz.ee/) or URL (xyz.ee/X/)
+	 *  or ASN (AS:12345) 
+	 * @return a String[] array containing references to
+	 * the badness. Should be clear that this is not we
+	 * inventing badness. This is what Google thinks.
 	 * 
-	 * @param source
-	 *            The number or an ASN in numeric form (12345)
-	 * @param source
-	 * @return Google preferred AS:12345 format converted to an int number 12345
-	 */
-	static String as2ASN(String source) {
-
-		System.out.println(TAB + "---> as2ASN");
-		String destination = source.replaceAll("^AS", "");
-		destination = destination.replaceAll(":", "");
-		System.out.println(TAB + TAB + destination);
-		// to be extremely sure:
-		int sourceNo = Integer.parseInt(destination);
-		destination = Integer.toString(sourceNo);
-		System.out.println(TAB + "---< as2ASN");
-		return destination;
-	}
-
-	/**
-	 * This is the most important method in this class which is axial to the
-	 * whole package. A network resource is checked against Google SafeBrowsing
-	 * Interface.
-	 * 
-	 * 
-	 * @param source
-	 *            an FQDN or URL or ASN (AS:12345) to be checked
-	 * @return a String[] array containing references to the badness
+	 * We are not too precise within this experiment, we
+	 * are satisfied with the 90 last days precision offered.
+	 * @see doc/Parsing-GSB-sitepages-010 for a much more
+	 * thorough assessment of the topic.
+	 * @exception There are chances that Google will modify
+	 * the page format. If so, hopefully this exception
+	 * remembers us about the possibility.
 	 */
 	static String[] badReputation(String source) {
-		ArrayList<String> validSites = new ArrayList<String>();
-		String workspace = "";
+		String candidate = "";
 		String baseURL = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=";
+		ArrayList<String> vettedBadness = new ArrayList<String>();
 
-			// ToDo: how to handle network layer ERRORS?
-			// either a cycle with (false) until no Exception
-			// or dismiss errors (faster recovery)
 		
 		try {
 			String url = (baseURL + source);
-			System.out.println("===+ START badReputation");
-			System.out.println(TAB + "URL: " + url);
-
+			System.out.println("===+ START badReputation");	
+			System.out.println(TAB + "URL visited: " + url);
+			
 			Document doc = Jsoup.connect(url).get();
 			Elements meaningfulSections = doc.select("a");
-			// keep only memes with meaningful FQDNs / AS's.
-			for (Element fqdnCandidate : meaningfulSections) {
-				workspace = fqdnCandidate.text();
+			
+			// Some chemical laundry for the elements we don't need
+			for (Element found : meaningfulSections) {
+				candidate = found.text();
 				// System.out.println(workspace);
 
 				// Exclude promo targets
-				if (!(isNonsense(workspace))) {
-
-					if (workspace.contains(AS)) {
-						System.out.println(TAB + "AS info: " + workspace);
-
-					} else {
-						// DEBUG System.out.println(TAB + "New Malwaresite: "+
-						// workspace);
-						validSites.add(workspace);
-						// DEBUG System.out.println();
-					} // ELSE
-				} // FI
+				if (Func.isSensible(candidate)) {
+					vettedBadness.add(candidate);
+					Func.doSomeBookkeepingOnThe(candidate);
+				} 
 			} // FOR
 		} // TRY
 		catch (IOException ex) {
 			System.out
-					.println("!!!WARNING!!! Some connectivity glitch against GSB");
-			System.out.println(TAB + "should we act somehow?");
+					.println("!!!WARNING!!! NETWORK glitch against GSB discovered!");
+			System.out.println(TAB + "We probably should act somehow but we are too lazy for that");
 		}
-		String checkout = validSites.toString();
-		System.out.println(TAB + "badReputation found: " + checkout);
+		// Who likes Chopin, but I like String[] array returns
+		// much more than ArrayLists<>. Dancing between the datatypes
+		// could be  considered as fuzzing and reveals bugs. ;)
 
-		String[] validTargets = new String[validSites.size()];
-		validTargets = validSites.toArray(validTargets);
+		int count = vettedBadness.size();
+		String[] someTargets = new String[count];
+		someTargets = vettedBadness.toArray(someTargets);
+		
+		if (count == 0) {
+			System.out.println("---= Uncopulatingbelieveable ... no badness discovered under " + source);
+		} else {
+			System.out.println("---= Normal business: badness count under " + source + " is " + count);
+		}
+			
 		System.out.println("===- END badReputation ");
-		return validTargets;
+		return someTargets;
+
 	}
 
+	
+	// ================ Here ends the program
+	// and starts some experimental test ===========
+	
 	/**
 	 * main method is mostly kept here for debugging purposes.
 	 * 

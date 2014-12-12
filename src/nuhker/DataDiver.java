@@ -48,27 +48,6 @@ public class DataDiver {
 
 	
 	/**
-	 * Method delay(DefaultParms thisCopy) introduces
-	 * a couple of seconds delay between the internet
-	 * requests not to overload the services used.
-	 * 
-	 * For a reason or two, the numeric parameter for the
-	 * waittime is not given directly as a long int, but
-	 * passed as a structure od default runtime parameters
-	 * (of DefaultParms type) 
-	 * @param DefaultParms
-	 */
-	public static void delay(DefaultParms thisCopy) {
-		long waitTime = thisCopy.getMinTimeBetweenGSBRequests();
-		System.out.println("Here we should wait for: " + waitTime + " msec");
-		try {
-		    Thread.sleep(waitTime); //msecs
-		} catch (InterruptedException enough) {
-		    Thread.currentThread().interrupt();
-		}
-	}
-	
-	/**
 	 * The MAIN logic of the whole package - an actual recursion.
 	 * 
 	 * This method is invoked with a copy of previously initialized
@@ -102,8 +81,9 @@ public class DataDiver {
 
 		DefaultParms Current = LevelVariables;
 		long nowTime = System.nanoTime();
-		boolean upperLevel = false;
+		int waitTime = Current.getMinTimeBetweenGSBRequests();
 		int currentLevel = Current.getCurrentLevelOfRecursion();
+		boolean upperLevel = false;
 
 		// Introductory part - safeguards and calculations
 		
@@ -165,9 +145,8 @@ public class DataDiver {
 
 				for(String targetASN : resultOfFirstParsing) {
 				    System.out.println(TAB + TAB + "Yet another AS to check for: " + targetASN);
-				    Current.setCurrentTarget(ParseGSB.asn2Colon(targetASN));
-				    delay(Current);
-
+				    Current.setCurrentTarget(Func.asn2Colon(targetASN));
+				    Func.delay(waitTime);
 				    int nextLevel = (currentLevel - 1);
 				    System.out.println("===-< Descending from level: " + currentLevel + " to level "+ nextLevel);
 				    Current.setCurrentLevelOfRecursion(nextLevel);
@@ -205,7 +184,7 @@ public class DataDiver {
 			    	   int nextLevel = (currentLevel - 1);
 			    	   System.out.println("===-< Going down, Mr Demon, from " + currentLevel + " to level " + nextLevel );
 			    	   Current.setCurrentLevelOfRecursion(nextLevel);
-			    	   delay(Current);
+			    	   Func.delay(waitTime);
 			    	   main(Current); // RECURSIVELY foreach argument
 			        } else {
 			        	System.out.println("---+---+---+---+---> Target " + target + " already KNOWN!");
