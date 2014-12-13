@@ -130,32 +130,33 @@ public class Func {
 	}
 	
 	
-	/**
-	 * A formal conversion method AS:12345 -> 12345. Several checks and
-	 * consequential format transformations are included to be VERY SURE
-	 * about our assumptions how Google uses its data at GSB.
-	 * 
-	 * @param The number or an ASN in numeric form (12345)
-	 * @return Google proprietary AS:12345 format converted to int 12345
-	 */
-	static String as2ASN(String source) {
-
-		// DEBUG System.out.println(TAB + "---> as2ASN");
-		String destination = source.replaceAll("^AS", "");
-		destination = destination.replaceAll(":", "");
-		// DEBUG System.out.println(TAB + TAB + destination);
-		// to be extremely sure canalize it through the snakes dick:
-		int sourceNo = Integer.parseInt(destination);
-		destination = Integer.toString(sourceNo);
-		// DEBUG System.out.println(TAB + "---< as2ASN");
-		return destination;
-	}
+//	/**
+//	 * A formal conversion method AS:12345 -> 12345. Several checks and
+//	 * consequential format transformations are included to be VERY SURE
+//	 * about our assumptions how Google uses its data at GSB.
+//	 * 
+//	 * @param The number or an ASN in numeric form (12345)
+//	 * @return Google proprietary AS:12345 format converted to int 12345
+//	 */
+//	static String as2ASN(String source) {
+//
+//		// DEBUG System.out.println(TAB + "---> as2ASN");
+//		String destination = source.replaceAll("^AS", "");
+//		destination = destination.replaceAll(":", "");
+//		// DEBUG System.out.println(TAB + TAB + destination);
+//		// to be extremely sure canalize it through the snakes dick:
+//		int sourceNo = Integer.parseInt(destination);
+//		destination = Integer.toString(sourceNo);
+//		// DEBUG System.out.println(TAB + "---< as2ASN");
+//		return destination;
+//	}
 	
 	 /**
 	  * The method does the conversion from int ASN to a Google preferred
 	  * AS:12345 format
 	  * 
 	  * To be very sure, it can convert even from AS12345 to 12345
+	  * Altogether used 2 times.
 	  *
 	  * @param The number or an ASN in pseudo-int format ("12345")
 	  * @return the same ASN with "AS:" prepended -> AS:12345 to be directly usable against GSB
@@ -185,6 +186,8 @@ public class Func {
 	 * The method will strip the AS description part off the data.
 	 * We will put in something like that: AS42337 (RESPINA-AS)
 	 * and get pure number back: 42337 .
+	 * 
+	 * Usage: 1 occasion
 	 * 
 	 * Future plans: do not rip it off but save separately
 	 *  

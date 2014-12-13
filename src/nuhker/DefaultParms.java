@@ -37,7 +37,7 @@ package nuhker;
  */
 public class DefaultParms {
 
-	// An idea about nanotime:
+	// An idea about nanotime vs UNIX utime:
 	// http://stackoverflow.com/questions/351565/system-currenttimemillis-vs-system-nanotime
 	private long startTime = 0;
 
