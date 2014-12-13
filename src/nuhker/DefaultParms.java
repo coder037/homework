@@ -50,6 +50,9 @@ public class DefaultParms {
 
 	// actually this should use LEVELS not int numbers ... but later:)
 	private int debugLevel = 4;
+	// experimenting with this
+	private String LogLevel = "OFF";
+	
 	private String countryCodeToWorkWith = "EE";
 	private String filenameForOutput = "output";
 	private String currentTarget = "";
