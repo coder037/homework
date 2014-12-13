@@ -280,8 +280,8 @@ public class Run {
 
 		// Alternatives for simulation (until we build the static CLI program)
 		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
-				"--xtra", "-o", "output", "-R", "6", "-t", "2400", "-d", "7",
-				"-M", "20000" };
+				"--xtra", "-o", "output", "-R", "7", "-t", "2400", "-d", "7",
+				"-M", "43200" };
 		String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000", "-n",
 				"-o", "somefilename-001", "-R", "6", "-t", "2800" };
 		String[] simulation3 = { "--help" };

@@ -46,6 +46,7 @@ import java.util.ArrayList;
 public class ParseGSB {
 
 	private final static String TAB = "\t";
+	private final static String AS = "AS";
 
 	/**
 	 * The method is axial to the whole package. The name of a network resource
@@ -68,9 +69,9 @@ public class ParseGSB {
 	 *                possibility.
 	 */
 	static String[] badReputation(String source) {
-		String candidate = "";
+		String nameOfTheCandidate = "";
 		String baseURL = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=";
-		ArrayList<String> vettedBadness = new ArrayList<String>();
+		ArrayList<String> temporaryList = new ArrayList<String>();
 
 		try {
 			String url = (baseURL + source);
@@ -82,13 +83,27 @@ public class ParseGSB {
 
 			// Some chemical laundry for the elements we don't need
 			for (Element found : meaningfulSections) {
-				candidate = found.text();
+				nameOfTheCandidate = found.text();
 				// System.out.println(workspace);
 
 				// Exclude promo targets
-				if (Func.isSensible(candidate)) {
-					vettedBadness.add(candidate);
-					Func.doSomeBookkeepingOnThe(candidate);
+				if (Func.isSensible(nameOfTheCandidate)) {
+					
+//					// Badsite  found: 15830
+//					String numbersOnly = "(\\d+)";
+//					String workspace = nameOfTheCandidate.replaceAll(numbersOnly, "");
+//					if ("".equals(workspace)) {
+//						System.out.println(TAB + "==========This was an AS");
+//					} else {
+//						System.out.println(TAB + "==========This was something else");
+//					}
+//					
+//					if (nameOfTheCandidate.contains(AS)) {
+//						nameOfTheCandidate = Func.cleanASDescr(nameOfTheCandidate);
+//						System.out.println(TAB + "AS string CLEANED UP: " + nameOfTheCandidate);
+//					}
+					temporaryList.add(nameOfTheCandidate);
+					Func.doSomeBookkeepingOnThe(nameOfTheCandidate);
 				}
 			} // FOR
 		} // TRY
@@ -103,9 +118,9 @@ public class ParseGSB {
 		// much more than ArrayLists<>. Dancing between the datatypes
 		// should be considered as fuzzing and thus reveals bugs. ;)
 
-		int count = vettedBadness.size();
+		int count = temporaryList.size();
 		String[] someTargets = new String[count];
-		someTargets = vettedBadness.toArray(someTargets);
+		someTargets = temporaryList.toArray(someTargets);
 
 		if (count == 0) {
 			System.out

@@ -54,7 +54,7 @@ public class Func {
 	int empiricTambovConstant = 1800 ;
 	int value = generator.nextInt(empiricTambovConstant);
 	int variatedTime = (base+value);
-	System.out.println("----------- Base: " + base + " ----------- Value: " + value + " ----------- Slightly Randomized WaitTime: " + variatedTime);
+	System.out.println("-------- Base: " + base + " -------- Random Value: " + value + " -------- Slightly Randomized WaitTime: " + variatedTime);
 		return variatedTime;
 	}
 	
@@ -113,7 +113,7 @@ public class Func {
 		
 		if (suspect.contains(AS)) {
 			// AS or AS: ?
-			// It is an AS and should go to that Arrayist
+			// It is an AS and should go to that Arraylist
 			System.out.println(TAB + "AS info found: " + suspect);
 
 		} else {
@@ -140,41 +140,72 @@ public class Func {
 	 */
 	static String as2ASN(String source) {
 
-		System.out.println(TAB + "---> as2ASN");
+		// DEBUG System.out.println(TAB + "---> as2ASN");
 		String destination = source.replaceAll("^AS", "");
 		destination = destination.replaceAll(":", "");
-		System.out.println(TAB + TAB + destination);
+		// DEBUG System.out.println(TAB + TAB + destination);
 		// to be extremely sure canalize it through the snakes dick:
 		int sourceNo = Integer.parseInt(destination);
 		destination = Integer.toString(sourceNo);
-		System.out.println(TAB + "---< as2ASN");
+		// DEBUG System.out.println(TAB + "---< as2ASN");
 		return destination;
 	}
 	
 	 /**
 	  * The method does the conversion from int ASN to a Google preferred
 	  * AS:12345 format
+	  * 
+	  * To be very sure, it can convert even from AS12345 to 12345
 	  *
-	  * @param The number or an ASN in integer format (12345)
+	  * @param The number or an ASN in pseudo-int format ("12345")
 	  * @return the same ASN with "AS:" prepended -> AS:12345 to be directly usable against GSB
 	  */
 	static String asn2Colon(String source) {
-
-		String destination = "";
+		String workspace = source;
 		// DEBUG System.out.println(TAB + "---> asn2Colon");
-		// DEBUG System.out.println(TAB + TAB + "SRC: " + source);
-		destination = source.replaceAll(" .*$", "");
-		// DEBUG System.out.println(TAB + TAB + "MID: " + destination);
-		destination = destination.replaceAll("^AS", "");
-		// DEBUG System.out.println(TAB + TAB + "DST: " + destination);
+		// DEBUG System.out.println(TAB + TAB + "SRC: " + workspace);
+		workspace = workspace.replaceAll("^AS", "");
+		// DEBUG System.out.println(TAB + TAB + "MID: " + workspace);
 		// To be extremely sure press it through the cobra's penis
-		int sourceNo = Integer.parseInt(destination);
-		destination = Integer.toString(sourceNo);
-		destination = (AS + COLON + destination);
-		// DEBUG System.out.println(TAB + TAB + "FIN: " + destination);
+		int sourceNo = Integer.parseInt(workspace);
+		workspace = Integer.toString(sourceNo);
+//		destination = destination.replaceAll(" .*$", "");
+//		System.out.println(TAB + TAB + "MID: " + destination);
+//		destination = destination.replaceAll("^AS", "");
+		// DEBUG System.out.println(TAB + TAB + "CLN: " + workspace);
+		
+		workspace = (AS + COLON + workspace);
+		// DEBUG System.out.println(TAB + TAB + "FIN: " + workspace);
 		// DEBUG System.out.println(TAB + "---< asn2Colon");
-		return destination;
+		return workspace;
 	}
+	
+
+	/**
+	 * The method will strip the AS description part off the data.
+	 * We will put in something like that: AS42337 (RESPINA-AS)
+	 * and get pure number back: 42337 .
+	 * 
+	 * Future plans: do not rip it off but save separately
+	 *  
+	 * @param source 
+	 * @return
+	 */
+	static String removeASDescr(String source) {
+		String cleanResult = source;
+		// DEBUG System.out.println(TAB + "---> removeASDescr");
+		// DEBUG System.out.println(TAB + "---> SRC: " + cleanResult);
+		// cleanResult = cleanResult.replaceAll("^AS", "");
+		// DEBUG System.out.println(TAB + "---> MID: " + cleanResult);
+		cleanResult = cleanResult.replaceAll("(\\d+)(\\s.*)", "$1");
+		// DEBUG System.out.println(TAB + "---> FIN: " + cleanResult);
+		// Fuzz it through the anaconda's member
+//		int asNumber = Integer.parseInt(cleanResult);
+//		cleanResult = Integer.toString(asNumber);
+		// DEBUG System.out.println(TAB + "---< removeASDescr");
+		return cleanResult;
+	}
+
 	
 	/**
 	 * The method will publicize some status data otherwise kept in the DBze.
@@ -184,7 +215,7 @@ public class Func {
 	 * @return nothing but prints interesting thingz to StdOut.
 	 */
 	public static void publicizeStatistics() {
-		System.out.println("===---===---===--- SIZE: " + DBze.knownSites.size() + " records");
+		System.out.println("===---===---===---===---===---===---===---===--- SIZE: " + DBze.knownSites.size() + " records");
 		return;
 	}
 	

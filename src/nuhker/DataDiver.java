@@ -50,6 +50,18 @@ public class DataDiver {
 	 * This method is invoked with a copy of previously initialized
 	 * structure of DefaultParms type.
 	 * 
+	 * * There are two main flows:
+	 *    on the UPPER level, a country code is transformed into a
+	 *    corresponding array of ASNs belonging to that country.
+	 *    This is done calling ParseRIPE.grabCountryDescription(cc)
+	 *    
+	 *    in the remaining levels, ParseGSB.badReputation(target2Dive)
+	 *    is called which returns an array of String[] subtargets
+	 * 
+	 * A scrupulous care has been excercised to pass both ASNs and
+	 * FFQDNs via the same methods (and this will need some back-and-
+	 * -forth translation between 12345 <--> AS:12345 forms.  
+	 * 
 	 * @param DefaultParms
 	 * 
 	 * Several parameters are passed between down the recursion levels
@@ -62,17 +74,6 @@ public class DataDiver {
 	 * Parameters are driven via getters setters interface of the
 	 * DefaultParms class
 	 * 
-	 * There are two main flows:
-	 *    on the UPPER level, a country code is transformed into a
-	 *    corresponding array of ASNs belonging to that country.
-	 *    This is done calling ParseRIPE.grabCountryDescription(cc)
-	 *    
-	 *    in the remaining levels, ParseGSB.badReputation(target2Dive)
-	 *    is called which returns an array of String[] subtargets
-	 * 
-	 * A scrupulous care has been excercised to pass both ASNs and
-	 * FFQDNs via the same methods (and this will need some back-and-
-	 * -forth translation between 12345 <--> AS:12345 forms.  
 	 */
 	public static void entryPoint(DefaultParms LevelVariables) {
 
@@ -168,10 +169,21 @@ public class DataDiver {
 			int countOfTargetsOnThisLevel = subTargets.length;
 			System.out.println(TAB + "+===+ Got " + countOfTargetsOnThisLevel + " subtargets to check under this target: " + target2Dive);
 			
-						
+
+			// ERROR - ===+ START badReputation
+			// URL visited: https://safebrowsing.google.com/safebrowsing/diagnostic?site=AS42337 (RESPINA-AS)
+			//         ---= Uncopulatingbelieveable ... no badness discovered under AS42337 (RESPINA-AS)
+			
 			for(String target : subTargets) {
 			    System.out.println(TAB + TAB + "An actual string to pass down is: " + target);
 
+			    if (target.contains(AS)) {
+				target = Func.asn2Colon(Func.removeASDescr(target));
+				System.out.println(TAB + TAB + TAB + TAB + TAB + "AS string CLEANED UP: " + target);
+			} else {
+				System.out.println(TAB + "This is OTHER TARGET: " + target);
+			}
+			    
 			     if (! DBze.knownSites.contains(target)) {
 			    	   DBze.knownSites.add(target);
 
@@ -179,7 +191,7 @@ public class DataDiver {
 			    	   TypeWriter.main(outputFileName, target);
 
 			    	   int nextLevel = (currentLevel - 1);
-			    	   System.out.println("===-< Going down, Mr Demon, from " + currentLevel + " to level " + nextLevel );
+			    	   System.out.println("===-===-===-===-===-< SUBMERGING from level " + currentLevel + " to level " + nextLevel );
 			    	   Current.setCurrentLevelOfRecursion(nextLevel);
 			    	   Func.delay(waitTime);
 			    	   entryPoint(Current); // RECURSIVELY foreach argument
