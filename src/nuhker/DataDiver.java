@@ -175,13 +175,13 @@ public class DataDiver {
 			//         ---= Uncopulatingbelieveable ... no badness discovered under AS42337 (RESPINA-AS)
 			
 			for(String target : subTargets) {
-			    System.out.println(TAB + TAB + "An actual string to pass down is: " + target);
+			    System.out.println(TAB + TAB + "DownStairs Decision: next argument to pass down is: " + target);
 
 			    if (target.contains(AS)) {
 				target = Func.asn2Colon(Func.removeASDescr(target));
-				System.out.println(TAB + TAB + TAB + TAB + TAB + "AS string CLEANED UP: " + target);
+				System.out.println(TAB + TAB + TAB +  "DownStairs:  AS target CLEANED UP : " + target);
 			} else {
-				System.out.println(TAB + "This is OTHER TARGET: " + target);
+				System.out.println(TAB + TAB + TAB +  "DownStairs: URL target passthrough: " + target);
 			}
 			    
 			     if (! DBze.knownSites.contains(target)) {
@@ -193,7 +193,10 @@ public class DataDiver {
 			    	   int nextLevel = (currentLevel - 1);
 			    	   System.out.println("===-===-===-===-===-< SUBMERGING from level " + currentLevel + " to level " + nextLevel );
 			    	   Current.setCurrentLevelOfRecursion(nextLevel);
+			    	   
+			    	   if (nextLevel > 0) {
 			    	   Func.delay(waitTime);
+			    	   }
 			    	   entryPoint(Current); // RECURSIVELY foreach argument
 			        } else {
 			        	System.out.println("---+---+---+---+---> Target " + target + " already KNOWN!");
