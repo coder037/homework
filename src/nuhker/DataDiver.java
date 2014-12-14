@@ -24,6 +24,7 @@ package nuhker;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import joptsimple.OptionParser;
 
@@ -42,6 +43,7 @@ public class DataDiver {
 
 	private final static String AS = "AS";
 	private final static String TAB = "\t";
+	// final static Logger LOG = Log.standard();
 
 	
 	/**
@@ -76,7 +78,7 @@ public class DataDiver {
 	 * 
 	 */
 	public static void entryPoint(DefaultParms LevelVariables) {
-
+		// Logger log = Log.standard();
 		DefaultParms Current = LevelVariables;
 		long nowTime = System.nanoTime();
 		int waitTime = Current.getMinTimeBetweenGSBRequests();
@@ -84,7 +86,7 @@ public class DataDiver {
 		boolean upperLevel = false;
 
 		// Introductory part - safeguards and calculations
-		
+		// Log.standard()log.info("===-> DataDiver Level " + currentLevel + " entered.");
 		System.out.println("===-> DataDiver Level " + currentLevel + " entered.");
 		String outputFileName =  Current.getFilenameForOutput();
 		

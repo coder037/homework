@@ -30,6 +30,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import java.util.EnumSet;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
@@ -54,7 +59,66 @@ public class Run {
 
 	private final static String VERSION = "0.8";
 	private final static String TAB = "\t";
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
+	
+	
+	
+	
+	public static void setLogger() {
+		
+		// ConsoleHandler (System.err)
 
+		Handler consoleHandler = null;
+		Handler fileHandler = null;
+
+		try {
+			SyslogLikeFormatter humanWay = new SyslogLikeFormatter();
+
+			// Creating consoleHandler and fileHandler
+			consoleHandler = new ConsoleHandler();
+			consoleHandler.setFormatter(humanWay);
+			// binding handler to LOGGER object	
+			LOG.addHandler(consoleHandler);
+			// Setting loglevel for this particular handler
+			consoleHandler.setLevel(Level.ALL);
+
+			// Defining output file
+			fileHandler = new FileHandler("./temporary.log");
+			// Assigning handler to it
+			LOG.addHandler(fileHandler);
+			// Setting loglevels to this particular handler
+			fileHandler.setLevel(Level.ALL);
+
+			// Make CLEAR and EVIDENT what our game rules are
+			LOG.setLevel(Level.ALL);
+			LOG.setUseParentHandlers(false);
+			LOG.config(" Parent logger HAS BEEN SUSPENDED for esthetical reasons");
+			LOG.config(TAB
+					+ "do manually switch over to the DEBUG mode to see more");
+			// final Statements
+			LOG.config(" Logger configuration done.");
+			String loggerName = LOG.getName();
+			LOG.info("   Logger Name is : " + loggerName);
+		}
+		// Should never happen but who know
+		catch (IOException ex) {
+		LOG.log(Level.SEVERE,
+				"Some ERROR occured in FileHandler or (less likely, in Consolehandler).",
+				ex);
+	}
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// Here we first parse the argv line to be sure it is parsable nuff
 
 	/**
@@ -68,11 +132,13 @@ public class Run {
 	 * @return boolean decision whether the conformancy was true or false
 	 */
 	public static boolean checkConformity(String[] arguments) {
+		// Logger log = Log.standard();
 		OptionSet args = null; // declaration separated due to subsequent TRY
 								// clause
 		OptionParser preParser = CLIGrammar.main();
+		LOG.info("===~ START: Option Conformity");
+		// ("   ===* Option Conformity Check");
 
-		System.out.println();
 		System.out.println("===* Option Conformity Check");
 		// ==== WARNING, NEXT 25 lines are not considered fully mine,
 		// but a neat trick from
@@ -276,11 +342,10 @@ public class Run {
 	public static void main(String[] argv) throws Exception {
 		long firstVariable = System.nanoTime();
 
-		System.out.println("0--------={Start}=--------0");
+		// Logger log = Logger.getLogger("nuhker");
+		// Logger log = Log.standard();
 		
-		// ===-< Descending from level: 8 to level 7
-		// <<<<<<< The Epoch lasted: 3168 secs.
-		// ===---===---===---===---===---===---===---===--- SIZE: 3564 records
+		LOG.config("   0--------={Start}=--------0");
 		
 		// Alternatives for simulation (until we build the static CLI program)
 		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
@@ -297,36 +362,39 @@ public class Run {
 		DefaultParms FinalOptions = parseContent(effectiveOptions);
 		FinalOptions.setStartTime(firstVariable); // Start our timer
 
+		setLogger();
 		// printout of ACTUAL options
-		System.out.println();
-		System.out.println("===================  M A I N ==============");
-		System.out.println("~~~~~~~~ " + "Our Epoch started at: "
+		LOG.info("===================  M A I N ==============");
+		LOG.info("===================  Options assessed");
+		LOG.config("~~~~~~~~ " + "Our Epoch started at: "
 				+ FinalOptions.getStartTime());
-		System.out.println("MAIN: READY to attempt the actual launch...");
-		System.out.println(TAB + "Debuglevel has been set as: "
+		LOG.fine(TAB + "Debuglevel has been set as: "
 				+ FinalOptions.getDebugLevel() + " of max 7");
-		System.out.println(TAB + "We seek for Malwarized Sites in country: "
+		LOG.fine(TAB + "We seek for Malwarized Sites in country: "
 				+ FinalOptions.getCountryCodeToWorkWith());
-		System.out.println(TAB + "Recursion depth has been limited to: "
+		LOG.fine(TAB + "Recursion depth has been limited to: "
 				+ FinalOptions.getDepthOfRecursion());
-		System.out.println(TAB + "Time allocated for the run is: "
+		LOG.fine(TAB + "Time allocated for the run is: "
 				+ FinalOptions.getMaxTimeToRunBeforeKilled() + " millisecs");
-		System.out.println(TAB + "Start UNIX nsec Epoch Time  was: "
+		LOG.fine(TAB + "Start UNIX nsec Epoch Time  was: "
 				+ FinalOptions.getStartTime());
-		System.out.println(TAB
+		LOG.fine(TAB
 				+ "Time prognosis until the END is: "
 				+ (FinalOptions.getStartTime() + FinalOptions
 						.getMaxTimeToRunBeforeKilled()));
-		System.out.println(TAB
+		LOG.fine(TAB
 				+ "Guard time between any other GSB request is: "
 				+ FinalOptions.getMinTimeBetweenGSBRequests() + " millisecs");
-		System.out.println(TAB + "FILENAME for the output: "
+		LOG.fine(TAB + "FILENAME for the output: "
 				+ FinalOptions.getFilenameForOutput());
-		System.out.println("==-> START of the actual launch... ");
+		LOG.info("       ============END of the Options.");
+			//
 		FinalOptions.setCurrentTarget(FinalOptions.getCountryCodeToWorkWith());
-		System.out.println(TAB + "asking DataDiver for this constituency: "
+		
+		LOG.info(TAB + "will ask thea DataDiver for this constituency: "
 				+ FinalOptions.getCurrentTarget());
 
+		LOG.info("==-> START of the actual launch... ");
 		// HERE starts the ACTUAL LAUNCH CODEwe launch the business logic
 		nuhker.DataDiver.entryPoint(FinalOptions);
 		//
