@@ -43,7 +43,7 @@ public class DataDiver {
 
 	private final static String AS = "AS";
 	private final static String TAB = "\t";
-	// final static Logger LOG = Log.standard();
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
 
 	
 	/**
@@ -78,43 +78,41 @@ public class DataDiver {
 	 * 
 	 */
 	public static void entryPoint(DefaultParms LevelVariables) {
-		// Logger log = Log.standard();
+		// Introductory part - safeguards and calculations
 		DefaultParms Current = LevelVariables;
 		long nowTime = System.nanoTime();
 		int waitTime = Current.getMinTimeBetweenGSBRequests();
 		int currentLevel = Current.getCurrentLevelOfRecursion();
 		boolean upperLevel = false;
-
-		// Introductory part - safeguards and calculations
-		// Log.standard()log.info("===-> DataDiver Level " + currentLevel + " entered.");
-		System.out.println("===-> DataDiver Level " + currentLevel + " entered.");
+		LOG.info("===-> DataDiver HEADER part, level" + currentLevel + " entered.");
+	
 		String outputFileName =  Current.getFilenameForOutput();
+		LOG.fine(TAB +"output filename defined as: " + outputFileName);
 		
 		long billion = 1000000000;
 		long thousand = 1000;
 		long runTimeSoFar = (nowTime - Current.getStartTime());
 		long remainedSecs= (Current.getMaxTimeToRunBeforeKilled() / thousand - (runTimeSoFar / billion));
-		System.out.println(TAB + "Runtime so far: " + (runTimeSoFar / billion)+ " sec(s), remained: "  + (remainedSecs) + " sec(s) until killed.");
+		LOG.finer(TAB + TAB + TAB + "Runtime so far: " + (runTimeSoFar / billion)+ " sec(s); remained: "  + (remainedSecs) + " sec(s) until killed.");
 		
 		if (0 > remainedSecs) {
 			Func.publicizeStatistics();
-			System.out.println("==== TIMEOUT REACHED - End Forced ===");
+			LOG.warning("==== TIMEOUT REACHED - End Forced ===");
+			LOG.finer(TAB + "might be we attempt some houskeeping before that.");
 			System.exit(0);
 		}
 		
 		if (0 == currentLevel) { // Remaining depth = 0
-			System.out.println("==== --{Recursion FLOOR reached}-- ====");
-			// System.out.println(TAB + "RETURN from this tree.");
+			LOG.finer("==== --{Recursion FLOOR reached}-- ====");
 			return;
 		}
 
 		if (Current.getDepthOfRecursion() == currentLevel) {
 			upperLevel = true;
-			System.out.println(TAB + "this is the FIRST call of the DataDiver, Level : " + currentLevel);
+			LOG.info(TAB + "Still on the ppermost level=" +  + currentLevel );
 		}
 
-		// DEBUG System.out.println("===----> Results to be appended to: " + outputFileName);
-		 
+
 		// ================================================
 		// Two alternatives - what kind of work to do.
 		
@@ -122,38 +120,39 @@ public class DataDiver {
 			if (upperLevel) { // RIPE thing
 				String cc = Current.getCountryCodeToWorkWith();
 				String toBeParsed = "";
-				System.out.println(TAB + "We only call this ONCE (ALT1)");
-				System.out.println(TAB + TAB + "for a country: " + cc);
+				LOG.info(TAB + "We only call this ONCE (ALT1)");
+				LOG.info(TAB + TAB + "for a country: " + cc);
 				
 				// Our primitive Logger called
+				LOG.warning(TAB + "Some NOT YET DONE filewritinh thingy");
 				TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + cc + " ***");
 				
 				try {
 					toBeParsed = ParseRIPE.grabCountryDescription(cc);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					System.err.println("Unable to parse constituency. RIPE connection error. BAILOUT");
+					LOG.severe("Unable to parse constituency. RIPE connection error. BAILOUT");
 					e.printStackTrace();
-					System.err.println("ABNORMAL Bailout.");
+					LOG.severe("ABNORMAL Bailout.");
 					System.exit(66);
 					// http://www.opensource.apple.com/source/Libc/Libc-320/include/sysexits.h
 				}
 
 				String[] resultOfFirstParsing = ParseRIPE.asnJsonParser(toBeParsed);
 				int countOfASNsObtained = resultOfFirstParsing.length;
-				System.out.println(TAB + "DataDiver: Need to check: " + countOfASNsObtained + " ASNs");
+				LOG.info(TAB + "DataDiver got " + countOfASNsObtained + " ASNs from the ParseRIPE");
 
 				for(String targetASN : resultOfFirstParsing) {
-				    System.out.println(TAB + TAB + "Yet another AS to check for: " + targetASN);
+				    LOG.fine(TAB + TAB + "Yet another AS to check for: " + targetASN);
 				    Current.setCurrentTarget(Func.asn2Colon(targetASN));
 				    Func.delay(waitTime);
 				    int nextLevel = (currentLevel - 1);
-				    System.out.println("===-< Descending from level: " + currentLevel + " to level "+ nextLevel);
+				    LOG.finer("DataDiver called recursively: ");
+				    LOG.fine("===-< Descending from level: " + currentLevel + " to level " + nextLevel);
 				    Current.setCurrentLevelOfRecursion(nextLevel);
 				    entryPoint(Current); // RECURSIVELY foreach argument  
 				}
-				System.out.println("===-! DONE withAll arguments for the country: " + cc);
-				System.out.println(TAB + "===-< end of the UPPER level.");
+				LOG.info("===-! DONE with the All arguments for  country=" + cc);
+				LOG.info(TAB + "===-< ascending from level: " + currentLevel);
 		} // END of Upper Level
 			
 	

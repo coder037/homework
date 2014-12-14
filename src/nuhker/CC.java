@@ -21,6 +21,8 @@
 
 package nuhker;
 
+import java.util.logging.Logger;
+
 /**
  * This class contains the manually kept enum database of country codes that
  * RIPE is serving. It also contains a boolean method isKosher(String candidate)
@@ -32,7 +34,9 @@ package nuhker;
  */
 public class CC {
 	private final static String TAB = "\t";
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
 
+	
 	public enum cc {
 		AX, AL, AD, AM, AT, AZ, BH, BY, BE, BA, BG,
 		HR, CY, CZ, DK, EE, FO, FI, FR, GE, DE, GI,
@@ -53,19 +57,20 @@ public class CC {
 		 * @return boolean value whether the code is served by RIPE
 		 */
 		public static boolean isKosher(String candidate) {
+			
 			// Inspiration:
 			// http://stackoverflow.com/questions/4936819/java-check-if-enum-contains-a-given-string
-			System.out.println(TAB + TAB + "==- CountryCode Kosherness Check");
+			LOG.info(TAB + TAB + "==- CountryCode Kosherness Check");
 			try {
 				cc.valueOf(candidate);
-				System.out.println(TAB + TAB + "CC found to be kosher enough.");
-				System.out.println(TAB + TAB + "==-> CountryCode NORMAL EXIT");
+				LOG.info(TAB + TAB + "CC found to be kosher enough.");
+				LOG.info(TAB + TAB + "==-> CountryCode NORMAL EXIT");
 				return true;
 
 			} catch (Exception e) {
-				System.err.println(TAB + TAB
+				LOG.info(TAB + TAB
 						+ "CC extends the bearable kosherness.");
-				System.out.println(TAB + TAB
+				LOG.info(TAB + TAB
 						+ "==-> CountryCode check UNSUXXESSFUL");
 				return false;
 			}

@@ -21,7 +21,13 @@
 
 package nuhker;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Here are concentrated some simple functions (oops, methods) we need
@@ -34,10 +40,59 @@ import java.util.*;
 public class Func {
 
 	// I like constants, somebody might like Chopin.
+	
 	private final static String AUTHOR = "0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff";
 	private final static String AS = "AS";
 	private final static String COLON = ":";
 	private final static String TAB = "\t";
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
+	
+	
+	public static void setLogger() {
+		
+		// ConsoleHandler (System.err)
+
+		Handler consoleHandler = null;
+		Handler fileHandler = null;
+
+		try {
+			SyslogLikeFormatter humanWay = new SyslogLikeFormatter();
+
+			// Creating consoleHandler and fileHandler
+			consoleHandler = new ConsoleHandler();
+			consoleHandler.setFormatter(humanWay);
+			// binding handler to LOGGER object	
+			LOG.addHandler(consoleHandler);
+			// Setting loglevel for this particular handler
+			consoleHandler.setLevel(Level.ALL);
+
+			// Defining output file
+			fileHandler = new FileHandler("./temporary.log");
+			// Assigning handler to it
+			LOG.addHandler(fileHandler);
+			// Setting loglevels to this particular handler
+			fileHandler.setLevel(Level.ALL);
+
+			// Make CLEAR and EVIDENT what our game rules are
+			LOG.setLevel(Level.ALL);
+			LOG.setUseParentHandlers(false);
+			LOG.config(" Parent logger HAS BEEN SUSPENDED for esthetical reasons");
+			LOG.config(TAB
+					+ "do manually switch over to the DEBUG mode to see more");
+			// final Statements
+			LOG.config(" Logger configuration done.");
+			String loggerName = LOG.getName();
+			LOG.info("   Logger Name is : " + loggerName);
+		}
+		// Should never happen but who know
+		catch (IOException ex) {
+		LOG.log(Level.SEVERE,
+				"Some ERROR occured in FileHandler or (less likely, in Consolehandler).",
+				ex);
+	}
+
+	}
+
 	
 	/**
 	 * Method delay(long milliSeconds) introduces
@@ -50,11 +105,14 @@ public class Func {
 	 * @param  base time in millisecs to variate a little bit 
 	 */
 	public static int variateTheTime (int base) {
+	LOG.info (TAB + "variateTheTime");
+	LOG.finest ("Basetime: " + base);
 	Random generator = new Random();
 	int empiricTambovConstant = 1800 ;
 	int value = generator.nextInt(empiricTambovConstant);
+	LOG.finest("Random Value: " + value);
 	int variatedTime = (base+value);
-	System.out.println("-------- Base: " + base + " -------- Random Value: " + value + " -------- Slightly Randomized WaitTime: " + variatedTime);
+	LOG.finer("Slightly Randomized WaitTime: " + variatedTime);
 		return variatedTime;
 	}
 	
@@ -68,7 +126,7 @@ public class Func {
 	 */
 	public static void delay(int someNumber) {
 		int kiikingNumber = variateTheTime(someNumber);
-		System.out.println("Here we should wait for: " + kiikingNumber + " msec");
+		LOG.finest("Here we should wait for: " + kiikingNumber + " msec");
 		try {
 		    Thread.sleep(someNumber);
 		} catch (InterruptedException enough) {
@@ -239,13 +297,13 @@ public class Func {
 	 */
 	public static String checkTheAuthorship(String argument) throws Exception {
 		String message = null;
+		LOG.info(TAB + "==-< Authorship test ===");
 		if (AUTHOR.equals(ForeignCode.calculateHash(argument))) {
 			message = TAB + TAB + "Copyright: " + argument
 					+ " (validated cryptographically).";
 		} else {
 			message = TAB + "You seem not to know who the actual author is...";
 		}
-		System.out.println(TAB + "==-< END of the Authorship test ===");
 		return message;
 	}
 }

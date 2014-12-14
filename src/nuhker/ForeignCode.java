@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 
 /**
  * Foreign code is kept in this Class, i.e. the code whose authors
@@ -21,6 +23,7 @@ import java.security.MessageDigest;
 public class ForeignCode {
 
 	private final static String TAB = "\t";
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
 	
 	/**
 	 * This is the web downloader of a specific purpose.
@@ -115,12 +118,19 @@ public class ForeignCode {
 	 * @throws Exception
 	 *             which is marked but not actually used
 	 */
-	public static String calculateHash(String argument) throws Exception {
+	public static String calculateHash(String argument) {
 		String digest = null;
-		System.out.println();
-		System.out.println(TAB + "==- Authorship test ==========");
-		MessageDigest hashhash = MessageDigest.getInstance("SHA-512");
-		// === WARNING: NEXT 10 lines of code are of SOMEBODY'S ELSE authorship:
+		LOG.fine(TAB + "==- Calculating the hash from author's name ");
+		
+		MessageDigest hashhash = null;
+		try {
+			hashhash = MessageDigest.getInstance("SHA-512");
+		} catch (NoSuchAlgorithmException e) {
+			LOG.severe(TAB + "Calulation of the hash did not succeed" );
+			e.printStackTrace();
+		}
+
+		// === WARNING: NEXT 10 lines of code mostly are of SOMEBODY'S ELSE authorship:
 		// Inspiration:
 		// http://stackoverflow.com/questions/3103652/hash-string-via-sha-256-in-java
 		byte[] sha512bytes = hashhash.digest(argument.getBytes());
@@ -133,6 +143,7 @@ public class ForeignCode {
 		}
 		// === END of the WARNING scope
 		digest = sb.toString();
+		LOG.finest(TAB + "==- Done with the hash calculation");
 		return digest;
 	}
 
