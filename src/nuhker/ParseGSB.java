@@ -23,6 +23,7 @@ package nuhker;
 
 import java.io.IOException;
 import java.util.logging.*;
+
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
@@ -47,6 +48,7 @@ public class ParseGSB {
 
 	private final static String TAB = "\t";
 	private final static String AS = "AS";
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
 
 	/**
 	 * The method is axial to the whole package. The name of a network resource
@@ -72,11 +74,13 @@ public class ParseGSB {
 		String nameOfTheCandidate = "";
 		String baseURL = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=";
 		ArrayList<String> temporaryList = new ArrayList<String>();
-
+		boolean glitch = true;
+		
+		while (glitch) {
 		try {
 			String url = (baseURL + source);
-			System.out.println("===+ START badReputation");
-			System.out.println(TAB + "URL visited: " + url);
+			LOG.fine("===+ START badReputation");
+			LOG.finer(TAB + "URL visited: " + url);
 
 			Document doc = Jsoup.connect(url).get();
 			Elements meaningfulSections = doc.select("a");
@@ -106,32 +110,32 @@ public class ParseGSB {
 					Func.doSomeBookkeepingOnThe(nameOfTheCandidate);
 				}
 			} // FOR
+			glitch = false; // i.e. it succeeded
 		} // TRY
 		catch (IOException ex) {
-			System.out
-					.println("!!!WARNING!!! NETWORK glitch against GSB discovered!");
-			System.out
-					.println(TAB
-							+ "We probably should act somehow but we are too lazy for that");
+			LOG.severe(TAB + "!WARNING!   A NETWORK glitch against GSB discovered!" + ex);
+			glitch = true;
+			LOG.warning(TAB + TAB + "timeout: Let the Net rest for next 15 secs.");
+			Func.delay(15000);
 		}
 		// Who likes Chopin, but I like String[] array returns
 		// much more than ArrayLists<>. Dancing between the datatypes
-		// should be considered as fuzzing and thus reveals bugs. ;)
-
+		// should be considered as fuzzing because it eveal bugs. ;)
+	} //WHILE
+		
 		int count = temporaryList.size();
 		String[] someTargets = new String[count];
 		someTargets = temporaryList.toArray(someTargets);
 
 		if (count == 0) {
-			System.out
-					.println("---= Uncopulatingbelieveable ... no badness discovered under "
+			LOG.fine("---= Uncopulatingbelieveable ... no badness discovered under "
 							+ source);
 		} else {
-			System.out.println("---= Normal business: badness count under "
+			LOG.fine("---= Normal business: badness count under "
 					+ source + " is " + count);
 		}
 
-		System.out.println("===- END badReputation ");
+		LOG.fine("===- END badReputation ");
 		return someTargets;
 
 	}
@@ -149,13 +153,13 @@ public class ParseGSB {
 		String target2 = "AS:8728";
 		String target3 = "AS:12757";
 
-		System.out.println("=== ParseGSB MAIN ===");
+		LOG.info("=== ParseGSB MAIN ===");
 		String needToDive[] = badReputation(target1); // choose 1 or 2 or 3
-		System.out.println("=== MAIN Printout: ");
+		LOG.info("=== MAIN Printout: ");
 		for (String s : needToDive) {
-			System.out.println(TAB + TAB + s);
+			LOG.info(TAB + TAB + s);
 		}
-		System.out.println("=== End of ParseGSB MAIN");
+		LOG.info("=== End of ParseGSB MAIN");
 	} // MAIN
 
 } // CLASS

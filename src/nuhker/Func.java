@@ -40,11 +40,11 @@ import java.util.logging.Logger;
 public class Func {
 
 	// I like constants, somebody might like Chopin.
-	
 	private final static String AUTHOR = "0fa1557ce3cbb37c25a6dd68a1f65c59d354b24788c39abf15fc2d1440d4f45c2f77425c1fe3d4b255fcd936042ef7ea0c202edbdd1505937da13455085c47ff";
 	private final static String AS = "AS";
 	private final static String COLON = ":";
 	private final static String TAB = "\t";
+	private final static String BEGINNING = "^"; // for regexp use
 	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
 	
 	
@@ -59,12 +59,13 @@ public class Func {
 			SyslogLikeFormatter humanWay = new SyslogLikeFormatter();
 
 			// Creating consoleHandler and fileHandler
+			
 			consoleHandler = new ConsoleHandler();
 			consoleHandler.setFormatter(humanWay);
 			// binding handler to LOGGER object	
 			LOG.addHandler(consoleHandler);
 			// Setting loglevel for this particular handler
-			consoleHandler.setLevel(Level.ALL);
+			consoleHandler.setLevel(Level.WARNING);
 
 			// Defining output file
 			fileHandler = new FileHandler("./temporary.log");
@@ -74,7 +75,7 @@ public class Func {
 			fileHandler.setLevel(Level.ALL);
 
 			// Make CLEAR and EVIDENT what our game rules are
-			LOG.setLevel(Level.ALL);
+			// WHY? LOG.setLevel(Level.ALL);
 			LOG.setUseParentHandlers(false);
 			LOG.config(" Parent logger HAS BEEN SUSPENDED for esthetical reasons");
 			LOG.config(TAB
@@ -105,7 +106,7 @@ public class Func {
 	 * @param  base time in millisecs to variate a little bit 
 	 */
 	public static int variateTheTime (int base) {
-	LOG.info (TAB + "variateTheTime");
+	LOG.finer (TAB + "variateTheTime");
 	LOG.finest ("Basetime: " + base);
 	Random generator = new Random();
 	int empiricTambovConstant = 1800 ;
@@ -132,7 +133,7 @@ public class Func {
 		} catch (InterruptedException enough) {
 		    Thread.currentThread().interrupt();
 		}
-		return; // does nothing beside the time waste
+		return; // does nothing beside wasting time
 	}
 	
 	/**
@@ -147,7 +148,7 @@ public class Func {
 	 */
 	public static boolean isSensible(String suspect) {
 
-		// DEBUG System.out.println(TAB + "---> isSensible Candidate");
+		LOG.finer(TAB + "---> isSensible Candidate");
 		String[] googleCrap = { "Webmaster Help Center", "Webmaster Tools",
 				"Return to the previous page.", "Google Home" };
 		boolean thisIsCrap = false;
@@ -156,11 +157,11 @@ public class Func {
 		virginity: for (int i = 0; i < googleCrap.length; i++) {
 			if (googleCrap[i].equals(suspect)) {
 				thisIsCrap = true;
-				// DEBUG System.out.println(TAB + TAB + "Discard: " + suspect);
+				LOG.finest(TAB + TAB + "Discard: " + suspect);
 				break virginity; // at first match
 			}
 		} // FOR
-			// DEBUG System.out.println(TAB + "---< isSensible Candidate");
+			LOG.fine(TAB + "---<" + suspect + " isSensible Candidate");
 		whetherToKeep = !thisIsCrap; // ;) 3x
 		return whetherToKeep;
 	}
@@ -170,13 +171,12 @@ public class Func {
 		// ArrayList<String> validSites = new ArrayList<String>();
 		
 		if (suspect.contains(AS)) {
-			// AS or AS: ?
 			// It is an AS and should go to that Arraylist
-			System.out.println(TAB + "AS info found: " + suspect);
+			LOG.finer(TAB + "AS info found: " + suspect);
 
 		} else {
 			// it is an URL and should go to THIS ArrayList
-			System.out.println(TAB + "Badsite  found: "+ suspect);
+			LOG.finer(TAB + "Malsite  found: "+ suspect);
 
 		} // ELSE
 		
@@ -198,14 +198,14 @@ public class Func {
 //	 */
 //	static String as2ASN(String source) {
 //
-//		// DEBUG System.out.println(TAB + "---> as2ASN");
+//		LOG.fine(TAB + "---> as2ASN (" + source + ")");
 //		String destination = source.replaceAll("^AS", "");
 //		destination = destination.replaceAll(":", "");
-//		// DEBUG System.out.println(TAB + TAB + destination);
+//		LOG.finer(TAB + TAB + "FIN: " + destination);
 //		// to be extremely sure canalize it through the snakes dick:
 //		int sourceNo = Integer.parseInt(destination);
 //		destination = Integer.toString(sourceNo);
-//		// DEBUG System.out.println(TAB + "---< as2ASN");
+//		LOG.finer(TAB + "---< as2ASN converted |" + source + "| to |" + destination + "|.");
 //		return destination;
 //	}
 	
@@ -221,21 +221,18 @@ public class Func {
 	  */
 	static String asn2Colon(String source) {
 		String workspace = source;
-		// DEBUG System.out.println(TAB + "---> asn2Colon");
-		// DEBUG System.out.println(TAB + TAB + "SRC: " + workspace);
-		workspace = workspace.replaceAll("^AS", "");
-		// DEBUG System.out.println(TAB + TAB + "MID: " + workspace);
+		LOG.fine(TAB + "---> asn2Colon (" + source + ")");
+		LOG.finest(TAB + TAB + "SRC: " + workspace);
+		workspace = workspace.replaceAll( (BEGINNING + AS) , "");
+		LOG.finest(TAB + TAB + "MID: " + workspace);
 		// To be extremely sure press it through the cobra's penis
 		int sourceNo = Integer.parseInt(workspace);
 		workspace = Integer.toString(sourceNo);
-//		destination = destination.replaceAll(" .*$", "");
-//		System.out.println(TAB + TAB + "MID: " + destination);
-//		destination = destination.replaceAll("^AS", "");
-		// DEBUG System.out.println(TAB + TAB + "CLN: " + workspace);
+		LOG.finest(TAB + TAB + "CLN: " + workspace);
 		
 		workspace = (AS + COLON + workspace);
-		// DEBUG System.out.println(TAB + TAB + "FIN: " + workspace);
-		// DEBUG System.out.println(TAB + "---< asn2Colon");
+		LOG.finest(TAB + TAB + "FIN: " + workspace);
+		LOG.finer(TAB + "---< asn2Colon converted |" + source + "| to |" + workspace +"|.");
 		return workspace;
 	}
 	
@@ -254,16 +251,18 @@ public class Func {
 	 */
 	static String removeASDescr(String source) {
 		String cleanResult = source;
-		// DEBUG System.out.println(TAB + "---> removeASDescr");
-		// DEBUG System.out.println(TAB + "---> SRC: " + cleanResult);
-		// cleanResult = cleanResult.replaceAll("^AS", "");
-		// DEBUG System.out.println(TAB + "---> MID: " + cleanResult);
+		LOG.fine(TAB + "---> removeASDescr (" + source + ").");
+		LOG.finest(TAB + "---> SRC: " + source);
 		cleanResult = cleanResult.replaceAll("(\\d+)(\\s.*)", "$1");
-		// DEBUG System.out.println(TAB + "---> FIN: " + cleanResult);
+		LOG.finest(TAB + "---> MID: " + cleanResult);
 		// Fuzz it through the anaconda's member
-//		int asNumber = Integer.parseInt(cleanResult);
-//		cleanResult = Integer.toString(asNumber);
-		// DEBUG System.out.println(TAB + "---< removeASDescr");
+		cleanResult = cleanResult.replaceAll("^AS", "");
+		int asNumber = Integer.parseInt(cleanResult);
+		LOG.finest(TAB + "---> INT: " + asNumber);
+		cleanResult = Integer.toString(asNumber);
+		cleanResult = (AS + Integer.toString(asNumber));
+		LOG.finest(TAB + "---> FIN: " + cleanResult);
+		LOG.finer(TAB + "---< removeASDescr");
 		return cleanResult;
 	}
 
@@ -276,7 +275,7 @@ public class Func {
 	 * @return nothing but prints interesting thingz to StdOut.
 	 */
 	public static void publicizeStatistics() {
-		System.out.println("===---===---===---===---===---===---===---===--- SIZE: " + DBze.knownSites.size() + " records");
+		LOG.info("===---===---===---===---===---===---===---===--- SIZE: " + DBze.knownSites.size() + " records");
 		return;
 	}
 	

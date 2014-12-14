@@ -47,6 +47,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * The ParseRIPE class is to raise an argument against RIPE
@@ -59,6 +60,7 @@ import java.util.ArrayList;
 public class ParseRIPE {
 	// Some like Chopin, me like constants.
 	private final static String TAB = "\t";
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
 
 
 	/**
@@ -73,7 +75,8 @@ public class ParseRIPE {
 	public static String grabCountryDescription(String countryCode)
 			throws IOException {
 		String jsonDataObtained = "{\"status\": \"not OK\"}";
-
+		LOG.fine(TAB + "START of grabCountryDescription(" + countryCode + ").");
+		
 		// 1. Form the URL we plan to grab and parse
 		String parameterToURL = countryCode.toLowerCase();
 		String QueryBaseLink = "https://stat.ripe.net/data/country-resource-list/data.json?resource=";
@@ -81,13 +84,14 @@ public class ParseRIPE {
 
 		// 2. Open a network stream from the resource and read it in
 		byte[] response = ForeignCode.downLoader(fullUrl);
-		System.out.println(TAB + "Chars in the array: " + response.length);
+		LOG.finer(TAB + "Chars in the array: " + response.length);
 		jsonDataObtained = new String(response);
-		// DEBUG System.out.println("BlobString: " + passToParse);
-
+		
 		// WARNING! Is it safe to convert use hyperLONG Strings?
 		// (danger of eventual linesize limits).
 		// Results approx 10kchars in case of EE
+		LOG.fine(TAB + "RETURN from grabCountryDescription(" + countryCode + ").");
+		LOG.finest(TAB + TAB + "with BlobString: " + jsonDataObtained);
 		return jsonDataObtained;
 	}
 
@@ -107,7 +111,7 @@ public class ParseRIPE {
 	 */
 	public static String[] asnJsonParser(String jsonedASNList) {
 		String[] arrayedASNList = null;
-		System.out.println("===~ STARTing RIPE parsing method.");
+		LOG.fine("===~ STARTing RIPE parsing method.");
 		
 		// We parse a 3-level json hierarchy here
 		// and obtain asn names from the 4-th level
@@ -120,9 +124,9 @@ public class ParseRIPE {
 			JSONObject jsonObject1 = (JSONObject) outerObject;
 
 			String status = (String) jsonObject1.get("status");
-			System.out.println(TAB + "Query Status: " + status);
+			LOG.finer(TAB + "Query Status: " + status);
 			String time = (String) jsonObject1.get("time");
-			System.out.println(TAB + "Response Time: " + time);
+			LOG.finer(TAB + "Response Time: " + time);
 
 			// Hierarhy Level 2 - "data" keyword
 			Object midObject = (jsonObject1.get("data")); // everything inside
@@ -131,7 +135,7 @@ public class ParseRIPE {
 			JSONObject jsonObject2 = (JSONObject) midObject;
 
 			String timeValue = (String) jsonObject2.get("query_time");
-			System.out.println(TAB + "Data claimed valid at: "
+			LOG.finer(TAB + "Data claimed valid at: "
 					+ timeValue);
 
 			// Hierarchy Level 3 - ASN record list from "resources"
@@ -141,27 +145,26 @@ public class ParseRIPE {
 			// Hierarhy level 4 - each particular ASN
 			JSONArray asn = (JSONArray) jsonObject3.get("asn");
 
-			// ToDo! This conversion can be nicer ;)
-			@SuppressWarnings("unchecked")
+			// ToDo! This conversion could be nicer ;)
 			// http://stackoverflow.com/questions/367626/how-do-i-fix-the-expression-of-type-list-needs-unchecked-conversion
+			@SuppressWarnings("unchecked")
 			ArrayList<String> outputList = new ArrayList<String>(asn);
 			int arraySize = outputList.size();
 
-			System.out.println(TAB + "AS count obtained: " + arraySize);
+			LOG.finer(TAB + "AS count obtained: " + arraySize);
 			arrayedASNList = (String[]) outputList
 					.toArray(new String[arraySize]);
 
-			System.out.println("===~ END of RIPE parsing method.");
+			LOG.fine("===~ END of RIPE parsing method.");
 
 		} catch (ParseException e) {
-			System.err
-					.println("Parsing exception made a Boo-boo during asnJsonParser method,");
-			System.err.println("        that's all I know currently...");
+			LOG.severe("An exception occurred during asnJsonParser method,");
+			LOG.severe("        that's all I know currently..." + e);
 			e.printStackTrace();
 		}
 
 		return arrayedASNList;
-	} // METHOD
+	} // METHOD// 
 
 	
 	// ===========================================
@@ -180,12 +183,12 @@ public class ParseRIPE {
 		String[] hasBeenParsed = asnJsonParser(toBeParsed);
 		int countOfASNsObtained = hasBeenParsed.length;
 
-		System.out.println("===~===~=== ParseRIPE.main debug");
+		LOG.info("===~===~=== ParseRIPE.main, debug for " + cc);
 		// Print it out to be very sure
 		for (int k = 0; k < countOfASNsObtained; k++) {
-			System.out.println(TAB + hasBeenParsed[k] + " ");
+			LOG.info(TAB + hasBeenParsed[k] + " ");
 		}
-		System.out.println("===~===~=== end of the ParseRIPE.main");
+		LOG.info("===~===~=== end of the ParseRIPE.main");
 
 	} // MAIN
 

@@ -84,7 +84,7 @@ public class DataDiver {
 		int waitTime = Current.getMinTimeBetweenGSBRequests();
 		int currentLevel = Current.getCurrentLevelOfRecursion();
 		boolean upperLevel = false;
-		LOG.info("===-> DataDiver HEADER part, level" + currentLevel + " entered.");
+		LOG.fine("===-> DataDiver HEADER part, level" + currentLevel + " entered.");
 	
 		String outputFileName =  Current.getFilenameForOutput();
 		LOG.fine(TAB +"output filename defined as: " + outputFileName);
@@ -109,7 +109,7 @@ public class DataDiver {
 
 		if (Current.getDepthOfRecursion() == currentLevel) {
 			upperLevel = true;
-			LOG.info(TAB + "Still on the ppermost level=" +  + currentLevel );
+			LOG.info(TAB + "Still on the Uppermost level=" +  + currentLevel );
 		}
 
 
@@ -124,7 +124,7 @@ public class DataDiver {
 				LOG.info(TAB + TAB + "for a country: " + cc);
 				
 				// Our primitive Logger called
-				LOG.warning(TAB + "Some NOT YET DONE filewritinh thingy");
+				LOG.warning(TAB + "Some NOT YET DONE filewriting thingy");
 				TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + cc + " ***");
 				
 				try {
@@ -161,28 +161,22 @@ public class DataDiver {
 
 			// First PRINTout how much entries are there on the list xN
 				Func.publicizeStatistics();
-				
-			System.out.println("===+===-> regular AS/FQDN parsing (ALT2).");
+			
 			String target2Dive = Current.getCurrentTarget();
-			System.out.println(TAB + "Target is: " + target2Dive );
-			System.out.println(TAB + "+===+ Calling ParseGSB for : " + target2Dive );
+			LOG.fine("===+===-> regular AS/FQDN parsing (ALT2), target=" + target2Dive);
+			LOG.finest(TAB + "+===+ Calling ParseGSB for : " + target2Dive );
 			String subTargets[] = ParseGSB.badReputation(target2Dive);
 			int countOfTargetsOnThisLevel = subTargets.length;
-			System.out.println(TAB + "+===+ Got " + countOfTargetsOnThisLevel + " subtargets to check under this target: " + target2Dive);
-			
-
-			// ERROR - ===+ START badReputation
-			// URL visited: https://safebrowsing.google.com/safebrowsing/diagnostic?site=AS42337 (RESPINA-AS)
-			//         ---= Uncopulatingbelieveable ... no badness discovered under AS42337 (RESPINA-AS)
-			
+			LOG.fine(TAB + "+===+ Got " + countOfTargetsOnThisLevel + " subtargets to check under this target: " + target2Dive);
+						
 			for(String target : subTargets) {
-			    System.out.println(TAB + TAB + "DownStairs Decision: next argument to pass down is: " + target);
-
+			    LOG.info(TAB + TAB + "DownStairs Decision: --=---==---=-- next subtarget: " + target);
+			 // LOG.info(TAB + TAB + "DownStairs Decision: next argument to pass down is: " + target);
 			    if (target.contains(AS)) {
 				target = Func.asn2Colon(Func.removeASDescr(target));
-				System.out.println(TAB + TAB + TAB +  "DownStairs:  AS target CLEANED UP : " + target);
+				LOG.finer(TAB + TAB + TAB +  "DownStairs: AS NAME colonized : " + target);
 			} else {
-				System.out.println(TAB + TAB + TAB +  "DownStairs: URL target passthrough: " + target);
+				LOG.finer(TAB + TAB + TAB +  "DownStairs: URL target as is  : " + target);
 			}
 			    
 			     if (! DBze.knownSites.contains(target)) {
@@ -192,7 +186,7 @@ public class DataDiver {
 			    	   TypeWriter.main(outputFileName, target);
 
 			    	   int nextLevel = (currentLevel - 1);
-			    	   System.out.println("===-===-===-===-===-< SUBMERGING from level " + currentLevel + " to level " + nextLevel );
+			    	   LOG.fine("===-===-===-===-===-< SUBMERGING from level " + currentLevel + " to level " + nextLevel );
 			    	   Current.setCurrentLevelOfRecursion(nextLevel);
 			    	   
 			    	   if (nextLevel > 0) {
@@ -200,12 +194,13 @@ public class DataDiver {
 			    	   }
 			    	   entryPoint(Current); // RECURSIVELY foreach argument
 			        } else {
-			        	System.out.println("---+---+---+---+---> Target " + target + " already KNOWN!");
+			        	// Target was already recorded to DB. Not wasting time
+			        	LOG.fine("---+---+---+---+---> Target " + target + " already KNOWN!");
 			        }
 			}
-			System.out.println("===+===-! DONE with All arguments");
+			LOG.fine("===+===-! DONE with All arguments");
 		} 
-		System.out.println("===+===-< out of this parsing dive");
+		LOG.fine("===+===-< End of oxygen, out of this Parsing Dive");
 		return;
 
 	}

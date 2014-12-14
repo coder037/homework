@@ -47,11 +47,11 @@ public class ForeignCode {
 		try {
 			urlToVisit = new URL(urlToDL);
 		} catch (MalformedURLException e) {
-			System.err.println("You see this message because or a malformed URL");
+			LOG.severe("You see this message because or a malformed URL" + e);
 			e.printStackTrace();
 		}
-		System.out.println("===* RIPE Downloader");
-		System.out.println(TAB + "URL: " + urlToVisit);
+		LOG.info("===* RIPE Downloader");
+		LOG.fine(TAB + "URL: " + urlToVisit);
 
 		// Open a network stream to the resource
 		// and record the answer.
@@ -61,13 +61,13 @@ public class ForeignCode {
 			networkSource = new BufferedInputStream(
 					urlToVisit.openStream());
 		} catch (IOException e) {
-			System.err.println("You see this message sometimes when the network to RIPE is down");
+			LOG.severe("Some error happened trying to contact RIPE server" + e);
 			e.printStackTrace();
 		}
 		// output goes there:
 		ByteArrayOutputStream httpResult = new ByteArrayOutputStream();
 
-		// FOREIGN COPYRIGHT WARNING - next 15 lines
+		// FOREIGN COPYRIGHT WARNING - next 18 lines
 		// #### START OF SOME industry-standard method
 		// available in many textbooks. G: bufferlength = 1024 etc.
 		// Me don't know who has written this code block ;)
@@ -80,19 +80,19 @@ public class ForeignCode {
 				httpResult.write(queueBuffer, 0, n);
 			}
 		} catch (IOException e) {
-			System.err.println("You only see this message when the network to RIPE is down");
+			LOG.severe("You only see this message when the network to RIPE is down" +e);
 			e.printStackTrace();
 		}
 		try {
 			httpResult.close();
 		} catch (IOException e) {
-			System.err.println("Wow! I was able to open the Byte Stream but not to close it");
+			LOG.warning("Wow! I was able to open the Byte Stream but not to close it" + e);
 			e.printStackTrace();
 		}
 		try {
 			networkSource.close();
 		} catch (IOException e) {
-			System.err.println("Copying a ByteStream to the ResultArray[] failed miserably");
+			LOG.severe("Copying a ByteStream to the ResultArray[] failed miserably" + e);
 			e.printStackTrace();
 		}
 		byteArray = httpResult.toByteArray();
@@ -101,16 +101,13 @@ public class ForeignCode {
 		return byteArray;
 	}
 	
-	
-	// This method does some hashing with the string
-	// The warning - never try to make crypto at home ;)
 
 	/**
 	 * Because the general warning by NSA is - never make crypto at home - I
 	 * used this method to mark SOMEBODY'S ELSE COPYRIGHT on hash calculation
 	 * routines.
 	 * 
-	 * I actually need hashes to conceal my identity ;)
+	 * This method does some hashing with the string.
 	 * 
 	 * @param argument
 	 *            Name of the Author to be checked cryptographically
@@ -120,20 +117,20 @@ public class ForeignCode {
 	 */
 	public static String calculateHash(String argument) {
 		String digest = null;
-		LOG.fine(TAB + "==- Calculating the hash from author's name ");
+		LOG.fine(TAB + "==- Calculating the hash.");
 		
-		MessageDigest hashhash = null;
+		MessageDigest hash = null;
 		try {
-			hashhash = MessageDigest.getInstance("SHA-512");
+			hash = MessageDigest.getInstance("SHA-512");
 		} catch (NoSuchAlgorithmException e) {
 			LOG.severe(TAB + "Calulation of the hash did not succeed" );
 			e.printStackTrace();
 		}
-
-		// === WARNING: NEXT 10 lines of code mostly are of SOMEBODY'S ELSE authorship:
+		
+		// ### WARNING: NEXT 10 lines of code mostly are of SOMEBODY'S ELSE authorship:
 		// Inspiration:
 		// http://stackoverflow.com/questions/3103652/hash-string-via-sha-256-in-java
-		byte[] sha512bytes = hashhash.digest(argument.getBytes());
+		byte[] sha512bytes = hash.digest(argument.getBytes());
 		// Inspiration: convert the byte to hex format
 		// http://www.mkyong.com/java/java-sha-hashing-example/
 		StringBuffer sb = new StringBuffer();

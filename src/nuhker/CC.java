@@ -35,7 +35,6 @@ import java.util.logging.Logger;
 public class CC {
 	private final static String TAB = "\t";
 	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
-
 	
 	public enum cc {
 		AX, AL, AD, AM, AT, AZ, BH, BY, BE, BA, BG,
