@@ -301,7 +301,7 @@ public class Func {
 			message = TAB + TAB + "Copyright: " + argument
 					+ " (validated cryptographically).";
 		} else {
-			message = TAB + "You seem not to know who the actual author is...";
+			message = TAB + "Only use option -c with the actual author's name";
 		}
 		return message;
 	}

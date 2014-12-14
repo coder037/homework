@@ -123,8 +123,8 @@ public class DataDiver {
 				LOG.info(TAB + "We only call this ONCE (ALT1)");
 				LOG.info(TAB + TAB + "for a country: " + cc);
 				
-				// Our primitive Logger called
-				LOG.warning(TAB + "Some NOT YET DONE filewriting thingy");
+				// Our primitive FileLogger called
+				LOG.fine(TAB + "Some NOT YET DONE filewriting thingy");
 				TypeWriter.main(outputFileName, "*** THIS IS THE HEADER for country " + cc + " ***");
 				
 				try {

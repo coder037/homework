@@ -141,7 +141,7 @@ public class Run {
 					+ optionValue);
 			// Set the global DebugLevel from here
 			LOG.finer(TAB + "Setting current loglevel value as: "
-					+ optionValue + "but NOt IMPLEMENTER yet");
+					+ optionValue + "but NOT IMPLEMENTED yet");
 			RunTimes.setDebugLevel(Integer.parseInt(optionValue));
 		} else {
 			// or the DebugLevel remains whatever the default is
@@ -194,7 +194,7 @@ public class Run {
 							+ "# Small portions of foreign copyleft noted as such in code, expressis verbis. #");
 			LOG.warning(TAB
 							+ "###############################################################################");
-			LOG.warning(TAB + "===-) END of Option Parser phase 1");
+			LOG.info(TAB + "===-) END of Option Parser (phase 1)");
 		}
 
 		// More generic options (coefficients / parameters) to the runtime
@@ -289,7 +289,7 @@ public class Run {
 
 		Func.setLogger(); // with the FINEST argument?
 		
-		LOG.info("===================  M A I N ==============");
+		LOG.warning("============= Starting M A I N ==============");
 		// Formal check of command line options syntax
 		checkConformity(effectiveOptions); // Else bailout
 		LOG.info(TAB + "DONE:  Options assessed");
@@ -300,7 +300,7 @@ public class Run {
 		// printout of ACTUAL options		
 		LOG.config(TAB + "~~~~~~~~ " + "Our Epoch started at: "
 				+ FinalOptions.getStartTime());
-		LOG.fine(TAB + "Debuglevel has been set as: "
+		LOG.warning(TAB + "Debuglevel has been set as: "
 				+ FinalOptions.getDebugLevel() + " of max 7");
 		LOG.fine(TAB + "We seek for Malwarized Sites in country: "
 				+ FinalOptions.getCountryCodeToWorkWith());
