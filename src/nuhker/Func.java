@@ -30,9 +30,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Here are concentrated some simple functions (oops, methods) we need
- * here and there. Basically said, these are simple bit-banging things,
- * thus nothing complex.
+ * Here are concentrated some simple functions (oops, methods) we need here and
+ * there. Basically said, these are simple bit-banging things, thus nothing
+ * complex.
  * 
  * @created Dec 12, 2014 8:36:39 PM
  * @author coder037@xyz.ee
@@ -45,12 +45,12 @@ public class Func {
 	private final static String COLON = ":";
 	private final static String TAB = "\t";
 	private final static String BEGINNING = "^"; // for regexp use
-	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
-	
-	
-	public static void setLogger() {
-		
-		// ConsoleHandler (System.err)
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
+			.getStackTrace()[0].getClassName());
+
+	public static void setLogger(String logLevel) {
+
+		// ToDo: Tantsita logLevel upperkeissi!
 
 		Handler consoleHandler = null;
 		Handler fileHandler = null;
@@ -59,15 +59,19 @@ public class Func {
 			SyslogLikeFormatter humanWay = new SyslogLikeFormatter();
 
 			// Creating consoleHandler and fileHandler
-			
+
 			consoleHandler = new ConsoleHandler();
 			consoleHandler.setFormatter(humanWay);
-			// binding handler to LOGGER object	
+			// binding handler to LOGGER object
 			LOG.addHandler(consoleHandler);
 			// Setting loglevel for this particular handler
-			consoleHandler.setLevel(Level.WARNING);
+			LOG.severe(" The loglevel should be: " + logLevel);
+			consoleHandler.setLevel(Level.parse(logLevel));
+			Level such = consoleHandler.getLevel();
+			String currentLevel = such.toString();
+			LOG.severe(" The loglevel actually is: " + currentLevel);
 
-			// Defining output file
+			// Defining the output file
 			fileHandler = new FileHandler("./temporary.log");
 			// Assigning handler to it
 			LOG.addHandler(fileHandler);
@@ -87,41 +91,37 @@ public class Func {
 		}
 		// Should never happen but who know
 		catch (IOException ex) {
-		LOG.log(Level.SEVERE,
-				"Some ERROR occured in FileHandler or (less likely, in Consolehandler).",
-				ex);
+			LOG.log(Level.SEVERE,
+					"Some ERROR occured in FileHandler or (less likely, in Consolehandler).",
+					ex);
+		}
 	}
 
-	}
-
-	
 	/**
-	 * Method delay(long milliSeconds) introduces
-	 * a couple of seconds delay between the internet
-	 * requests, not to overload the services used.
+	 * Method delay(long milliSeconds) introduces a couple of seconds delay
+	 * between the internet requests, not to overload the services used.
 	 * 
-	 * For conspirative reasons, the delay is non-static
-	 * and varies a little bit each time.
+	 * For conspirative reasons, the delay is non-static and varies a little bit
+	 * each time.
 	 * 
-	 * @param  base time in millisecs to variate a little bit 
+	 * @param base
+	 *            time in millisecs to variate a little bit
 	 */
-	public static int variateTheTime (int base) {
-	LOG.finer (TAB + "variateTheTime");
-	LOG.finest ("Basetime: " + base);
-	Random generator = new Random();
-	int empiricTambovConstant = 1800 ;
-	int value = generator.nextInt(empiricTambovConstant);
-	LOG.finest("Random Value: " + value);
-	int variatedTime = (base+value);
-	LOG.finer("Slightly Randomized WaitTime: " + variatedTime);
+	public static int variateTheTime(int base) {
+		LOG.finer(TAB + "variateTheTime");
+		LOG.finest("Basetime: " + base);
+		Random generator = new Random();
+		int empiricTambovConstant = 1800;
+		int value = generator.nextInt(empiricTambovConstant);
+		LOG.finest("Random Value: " + value);
+		int variatedTime = (base + value);
+		LOG.finer("Slightly Randomized WaitTime: " + variatedTime);
 		return variatedTime;
 	}
-	
-	
+
 	/**
-	 * Method delay (int milliseconds) keeps
-	 * internet requests a couple of seconds apart.
-	 * This is in order not to abuse services.
+	 * Method delay (int milliseconds) keeps internet requests a couple of
+	 * seconds apart. This is in order not to abuse services.
 	 * 
 	 * @param long milliSeconds to wait
 	 */
@@ -129,19 +129,19 @@ public class Func {
 		int kiikingNumber = variateTheTime(someNumber);
 		LOG.finest("Here we should wait for: " + kiikingNumber + " msec");
 		try {
-		    Thread.sleep(someNumber);
+			Thread.sleep(someNumber);
 		} catch (InterruptedException enough) {
-		    Thread.currentThread().interrupt();
+			Thread.currentThread().interrupt();
 		}
 		return; // does nothing beside wasting time
 	}
-	
+
 	/**
 	 * 
-	 * The method recognizes Google promotional links and removes
-	 * these from actual data. There are 4 previously known links.
-	 * We compare the argument with these found. On the firstfound,
-	 * we break the cycle and return a flag to the calling program.
+	 * The method recognizes Google promotional links and removes these from
+	 * actual data. There are 4 previously known links. We compare the argument
+	 * with these found. On the firstfound, we break the cycle and return a flag
+	 * to the calling program.
 	 * 
 	 * @param - a "link"/sitename to discard as invalid data
 	 * @return - the decision whether to discard the initial parameter
@@ -161,92 +161,93 @@ public class Func {
 				break virginity; // at first match
 			}
 		} // FOR
-			LOG.fine(TAB + "---<" + suspect + " isSensible Candidate");
+		LOG.fine(TAB + "---<" + suspect + " isSensible Candidate");
 		whetherToKeep = !thisIsCrap; // ;) 3x
 		return whetherToKeep;
 	}
 
-	
 	public static void doSomeBookkeepingOnThe(String suspect) {
 		// ArrayList<String> validSites = new ArrayList<String>();
-		
+
 		if (suspect.contains(AS)) {
 			// It is an AS and should go to that Arraylist
 			LOG.finer(TAB + "AS info found: " + suspect);
 
 		} else {
 			// it is an URL and should go to THIS ArrayList
-			LOG.finer(TAB + "Malsite  found: "+ suspect);
+			LOG.finer(TAB + "Malsite  found: " + suspect);
 
 		} // ELSE
-		
+
 		// ToDo: there exist a rare case when the suspect is numeric,
 		// probably should it be reverse-resolved or compared
 		// to the ASN list of the constituency?
-		
+
 		return;
 	}
-	
-	
-//	/**
-//	 * A formal conversion method AS:12345 -> 12345. Several checks and
-//	 * consequential format transformations are included to be VERY SURE
-//	 * about our assumptions how Google uses its data at GSB.
-//	 * 
-//	 * @param The number or an ASN in numeric form (12345)
-//	 * @return Google proprietary AS:12345 format converted to int 12345
-//	 */
-//	static String as2ASN(String source) {
-//
-//		LOG.fine(TAB + "---> as2ASN (" + source + ")");
-//		String destination = source.replaceAll("^AS", "");
-//		destination = destination.replaceAll(":", "");
-//		LOG.finer(TAB + TAB + "FIN: " + destination);
-//		// to be extremely sure canalize it through the snakes dick:
-//		int sourceNo = Integer.parseInt(destination);
-//		destination = Integer.toString(sourceNo);
-//		LOG.finer(TAB + "---< as2ASN converted |" + source + "| to |" + destination + "|.");
-//		return destination;
-//	}
-	
-	 /**
-	  * The method does the conversion from int ASN to a Google preferred
-	  * AS:12345 format
-	  * 
-	  * To be very sure, it can convert even from AS12345 to 12345
-	  * Altogether used 2 times.
-	  *
-	  * @param The number or an ASN in pseudo-int format ("12345")
-	  * @return the same ASN with "AS:" prepended -> AS:12345 to be directly usable against GSB
-	  */
+
+	// /**
+	// * A formal conversion method AS:12345 -> 12345. Several checks and
+	// * consequential format transformations are included to be VERY SURE
+	// * about our assumptions how Google uses its data at GSB.
+	// *
+	// * @param The number or an ASN in numeric form (12345)
+	// * @return Google proprietary AS:12345 format converted to int 12345
+	// */
+	// static String as2ASN(String source) {
+	//
+	// LOG.fine(TAB + "---> as2ASN (" + source + ")");
+	// String destination = source.replaceAll("^AS", "");
+	// destination = destination.replaceAll(":", "");
+	// LOG.finer(TAB + TAB + "FIN: " + destination);
+	// // to be extremely sure canalize it through the snakes dick:
+	// int sourceNo = Integer.parseInt(destination);
+	// destination = Integer.toString(sourceNo);
+	// LOG.finer(TAB + "---< as2ASN converted |" + source + "| to |" +
+	// destination + "|.");
+	// return destination;
+	// }
+
+	/**
+	 * The method does the conversion from int ASN to a Google preferred
+	 * AS:12345 format
+	 * 
+	 * To be very sure, it can convert even from AS12345 to 12345 Altogether
+	 * used 2 times.
+	 * 
+	 * @param The
+	 *            number or an ASN in pseudo-int format ("12345")
+	 * @return the same ASN with "AS:" prepended -> AS:12345 to be directly
+	 *         usable against GSB
+	 */
 	static String asn2Colon(String source) {
 		String workspace = source;
 		LOG.fine(TAB + "---> asn2Colon (" + source + ")");
 		LOG.finest(TAB + TAB + "SRC: " + workspace);
-		workspace = workspace.replaceAll( (BEGINNING + AS) , "");
+		workspace = workspace.replaceAll((BEGINNING + AS), "");
 		LOG.finest(TAB + TAB + "MID: " + workspace);
 		// To be extremely sure press it through the cobra's penis
 		int sourceNo = Integer.parseInt(workspace);
 		workspace = Integer.toString(sourceNo);
 		LOG.finest(TAB + TAB + "CLN: " + workspace);
-		
+
 		workspace = (AS + COLON + workspace);
 		LOG.finest(TAB + TAB + "FIN: " + workspace);
-		LOG.finer(TAB + "---< asn2Colon converted |" + source + "| to |" + workspace +"|.");
+		LOG.finer(TAB + "---< asn2Colon converted |" + source + "| to |"
+				+ workspace + "|.");
 		return workspace;
 	}
-	
 
 	/**
-	 * The method will strip the AS description part off the data.
-	 * We will put in something like that: AS42337 (RESPINA-AS)
-	 * and get pure number back: 42337 .
+	 * The method will strip the AS description part off the data. We will put
+	 * in something like that: AS42337 (RESPINA-AS) and get pure number back:
+	 * 42337 .
 	 * 
 	 * Usage: 1 occasion
 	 * 
 	 * Future plans: do not rip it off but save separately
-	 *  
-	 * @param source 
+	 * 
+	 * @param source
 	 * @return
 	 */
 	static String removeASDescr(String source) {
@@ -266,7 +267,6 @@ public class Func {
 		return cleanResult;
 	}
 
-	
 	/**
 	 * The method will publicize some status data otherwise kept in the DBze.
 	 * E.g. we call it before killing the program and elsewhere
@@ -275,11 +275,11 @@ public class Func {
 	 * @return nothing but prints interesting thingz to StdOut.
 	 */
 	public static void publicizeStatistics() {
-		LOG.info("===---===---===---===---===---===---===---===--- SIZE: " + DBze.knownSites.size() + " records");
+		LOG.info("===---===---===---===---===---===---===---===--- SIZE: "
+				+ DBze.knownSites.size() + " records");
 		return;
 	}
-	
-	
+
 	/**
 	 * This is the wrapper class to check the Autorship. It does nothing except
 	 * taking the proposed author's name and calling a cryptographic validation

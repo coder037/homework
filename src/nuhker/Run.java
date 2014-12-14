@@ -136,13 +136,14 @@ public class Run {
 
 		if (cliOptions.has("d")) {
 			LOG.finer(TAB + "Option d was found");
-			String optionValue = String.valueOf(cliOptions.valueOf("d"));
+			String subOption = String.valueOf(cliOptions.valueOf("d"));
 			LOG.finer(TAB + TAB + "and it had a suboption: "
-					+ optionValue);
+					+ subOption);
 			// Set the global DebugLevel from here
 			LOG.finer(TAB + "Setting current loglevel value as: "
-					+ optionValue + "but NOT IMPLEMENTED yet");
-			RunTimes.setDebugLevel(Integer.parseInt(optionValue));
+					+ subOption );
+			RunTimes.setLogLevel(subOption);
+			// =========== BUT HOW TO REALLY SET IT ?
 		} else {
 			// or the DebugLevel remains whatever the default is
 		}
@@ -159,13 +160,13 @@ public class Run {
 
 		if (cliOptions.has("c")) {
 			LOG.finest(TAB + "Option c was found");
-			String optionValue = (String) cliOptions.valueOf("c");
-			if (CC.cc.isKosher(optionValue)) {
+			String subOption = (String) cliOptions.valueOf("c");
+			if (CC.cc.isKosher(subOption)) {
 				LOG.info(TAB + TAB + "CountryCode is kosher: "
-						+ optionValue);
+						+ subOption);
 			} else {
 				LOG.warning(TAB + TAB + "Man, I deeply doubt *"
-						+ optionValue + "* is a CountryCode RIPE is aware of.");
+						+ subOption + "* is a CountryCode RIPE is aware of.");
 				LOG.severe("BailOut");
 				System.exit(1);
 			}
@@ -183,11 +184,11 @@ public class Run {
 		if (cliOptions.has("C")) {
 			LOG.fine(TAB
 					+ "Option C was called to expose the copyright message");
-			String optionValue = (String) cliOptions.valueOf("C");
+			String Suboption = (String) cliOptions.valueOf("C");
 			LOG.finer(TAB + TAB + "and it had a sub-option: "
-					+ optionValue);
+					+ Suboption);
 
-			LOG.warning(Func.checkTheAuthorship(optionValue));
+			LOG.warning(Func.checkTheAuthorship(Suboption));
 			LOG.warning(TAB
 							+ "###############################################################################");
 			LOG.warning(TAB
@@ -202,12 +203,12 @@ public class Run {
 		LOG.fine("      ===-( Option Parser phase 2");
 		if (cliOptions.has("M")) {
 			LOG.finer(TAB + "Option M was found");
-			String optionValue = String.valueOf(cliOptions.valueOf("M"));
+			String subOption = String.valueOf(cliOptions.valueOf("M"));
 			LOG.finest(TAB + TAB + "and it had a suboption: "
-					+ optionValue);
+					+ subOption);
 			LOG.finest(TAB + "Setting MaxRunTime value as: "
-					+ optionValue + " secs.");
-			RunTimes.setMaxTimeToRunBeforeKilled(Integer.parseInt(optionValue) * 1000); // DONE!!!
+					+ subOption + " secs.");
+			RunTimes.setMaxTimeToRunBeforeKilled(Integer.parseInt(subOption) * 1000); // DONE!!!
 			LOG.fine(TAB + "Have set MaxRunTime value as: "
 					+ RunTimes.getMaxTimeToRunBeforeKilled() + " msecs.");
 			// Inspiration to convert by means of Integer.parseInt from reznic
@@ -216,42 +217,42 @@ public class Run {
 
 		if (cliOptions.has("R")) {
 			LOG.fine(TAB + "Option R was found");
-			String optionValue = String.valueOf(cliOptions.valueOf("R"));
+			String subOption = String.valueOf(cliOptions.valueOf("R"));
 			LOG.finer(TAB + TAB + "and it had a suboption: "
-					+ optionValue);
+					+ subOption);
 			// Set recursion max level
 			LOG.finer(TAB + "Setting Max Recursion depth as : "
-					+ optionValue);
-			RunTimes.setDepthOfRecursion(Integer.parseInt(optionValue));
+					+ subOption);
+			RunTimes.setDepthOfRecursion(Integer.parseInt(subOption));
 			// Set relative level
 			LOG.finer(TAB
 					+ "Setting Current Recursion level the same: "
-					+ optionValue);
-			RunTimes.setCurrentLevelOfRecursion(Integer.parseInt(optionValue));
+					+ subOption);
+			RunTimes.setCurrentLevelOfRecursion(Integer.parseInt(subOption));
 
 		}
 
 		if (cliOptions.has("t")) {
 			LOG.fine(TAB + "Option t was found");
-			String optionValue = String.valueOf(cliOptions.valueOf("t"));
+			String subOption = String.valueOf(cliOptions.valueOf("t"));
 			LOG.finer(TAB + TAB + "and it had a suboption: "
-					+ optionValue);
+					+ subOption);
 			// set timeout
 			LOG.finer(TAB + "Setting GSB mandatory timeout >=: "
-					+ optionValue + " msec.");
-			RunTimes.setMinTimeBetweenGSBRequests(Integer.parseInt(optionValue));
+					+ subOption + " msec.");
+			RunTimes.setMinTimeBetweenGSBRequests(Integer.parseInt(subOption));
 
 		}
 
 		if (cliOptions.has("o")) {
 			LOG.fine(TAB + "Option o was found");
-			String optionValue = (String) cliOptions.valueOf("o");
+			String subOption = (String) cliOptions.valueOf("o");
 			LOG.finer(TAB + TAB + "and it had a suboption: "
-					+ optionValue);
+					+ subOption);
 			// set filename
 			LOG.finer(TAB + "Setting Base Filename as requested: "
-					+ optionValue);
-			RunTimes.setFilenameForOutput(optionValue);
+					+ subOption);
+			RunTimes.setFilenameForOutput(subOption);
 		}
 
 		LOG.info("      ===-) END of Option Parser, phase 2");
@@ -272,36 +273,38 @@ public class Run {
 	 */
 	public static void main(String[] argv) throws Exception {
 		long firstVariable = System.nanoTime();
-
-		// Logger log = Logger.getLogger("nuhker");
-		// Logger log = Log.standard();
 		
 		LOG.config("   0--------={Start}=--------0");
 		
 		// Alternatives for simulation (until we build the static CLI program)
 		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
-				"--xtra", "-o", "output", "-R", "8", "-t", "2400", "-d", "7",
+				"--xtra", "-o", "output", "-R", "8", "-t", "2400", "-d", "FINEST",
 				"-M", "43200" };
 		String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000", "-n",
 				"-o", "somefilename-001", "-R", "6", "-t", "2800" };
 		String[] simulation3 = { "--help" };
 		String[] effectiveOptions = simulation1; // vs argv
 
-		Func.setLogger(); // with the FINEST argument?
-		
+	
 		LOG.warning("============= Starting M A I N ==============");
+		
 		// Formal check of command line options syntax
 		checkConformity(effectiveOptions); // Else bailout
 		LOG.info(TAB + "DONE:  Options assessed");
 		// Parse RIPE for that country
 		DefaultParms FinalOptions = parseContent(effectiveOptions);
 		FinalOptions.setStartTime(firstVariable); // Start our timer
+		
+		String loggingLevel = FinalOptions.getLogLevel();
+		LOG.severe(TAB + "Trying to set logging level to: " + loggingLevel);
+		Func.setLogger(loggingLevel);
+		
 		LOG.info(TAB + "=================================");
 		// printout of ACTUAL options		
-		LOG.config(TAB + "~~~~~~~~ " + "Our Epoch started at: "
+		LOG.info(TAB + "~~~~~~~~ " + "Our Epoch started at: "
 				+ FinalOptions.getStartTime());
-		LOG.warning(TAB + "Debuglevel has been set as: "
-				+ FinalOptions.getDebugLevel() + " of max 7");
+		LOG.warning(TAB + "Debuglevel has been set on ||"
+				+ FinalOptions.getLogLevel() + "|| level.");
 		LOG.fine(TAB + "We seek for Malwarized Sites in country: "
 				+ FinalOptions.getCountryCodeToWorkWith());
 		LOG.fine(TAB + "Recursion depth has been limited to: "
@@ -326,7 +329,7 @@ public class Run {
 				+ FinalOptions.getCurrentTarget());
 
 		LOG.info("==-> START of the actual launch of our business logic... ");
-		nuhker.DataDiver.entryPoint(FinalOptions);
+		DataDiver.entryPoint(FinalOptions);
 		// it took long ;)
 		
 		long duration = (System.nanoTime() - FinalOptions.getStartTime());

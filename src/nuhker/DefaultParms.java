@@ -48,11 +48,8 @@ public class DefaultParms {
 	private int depthOfRecursion = 7; // How deep we intend to go?
 	private int currentLevelOfRecursion = 7; // How deep we are?
 
-	// actually this should use LEVELS not int numbers ... but later:)
-	private int debugLevel = 4;
-	// experimenting with this
-	private String LogLevel = "OFF";
-	
+	// using loglevels in concordance with the Level class
+	private String logLevel = "ALL";
 	private String countryCodeToWorkWith = "EE";
 	private String filenameForOutput = "output";
 	private String currentTarget = "";
@@ -104,12 +101,12 @@ public class DefaultParms {
 	}
 
 	//
-	public int getDebugLevel() {
-		return debugLevel;
+	public String getLogLevel() {
+		return logLevel;
 	}
 
-	public void setDebugLevel(int debugLevel) {
-		this.debugLevel = debugLevel;
+	public void setLogLevel(String logLevel) {
+		this.logLevel = logLevel;
 	}
 
 	//
@@ -137,5 +134,7 @@ public class DefaultParms {
 	public void setCurrentTarget(String currentTarget) {
 		this.currentTarget = currentTarget;
 	}
+
+
 
 }

@@ -62,7 +62,7 @@ public class CC {
 			LOG.info(TAB + TAB + "==- CountryCode Kosherness Check");
 			try {
 				cc.valueOf(candidate);
-				LOG.info(TAB + TAB + "CC found to be kosher enough.");
+				LOG.fine(TAB + TAB + "CC found to be kosher enough.");
 				LOG.info(TAB + TAB + "==-> CountryCode NORMAL EXIT");
 				return true;
 

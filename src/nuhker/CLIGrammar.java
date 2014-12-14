@@ -23,11 +23,10 @@ package nuhker;
 
 
 import java.util.Arrays;
-import java.util.logging.Logger;
-
 import joptsimple.OptionParser;
 //import joptsimple.OptionException;
 //import joptsimple.OptionSet;
+import java.util.logging.Level;
 
 /**
  * This class is depending on the joptsimple library and is used
@@ -44,32 +43,44 @@ public class CLIGrammar extends OptionParser {
 	private final static String OPT_OUTPUT = "output";
 	private final static String OPT_RECURSIONLEVEL = "recursion-level";
 	private final static String OPT_TIMEOUT = "timeout";
-	private final static String OPT_VERBOSE = "verbose";
+	private final static String OPT_VERBOSE = "level";
 	private final static String OPT_VER = "version";
 	private final static String OPT_XTRA = "xtra";
 
+	private final static String DEFAULT_LOGLEVEL = "ALL";
+	
 	public static OptionParser main() {
 
+		
 		OptionParser preParser = new OptionParser();
 
 		preParser.acceptsAll(Arrays.asList("h", "?", "help"),
 				"Show the help msg").forHelp();
 		preParser
 				.acceptsAll(Arrays.asList("C", OPT_COPYRIGHT),
-						"Formalism: requering for author's name")
+						"Formalism: requiring the author's name")
 				.withRequiredArg().ofType(String.class);
 		preParser
 				.acceptsAll(Arrays.asList("c", OPT_COUNTRY),
 						"Enter country code to work with; default=EE")
 				.withRequiredArg().ofType(String.class);
 		
-		// Warning: the next option is a dummy option so far.
-		// ToDo: use Java Logger verboseness semantics, not numbers
-
 		preParser
 				.acceptsAll(Arrays.asList("d", "V", OPT_VERBOSE),
-						"Debuglevel 0-7; default=4").withRequiredArg()
-				.ofType(Integer.class);
+						"Java logging level; default=" + DEFAULT_LOGLEVEL)
+						.withOptionalArg().ofType(String.class).defaultsTo(DEFAULT_LOGLEVEL);
+
+		// Weird but no success :
+						// .withOptionalArg().ofType(Level.class)
+						// .defaultsTo(Level.parse(DEFAULT_LOGLEVEL));
+//		Exception in thread "main" java.lang.IllegalArgumentException: class java.util.logging.Level is not a value type
+//		at joptsimple.internal.Reflection.findConverter(Reflection.java:66)
+//		at joptsimple.ArgumentAcceptingOptionSpec.ofType(ArgumentAcceptingOptionSpec.java:104)
+//		at nuhker.CLIGrammar.main(CLIGrammar.java:71)
+//		at nuhker.Run.checkConformity(Run.java:78)
+//		at nuhker.Run.main(Run.java:295)
+		
+
 		preParser
 				.acceptsAll(Arrays.asList("M", OPT_MAXRUN),
 						"Max time in seconds we should run, kill then; default=80000 secs")
