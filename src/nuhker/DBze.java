@@ -51,6 +51,8 @@ public interface DBze {
 	ArrayList<String> knownASNs = new ArrayList<String>();
 	// A sub-subset of these in target constituency (option -c EE)
 	ArrayList<String> knownASNsInCC = new ArrayList<String>();
+	// Could be I am not lazy and will separate numerics:
+	ArrayList<String> knownNumericSites = new ArrayList<String>();
 
 	// Future deas: ArrayList of Structures
 	// to count occurrencies of each

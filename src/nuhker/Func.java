@@ -48,55 +48,9 @@ public class Func {
 	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
 			.getStackTrace()[0].getClassName());
 
-	public static void setLogger(String logLevel) {
 
-		// ToDo: Tantsita logLevel upperkeissi!
 
-		Handler consoleHandler = null;
-		Handler fileHandler = null;
-
-		try {
-			SyslogLikeFormatter humanWay = new SyslogLikeFormatter();
-
-			// Creating consoleHandler and fileHandler
-
-			consoleHandler = new ConsoleHandler();
-			consoleHandler.setFormatter(humanWay);
-			// binding handler to LOGGER object
-			LOG.addHandler(consoleHandler);
-			// Setting loglevel for this particular handler
-			LOG.severe(" The loglevel should be: " + logLevel);
-			consoleHandler.setLevel(Level.parse(logLevel));
-			Level such = consoleHandler.getLevel();
-			String currentLevel = such.toString();
-			LOG.severe(" The loglevel actually is: " + currentLevel);
-
-			// Defining the output file
-			fileHandler = new FileHandler("./temporary.log");
-			// Assigning handler to it
-			LOG.addHandler(fileHandler);
-			// Setting loglevels to this particular handler
-			fileHandler.setLevel(Level.ALL);
-
-			// Make CLEAR and EVIDENT what our game rules are
-			// WHY? LOG.setLevel(Level.ALL);
-			LOG.setUseParentHandlers(false);
-			LOG.config(" Parent logger HAS BEEN SUSPENDED for esthetical reasons");
-			LOG.config(TAB
-					+ "do manually switch over to the DEBUG mode to see more");
-			// final Statements
-			LOG.config(" Logger configuration done.");
-			String loggerName = LOG.getName();
-			LOG.info("   Logger Name is : " + loggerName);
-		}
-		// Should never happen but who know
-		catch (IOException ex) {
-			LOG.log(Level.SEVERE,
-					"Some ERROR occured in FileHandler or (less likely, in Consolehandler).",
-					ex);
-		}
-	}
-
+	
 	/**
 	 * Method delay(long milliSeconds) introduces a couple of seconds delay
 	 * between the internet requests, not to overload the services used.
@@ -275,8 +229,24 @@ public class Func {
 	 * @return nothing but prints interesting thingz to StdOut.
 	 */
 	public static void publicizeStatistics() {
-		LOG.info("===---===---===---===---===---===---===---===--- SIZE: "
+		LOG.info("===---===---===---===---===---> knownSites        COUNT: "
 				+ DBze.knownSites.size() + " records");
+		
+		LOG.info("===---===---===---===---===---> knownDomains      COUNT: "
+				+ DBze.knownDomains.size() + " records");
+		
+		LOG.info("===---===---===---===---===---> DomainsInCC       COUNT: "
+				+ DBze.knownDomainsInCC.size() + " records");
+		
+		LOG.info("===---===---===---===---===---> knownASNs         COUNT: "
+				+ DBze.knownASNs.size() + " records");
+		// Can only be done if a separate array of CC ASNs exist
+//		LOG.info("===---===---===---===---===---> knownASNsInCC     COUNT: "
+//				+ DBze.knownASNsInCC.size() + " records");
+
+		LOG.info("===---===---===---===---===---> knownNumericSites COUNT: "
+				+ DBze.knownNumericSites.size() + " records");
+		
 		return;
 	}
 

@@ -139,14 +139,19 @@ public class Run {
 			String subOption = String.valueOf(cliOptions.valueOf("d"));
 			LOG.finer(TAB + TAB + "and it had a suboption: "
 					+ subOption);
+			
+			if (Candidate.level.isKosher(subOption)) {
 			// Set the global DebugLevel from here
 			LOG.finer(TAB + "Setting current loglevel value as: "
 					+ subOption );
 			RunTimes.setLogLevel(subOption);
 			// =========== BUT HOW TO REALLY SET IT ?
-		} else {
-			// or the DebugLevel remains whatever the default is
-		}
+			} else {
+				LOG.severe(TAB + "As a punishment for |"
+						+ subOption + "|, debug level will be set to ||ALL||.");
+				RunTimes.setLogLevel("ALL");
+			}
+		} 
 
 		if (cliOptions.has("help")) {
 			postParser.printHelpOn(System.out);
@@ -278,7 +283,7 @@ public class Run {
 		
 		// Alternatives for simulation (until we build the static CLI program)
 		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
-				"--xtra", "-o", "output", "-R", "8", "-t", "2400", "-d", "FINEST",
+				"--xtra", "-o", "output", "-R", "8", "-t", "2400", "-d", "INFO",
 				"-M", "43200" };
 		String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000", "-n",
 				"-o", "somefilename-001", "-R", "6", "-t", "2800" };
@@ -286,7 +291,7 @@ public class Run {
 		String[] effectiveOptions = simulation1; // vs argv
 
 	
-		LOG.warning("============= Starting M A I N ==============");
+		LOG.severe("============= Starting M A I N ==============");
 		
 		// Formal check of command line options syntax
 		checkConformity(effectiveOptions); // Else bailout
@@ -297,13 +302,20 @@ public class Run {
 		
 		String loggingLevel = FinalOptions.getLogLevel();
 		LOG.severe(TAB + "Trying to set logging level to: " + loggingLevel);
-		Func.setLogger(loggingLevel);
 		
+		
+		if (Candidate.level.isKosher(loggingLevel)) {
+			LogHandler.setUpOnce(loggingLevel);
+			LOG.severe(TAB + "The logging level now: ||" + FinalOptions.getLogLevel() + "||.");
+		}
+		
+		
+		// From this point on, the LOG output is correclty formatted
 		LOG.info(TAB + "=================================");
 		// printout of ACTUAL options		
 		LOG.info(TAB + "~~~~~~~~ " + "Our Epoch started at: "
 				+ FinalOptions.getStartTime());
-		LOG.warning(TAB + "Debuglevel has been set on ||"
+		LOG.warning(TAB + "Loglevel has been set on ||"
 				+ FinalOptions.getLogLevel() + "|| level.");
 		LOG.fine(TAB + "We seek for Malwarized Sites in country: "
 				+ FinalOptions.getCountryCodeToWorkWith());
