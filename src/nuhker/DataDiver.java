@@ -165,6 +165,7 @@ public class DataDiver {
 				Func.publicizeStatistics();
 			
 			String target2Dive = Current.getCurrentTarget();
+			String fullTarget = "";
 			LOG.fine("===+===-> regular AS/FQDN parsing (ALT2), target=" + target2Dive);
 			LOG.finest(TAB + "+===+ Calling ParseGSB for : " + target2Dive );
 			String subTargets[] = ParseGSB.badReputation(target2Dive);
@@ -172,17 +173,19 @@ public class DataDiver {
 			LOG.fine(TAB + "+===+ Got " + countOfTargetsOnThisLevel + " subtargets to check under this target: " + target2Dive);
 						
 			for(String target : subTargets) {
+				fullTarget = target;
 				// OTSUSTAJA võiks välja kutsuda juba siin -
 				// - saaks AS kirjelduse ka kätte regexp ( ja ) vahelt.
 			    LOG.info(TAB + TAB + "DownStairs Decision: --=---==---=-- next subtarget: " + target);
 			    // Hahaa: Exception in thread "main" java.lang.NumberFormatException: For input string: "facebook.com/NASDAQOMXStockholm/"
 			    if ( AS.equals (  Func.whatIsIt(target) ) ) {
-				target = Func.asn2Colon(Func.removeASDescr(target));
-				LOG.finer(TAB + TAB + TAB +  "DownStairs: an AS NAME (colonized) : " + target);
-			} else {
-				LOG.finer(TAB + TAB + TAB +  "DownStairs: an URL left as it was  : " + target);
-			}
-			    // SIIN tuleb OTSUSTAJA välja kutsuda
+			    	
+			    	target = Func.asn2Colon(Func.removeASDescr(target));
+			    	LOG.finer(TAB + TAB + TAB +  "DownStairs: an AS NAME (colonized) : " + target);
+			    } else {
+			    	LOG.finer(TAB + TAB + TAB +  "DownStairs: an URL left as it was  : " + target);
+			    }
+			    // SIIN tuleb OTSUSTAJA välja kutsuda fullTarget kallal
 			    // Decider ning 5-6 olemasoleva kategooria kohta
 			    // EE on vaja alla anda kuidagi, ülejäänud arvutatakse
 			    // isknown, isASN, isIP, is-cc
