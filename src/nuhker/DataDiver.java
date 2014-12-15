@@ -138,6 +138,8 @@ public class DataDiver {
 				}
 
 				String[] resultOfFirstParsing = ParseRIPE.asnJsonParser(toBeParsed);
+				// ^ this ^ attay is to be written into a DB and textfile
+				
 				int countOfASNsObtained = resultOfFirstParsing.length;
 				LOG.info(TAB + "DataDiver got " + countOfASNsObtained + " ASNs from the ParseRIPE");
 
@@ -170,32 +172,43 @@ public class DataDiver {
 			LOG.fine(TAB + "+===+ Got " + countOfTargetsOnThisLevel + " subtargets to check under this target: " + target2Dive);
 						
 			for(String target : subTargets) {
+				// OTSUSTAJA võiks välja kutsuda juba siin -
+				// - saaks AS kirjelduse ka kätte regexp ( ja ) vahelt.
 			    LOG.info(TAB + TAB + "DownStairs Decision: --=---==---=-- next subtarget: " + target);
-			 // LOG.info(TAB + TAB + "DownStairs Decision: next argument to pass down is: " + target);
 			    if (target.contains(AS)) {
 				target = Func.asn2Colon(Func.removeASDescr(target));
-				LOG.finer(TAB + TAB + TAB +  "DownStairs: AS NAME colonized : " + target);
+				LOG.finer(TAB + TAB + TAB +  "DownStairs: an AS NAME (colonized) : " + target);
 			} else {
-				LOG.finer(TAB + TAB + TAB +  "DownStairs: URL target as is  : " + target);
+				LOG.finer(TAB + TAB + TAB +  "DownStairs: an URL left as it was  : " + target);
 			}
-			    
+			    // SIIN tuleb OTSUSTAJA välja kutsuda
+			    // Decider ning 5-6 olemasoleva kategooria kohta
+			    // EE on vaja alla anda kuidagi, ülejäänud arvutatakse
+			    // isknown, isASN, isIP, is-cc
+			    // ja typewriter kutsutakse maha kirjutama.
+			    // loginimi on vaja alla anda kuidagi
+			    // ja oma varasema ASN listiga võrdlemiseks IP'sid kontrollida
 			     if (! DBze.knownSites.contains(target)) {
 			    	   DBze.knownSites.add(target);
-
-			    	   Current.setCurrentTarget(target);
+			    	   // ja tulemused kirja panna
 			    	   TypeWriter.main(outputFileName, target);
-
+			    	   // publicizeStatistics() tuleb ka siia sisse panna
+			    	   
+			    	   // siin OTSUSTAJA enam sekkuda ei saa:
+			    	   // OTSUSTAJA tagastuskood on: boolean kasTegeleda?!
+			    	   Current.setCurrentTarget(target);
 			    	   int nextLevel = (currentLevel - 1);
 			    	   LOG.fine("===-===-===-===-===-< SUBMERGING from level " + currentLevel + " to level " + nextLevel );
 			    	   Current.setCurrentLevelOfRecursion(nextLevel);
 			    	   
+			    	   // spare some extra seconds
 			    	   if (nextLevel > 0) {
 			    	   Func.delay(waitTime);
 			    	   }
 			    	   entryPoint(Current); // RECURSIVELY foreach argument
 			        } else {
 			        	// Target was already recorded to DB. Not wasting time
-			        	LOG.fine("---+---+---+---+---> Target " + target + " already KNOWN!");
+			        	LOG.fine("---+---+---+---+---> Target " + target + " was previously KNOWN, a noGo.");
 			        }
 			}
 			LOG.fine("===+===-! DONE with All arguments");

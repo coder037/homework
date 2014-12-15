@@ -65,6 +65,7 @@ public class Func {
 		LOG.finer(TAB + "variateTheTime");
 		LOG.finest("Basetime: " + base);
 		Random generator = new Random();
+		// ToDo: Actually we should go to float and multiply the base to margin where margin is 1.5.
 		int empiricTambovConstant = 1800;
 		int value = generator.nextInt(empiricTambovConstant);
 		LOG.finest("Random Value: " + value);
@@ -102,7 +103,7 @@ public class Func {
 	 */
 	public static boolean isSensible(String suspect) {
 
-		LOG.finer(TAB + "---> isSensible Candidate");
+		LOG.finest(TAB + "---> isSensible Candidate?");
 		String[] googleCrap = { "Webmaster Help Center", "Webmaster Tools",
 				"Return to the previous page.", "Google Home" };
 		boolean thisIsCrap = false;
@@ -111,11 +112,13 @@ public class Func {
 		virginity: for (int i = 0; i < googleCrap.length; i++) {
 			if (googleCrap[i].equals(suspect)) {
 				thisIsCrap = true;
-				LOG.finest(TAB + TAB + "Discard: " + suspect);
+				LOG.fine(TAB + TAB + "Discard it: |" + suspect + "|.");
 				break virginity; // at first match
 			}
 		} // FOR
-		LOG.fine(TAB + "---<" + suspect + " isSensible Candidate");
+		if (!thisIsCrap) {
+		LOG.finer(TAB + "---<" + suspect + " is a Sensible Candidate");
+		}
 		whetherToKeep = !thisIsCrap; // ;) 3x
 		return whetherToKeep;
 	}
