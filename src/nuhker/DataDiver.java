@@ -175,6 +175,7 @@ public class DataDiver {
 				// OTSUSTAJA võiks välja kutsuda juba siin -
 				// - saaks AS kirjelduse ka kätte regexp ( ja ) vahelt.
 			    LOG.info(TAB + TAB + "DownStairs Decision: --=---==---=-- next subtarget: " + target);
+			    // Hahaa: Exception in thread "main" java.lang.NumberFormatException: For input string: "facebook.com/NASDAQOMXStockholm/"
 			    if (target.contains(AS)) {
 				target = Func.asn2Colon(Func.removeASDescr(target));
 				LOG.finer(TAB + TAB + TAB +  "DownStairs: an AS NAME (colonized) : " + target);
