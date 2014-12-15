@@ -167,37 +167,67 @@ public class Func {
 
 	
 	
-	
+	/**
+	 * An especially freaky regexp method to distinguish between AS name,
+	 * an URL/FQDN and (last but not least) an IPv4 address. No hopes
+	 * that no errors. This is RegExp.
+	 * 
+	 * DataDiver is using our decision to work properly with each
+	 * of these categories.
+	 * We expect following data:
+	 *    - AS29024 (BALLOU-AS) -> AS
+	 *    - bjornsweden.com/ -> URL
+	 *    - facebook.com/NASDAQOMXStockholm/ - URL
+	 *    - 192.168.2.0/whatever/ -> IPV4
+	 * 
+	 * @param candidate to check
+	 * @return the decision - choice of 3 or ERROR
+	 */
 	static String whatIsIt(String candidate) {
 		String decision = "ERROR";
 		String workspace = "";
-
-		// |AS29024 (BALLOU-AS)| vs |bjornsweden.com/| vs |facebook.com/NASDAQOMXStockholm/|
+		String pattern = ""; 
+		LOG.fine(TAB + "whatIsIt START");
 		
-		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
+		LOG.finer(TAB + TAB + "SRC: |" + candidate + "|.");
 		// Pattern: Caret , AS
-		workspace = candidate.replaceAll("(BEGINNING + AS)(\\d+)(\\s.*)(\\))", "$1,$4");
-		LOG.finest(TAB + TAB + "SRC: |" + workspace + "|.");
-		if (workspace.equals(BEGINNING + AS + ")" )) {
-			decision = "AS";
+		workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1");
+		pattern = ( AS );
+		LOG.finer(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
+		if (pattern.equals(workspace)) {
+			decision = ( AS ) ;
+			LOG.finer(TAB + TAB + " chosen: " + decision);
 		}
+		
+		// URL or IPV4?
+		
+		// Pattern Beginning, Decimal.dotted.IP , Slash
+		candidate = "192.168.2.1/";
+		LOG.finer(TAB + TAB + "SRC: |" + candidate + "|.");
+		workspace = candidate.replaceAll("(^\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\/)(*.\\/$)", "$2$4$6$8");
+		pattern = ".../"; // Disregard numbers - 3 dots and slash 
+		LOG.finer(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
+		if (pattern.equals(workspace)) {
+			decision = "IPV4";
+			LOG.finer(TAB + TAB + " chosen: " + decision);
+		} else {
+				
 		// Pattern Caret, Whatever, Slash+END
-		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
-		workspace = candidate.replaceAll("(BEGINNING)(.*)(\\/$)", "$1,$3");
-		LOG.finest(TAB + TAB + "SRC: |" + workspace + "|.");
-		if (workspace.equals(BEGINNING + "/$" )) {
+		LOG.finer(TAB + TAB + "SRC: |" + candidate + "|.");
+		workspace = candidate.replaceAll("(^)(.*)(\\/$)", "$3");
+		pattern = "/";
+		LOG.finer(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
+		if (pattern.equals(workspace)) {
 			decision = "URL";
+			LOG.finer(TAB + TAB + " chosen: " + decision);
 		}
 		
-		// Pattern Beginning, Decimal.dotted.IP , Slash+END 
-		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
-		workspace = candidate.replaceAll("(BEGINNING)(\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\))", "$1,$3,$5,$7,$9");
-		LOG.finest(TAB + TAB + "SRC: |" + workspace + "|.");
-		if (workspace.equals(BEGINNING + ".../$" )) {
-			decision = "ipv4";
+	}
+		// TEMPORARY THINGY to check the validity of the IPv4 pattern:
+		if (decision.equals("ERROR")) {
+			System.exit(1);
 		}
-		
-		LOG.fine(TAB + TAB + "SRC: " + decision);
+		LOG.fine(TAB + "whatIsIt END, decision=" + decision);
 		return decision;
 	}
 	
