@@ -198,12 +198,15 @@ public class Func {
 		
 		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
 		// Pattern: Caret , AS
-		workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1");
+		// Bastard AS55592 has no description ;)
+		// workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1");
+		workspace = candidate.replaceAll("(^AS)(\\d+)", "$1"); // and possibly no (Description)
 		pattern = ( AS );
 		LOG.finest(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
 		if (pattern.equals(workspace)) {
 			decision = ( AS ) ;
 			LOG.finest(TAB + TAB + " chosen: " + decision);
+			
 		}
 		
 		// URL or IPV4?
@@ -231,9 +234,10 @@ public class Func {
 	}
 		// TEMPORARY THINGY to check the validity of the IPv4 pattern:
 		if (decision.equals("ERROR")) {
+			LOG.severe(TAB + "---+---+---+---> whatIsIt made decision=" + decision + " for target " + candidate);
 			System.exit(1);
 		}
-		LOG.fine(TAB + "---+---+---+---> whatIsIt decision=" + decision);
+		LOG.finer(TAB + "---+---+---+---> whatIsIt decision=" + decision);
 		return decision;
 	}
 	
@@ -304,6 +308,7 @@ public class Func {
 	 * @return nothing but prints interesting thingz to StdOut.
 	 */
 	public static void publicizeStatistics() {
+
 		LOG.info("===---===---===---===---===---> knownSites        COUNT: "
 				+ DBze.knownSites.size() + " records");
 		
