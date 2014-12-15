@@ -165,6 +165,42 @@ public class Func {
 	// return destination;
 	// }
 
+	
+	
+	
+	static String whatIsIt(String candidate) {
+		String decision = "ERROR";
+		String workspace = "";
+
+		// |AS29024 (BALLOU-AS)| vs |bjornsweden.com/| vs |facebook.com/NASDAQOMXStockholm/|
+		
+		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
+		// Pattern: Caret , AS
+		workspace = candidate.replaceAll("(BEGINNING + AS)(\\d+)(\\s.*)(\\))", "$1,$4");
+		LOG.finest(TAB + TAB + "SRC: |" + workspace + "|.");
+		if (workspace.equals(BEGINNING + AS + ")" )) {
+			decision = "AS";
+		}
+		// Pattern Caret, Whatever, Slash+END
+		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
+		workspace = candidate.replaceAll("(BEGINNING)(.*)(\\/$)", "$1,$3");
+		LOG.finest(TAB + TAB + "SRC: |" + workspace + "|.");
+		if (workspace.equals(BEGINNING + "/$" )) {
+			decision = "URL";
+		}
+		
+		// Pattern Beginning, Decimal.dotted.IP , Slash+END 
+		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
+		workspace = candidate.replaceAll("(BEGINNING)(\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\))", "$1,$3,$5,$7,$9");
+		LOG.finest(TAB + TAB + "SRC: |" + workspace + "|.");
+		if (workspace.equals(BEGINNING + ".../$" )) {
+			decision = "ipv4";
+		}
+		
+		LOG.fine(TAB + TAB + "SRC: " + decision);
+		return decision;
+	}
+	
 	/**
 	 * The method does the conversion from int ASN to a Google preferred
 	 * AS:12345 format
@@ -213,7 +249,7 @@ public class Func {
 		LOG.finest(TAB + "---> SRC: " + source);
 		cleanResult = cleanResult.replaceAll("(\\d+)(\\s.*)", "$1");
 		LOG.finest(TAB + "---> MID: " + cleanResult);
-		// Fuzz it through the anaconda's member
+		// Fuzz it through the anaconda's member - my saver
 		cleanResult = cleanResult.replaceAll("^AS", "");
 		int asNumber = Integer.parseInt(cleanResult);
 		LOG.finest(TAB + "---> INT: " + asNumber);
