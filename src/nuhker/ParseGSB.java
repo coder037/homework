@@ -79,8 +79,8 @@ public class ParseGSB {
 		while (glitch) {
 		try {
 			String url = (baseURL + source);
-			LOG.fine("===+ START badReputation");
-			LOG.finer(TAB + "URL visited: " + url);
+			LOG.finer("===+ START badReputation");
+			LOG.fine(TAB + "URL visited: " + url);
 
 			Document doc = Jsoup.connect(url).get();
 			Elements meaningfulSections = doc.select("a");
@@ -92,20 +92,6 @@ public class ParseGSB {
 
 				// Exclude promo targets
 				if (Func.isSensible(nameOfTheCandidate)) {
-					
-//					// Badsite  found: 15830
-//					String numbersOnly = "(\\d+)";
-//					String workspace = nameOfTheCandidate.replaceAll(numbersOnly, "");
-//					if ("".equals(workspace)) {
-//						System.out.println(TAB + "==========This was an AS");
-//					} else {
-//						System.out.println(TAB + "==========This was something else");
-//					}
-//					
-//					if (nameOfTheCandidate.contains(AS)) {
-//						nameOfTheCandidate = Func.cleanASDescr(nameOfTheCandidate);
-//						System.out.println(TAB + "AS string CLEANED UP: " + nameOfTheCandidate);
-//					}
 					temporaryList.add(nameOfTheCandidate);
 					Func.doSomeBookkeepingOnThe(nameOfTheCandidate);
 				}
@@ -128,14 +114,14 @@ public class ParseGSB {
 		someTargets = temporaryList.toArray(someTargets);
 
 		if (count == 0) {
-			LOG.fine("---= Uncopulatingbelieveable ... no badness discovered under "
+			LOG.finer("---= badReputation: $#%&€ ... no badness discovered under "
 							+ source);
 		} else {
-			LOG.fine("---= Normal business: badness count under "
+			LOG.finer("---= badReputation: Normal business: badness count under "
 					+ source + " is " + count);
 		}
 
-		LOG.fine("===- END badReputation ");
+		LOG.finest("===- END badReputation ");
 		return someTargets;
 
 	}

@@ -112,7 +112,7 @@ public class Func {
 		virginity: for (int i = 0; i < googleCrap.length; i++) {
 			if (googleCrap[i].equals(suspect)) {
 				thisIsCrap = true;
-				LOG.fine(TAB + TAB + "Discard it: |" + suspect + "|.");
+				LOG.finest(TAB + TAB + "Discard it: |" + suspect + "|.");
 				break virginity; // at first match
 			}
 		} // FOR
@@ -125,17 +125,24 @@ public class Func {
 
 	public static void doSomeBookkeepingOnThe(String suspect) {
 		// ArrayList<String> validSites = new ArrayList<String>();
-
-		if (suspect.contains(AS)) {
+		String verdict = Func.whatIsIt(suspect);
+		
+		// WARNIG - a NOGO - AS AS AS AS
+		if (verdict.equals(AS)) {
 			// It is an AS and should go to that Arraylist
 			LOG.finer(TAB + "AS info found: " + suspect);
 
 		} else {
+			
+			if (verdict.equals("URL")) {
 			// it is an URL and should go to THIS ArrayList
-			LOG.finer(TAB + "Malsite  found: " + suspect);
+			LOG.finer(TAB + "Malsite found: " + suspect);
 
-		} // ELSE
-
+		} else {
+			// it is numeric ipv4
+			LOG.finer(TAB + "IPV4 Malsite : " + suspect);
+		}
+		}
 		// ToDo: there exist a rare case when the suspect is numeric,
 		// probably should it be reverse-resolved or compared
 		// to the ASN list of the constituency?
