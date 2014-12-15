@@ -196,14 +196,19 @@ public class Func {
 		String pattern = ""; 
 		LOG.finer(TAB + "whatIsIt START");
 		
-		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
+		LOG.fine(TAB + TAB + "SRC: |" + candidate + "|.");
 		// Pattern: Caret , AS
 		// Bastard AS55592 has no description ;)
-		// workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1");
-		workspace = candidate.replaceAll("(^AS)(\\d+)", "$1"); // and possibly no (Description)
-		pattern = ( AS );
-		LOG.finest(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
-		if (pattern.equals(workspace)) {
+		if (candidate.matches("^AS\\d+.*")) {
+			
+//		}
+//		workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1$2");
+//		workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1$2");
+//		// workspace = candidate.replaceAll("(^AS)(\\d+)", "$1"); // and possibly no (Description)
+//		pattern = ( AS );
+//		LOG.fine(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
+//		if (pattern.equals(workspace))
+//		{
 			decision = ( AS ) ;
 			LOG.finest(TAB + TAB + " chosen: " + decision);
 			
