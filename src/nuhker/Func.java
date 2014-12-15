@@ -187,39 +187,38 @@ public class Func {
 		String decision = "ERROR";
 		String workspace = "";
 		String pattern = ""; 
-		LOG.fine(TAB + "whatIsIt START");
+		LOG.finer(TAB + "whatIsIt START");
 		
-		LOG.finer(TAB + TAB + "SRC: |" + candidate + "|.");
+		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
 		// Pattern: Caret , AS
 		workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1");
 		pattern = ( AS );
-		LOG.finer(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
+		LOG.finest(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
 		if (pattern.equals(workspace)) {
 			decision = ( AS ) ;
-			LOG.finer(TAB + TAB + " chosen: " + decision);
+			LOG.finest(TAB + TAB + " chosen: " + decision);
 		}
 		
 		// URL or IPV4?
 		
 		// Pattern Beginning, Decimal.dotted.IP , Slash
-		candidate = "192.168.2.1/";
-		LOG.finer(TAB + TAB + "SRC: |" + candidate + "|.");
-		workspace = candidate.replaceAll("(^\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\/)(*.\\/$)", "$2$4$6$8");
+		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
+		workspace = candidate.replaceAll("(^\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\/)(\\/*$)", "$2$4$6$8");
 		pattern = ".../"; // Disregard numbers - 3 dots and slash 
-		LOG.finer(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
+		LOG.finest(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
 		if (pattern.equals(workspace)) {
 			decision = "IPV4";
-			LOG.finer(TAB + TAB + " chosen: " + decision);
+			LOG.finest(TAB + TAB + " chosen: " + decision);
 		} else {
 				
 		// Pattern Caret, Whatever, Slash+END
-		LOG.finer(TAB + TAB + "SRC: |" + candidate + "|.");
+		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
 		workspace = candidate.replaceAll("(^)(.*)(\\/$)", "$3");
 		pattern = "/";
-		LOG.finer(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
+		LOG.finest(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
 		if (pattern.equals(workspace)) {
 			decision = "URL";
-			LOG.finer(TAB + TAB + " chosen: " + decision);
+			LOG.finest(TAB + TAB + " chosen: " + decision);
 		}
 		
 	}
@@ -227,7 +226,7 @@ public class Func {
 		if (decision.equals("ERROR")) {
 			System.exit(1);
 		}
-		LOG.fine(TAB + "whatIsIt END, decision=" + decision);
+		LOG.fine(TAB + "---+---+---+---> whatIsIt decision=" + decision);
 		return decision;
 	}
 	
