@@ -60,10 +60,10 @@ public class DataDiver {
 	 * the same methods (and this will need some back-and- -forth translation
 	 * between 12345 <--> AS:12345 forms.
 	 * 
-	 * @param DefaultParms
+	 * @param levelVariables
 	 * 
-	 *            Several parameters are passed between down the recursion
-	 *            levels including these: - target - whom to OSI - depth level -
+	 *            An object with parameters passed down between the recursion
+	 *            levels including these: - target - what to OSI - depth level -
 	 *            (which level I am on) - max depth of the recursion - max
 	 *            working time, after which the program will stop itself.
 	 * 
@@ -71,23 +71,23 @@ public class DataDiver {
 	 *            DefaultParms class
 	 * 
 	 */
-	public static void entryPoint(DefaultParms LevelVariables) {
+	public static void entryPoint(DefaultParms levelVariables) {
 		// Introductory part - safeguards and calculations
-		DefaultParms Current = LevelVariables;
+		DefaultParms current = levelVariables;
 		long nowTime = System.nanoTime();
-		int waitTime = Current.getMinTimeBetweenGSBRequests();
-		int currentLevel = Current.getCurrentLevelOfRecursion();
+		int waitTime = current.getMinTimeBetweenGSBRequests();
+		int currentLevel = current.getCurrentLevelOfRecursion();
 		boolean upperLevel = false;
 		LOG.fine("===-> DataDiver HEADER part, level" + currentLevel
 				+ " entered.");
 
-		String outputFileName = Current.getFilenameForOutput();
+		String outputFileName = current.getFilenameForOutput();
 		LOG.fine(TAB + "output filename defined as: " + outputFileName);
 
 		long billion = 1000000000;
 		long thousand = 1000;
-		long runTimeSoFar = (nowTime - Current.getStartTime());
-		long remainedSecs = (Current.getMaxTimeToRunBeforeKilled() / thousand - (runTimeSoFar / billion));
+		long runTimeSoFar = (nowTime - current.getStartTime());
+		long remainedSecs = (current.getMaxTimeToRunBeforeKilled() / thousand - (runTimeSoFar / billion));
 		LOG.finer(TAB + TAB + TAB + "Runtime so far: "
 				+ (runTimeSoFar / billion) + " sec(s); remained: "
 				+ (remainedSecs) + " sec(s) until must be killed.");
@@ -104,7 +104,7 @@ public class DataDiver {
 			return;
 		}
 
-		if (Current.getDepthOfRecursion() == currentLevel) {
+		if (current.getDepthOfRecursion() == currentLevel) {
 			upperLevel = true;
 			LOG.info(TAB + "Still on the Uppermost level=" + +currentLevel);
 		}
@@ -114,7 +114,7 @@ public class DataDiver {
 
 		// #### Alternative 1 - upper level
 		if (upperLevel) { // RIPE thing
-			String cc = Current.getCountryCodeToWorkWith();
+			String cc = current.getCountryCodeToWorkWith();
 			String toBeParsed = "";
 			LOG.info(TAB + "We only call this ONCE (ALT1)");
 			LOG.info(TAB + TAB + "for a country: " + cc);
@@ -144,14 +144,14 @@ public class DataDiver {
 			for (String targetASN : resultOfFirstParsing) {
 				LOG.fine(TAB + TAB + "Yet another AS to check for: "
 						+ targetASN);
-				Current.setCurrentTarget(Func.asn2Colon(targetASN));
+				current.setCurrentTarget(Func.asn2Colon(targetASN));
 				Func.delay(waitTime);
 				int nextLevel = (currentLevel - 1);
 				LOG.finer("DataDiver called recursively: ");
 				LOG.fine("===-< Descending from level: " + currentLevel
 						+ " to level " + nextLevel);
-				Current.setCurrentLevelOfRecursion(nextLevel);
-				entryPoint(Current); // RECURSIVELY foreach argument
+				current.setCurrentLevelOfRecursion(nextLevel);
+				entryPoint(current); // RECURSIVELY foreach argument
 			}
 			LOG.info("===-! DONE with the All arguments for  country=" + cc);
 			LOG.info(TAB + "===-< ascending from level: " + currentLevel);
@@ -163,7 +163,7 @@ public class DataDiver {
 			// First PRINTout how much entries are there on the list xN
 			Func.publicizeStatistics();
 
-			String target2Dive = Current.getCurrentTarget();
+			String target2Dive = current.getCurrentTarget();
 			String fullTarget = "";
 			LOG.fine("===+===-> regular AS/FQDN parsing (ALT2), target="
 					+ target2Dive);
@@ -208,17 +208,17 @@ public class DataDiver {
 
 					// siin OTSUSTAJA enam sekkuda ei saa:
 					// OTSUSTAJA tagastuskood on: boolean kasTegeleda?!
-					Current.setCurrentTarget(target);
+					current.setCurrentTarget(target);
 					int nextLevel = (currentLevel - 1);
 					LOG.fine("===-===-===-===-===-< SUBMERGING from level "
 							+ currentLevel + " to level " + nextLevel);
-					Current.setCurrentLevelOfRecursion(nextLevel);
+					current.setCurrentLevelOfRecursion(nextLevel);
 
 					// spare some extra seconds
 					if (nextLevel > 0) {
 						Func.delay(waitTime);
 					}
-					entryPoint(Current); // RECURSIVELY foreach argument
+					entryPoint(current); // RECURSIVELY foreach argument
 				} else {
 					// Target was already recorded to DB. Not wasting time
 					LOG.fine("---+---+---+---+---> Target " + target

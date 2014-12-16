@@ -51,7 +51,7 @@ import java.util.logging.Logger;
  * The ParseRIPE class is to raise an argument against RIPE public interface to
  * return the constituency (extent of IP networks) of a country.
  * 
- * @created Nov 26, 2014 11:18:09 PM
+ * created Nov 26, 2014 11:18:09 PM
  * @author coder037@xyz.ee
  */
 public class ParseRIPE {

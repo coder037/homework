@@ -35,7 +35,7 @@ import java.util.ArrayList;
  * However, a separate task is responsible for writing down (at FS level) the
  * data gathered, doing so right before the end.
  * 
- * @created Dec 11, 2014 9:48:34 AM
+ * created Dec 11, 2014 9:48:34 AM
  * @author coder037@xyz.ee
  * 
  */

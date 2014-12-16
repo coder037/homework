@@ -24,7 +24,7 @@ package nuhker;
 import java.util.logging.Logger;
 
 /**
- * This class contains two shadow type enum "databases", 1. of Level string
+ * This class contains two shadow type enum "databases". 1. of Level string
  * values for logging and 2. of country codes that RIPE is serving.
  * 
  * Both enums contain a boolean method isKosher(String candidate) to calculate

@@ -44,13 +44,13 @@ import java.security.MessageDigest;
 
 /**
  * 
- * No multi-threading at all. This is the runnable class intended to be launched
- * from CLI
+ * This is the class to launch from CLI considering the options. No
+ * multi-threading at all.
  * 
  * It takes CLI Grammar, stores it in a data class and then calls
  * DataDiver.main(DefaultParms modified) to do the actual work
  * 
- * @created Nov 23, 2014 12:44:46 AM
+ * created Nov 23, 2014 12:44:46 AM
  * @author coder037@xyz.ee
  * @version 0.8 so far
  */
@@ -70,9 +70,8 @@ public class Run {
 	 * If it seems to the library that options are correct and adhere to the
 	 * Grammar, then we return Boolean true, otherwise false.
 	 * 
-	 * @param a
-	 *            copy of CLI option to be validated
-	 * @return boolean decision whether the conformancy was true or false
+	 * @param arguments - a copy of CLI options to be validated
+	 * @return decision whether the conformancy was true or false
 	 */
 	public static boolean checkConformity(String[] arguments) {
 		OptionSet args = null;
@@ -308,13 +307,12 @@ public class Run {
 
 		// CLI alternatives for Eclipse simulation
 		// String[] simulation1 = { "--country", "EE", "--copyright",
-		// "Some Name",
-		// "--xtra", "-o", "output", "-R", "15", "-t", "2500", "-d", "FINEST",
-		// "-M", "43200" };
-		// String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000", "-n",
-		// "-o", "somefilename-001", "-R", "6", "-t", "2800" };
+		// "Some Name", "--xtra", "-o", "output", "-R", "15",
+		// "-t", "2500", "-d", "FINEST", "-M", "43200" };
+		// String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000",
+		// "-n", "-o", "somefilename-001", "-R", "6", "-t", "2800" };
 		// String[] simulation3 = { "--help" };
-		String[] effectiveOptions = argv; // or some simulation
+		String[] effectiveOptions = argv; // or simulation{1,2.3}
 
 		LOG.severe("============= Starting M A I N ==============");
 

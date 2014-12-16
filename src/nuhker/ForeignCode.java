@@ -14,8 +14,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
 
 /**
- * Foreign code is kept in this Class, i.e. the code whose authors are not
- * precisely known. This is to mitigate the plagiate risk.
+ * Foreign code is kept in this Class, that means the code whose authors are not
+ * precisely known. This is to mitigate the risk of eventual plagiarism.
  * 
  * @author various sources
  * 

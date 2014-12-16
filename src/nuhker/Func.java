@@ -30,11 +30,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Here are concentrated some simple functions (oops, methods) we need here and
- * there. Basically said, these are simple bit-banging things, thus nothing
- * complex.
+ * Here are concentrated some simple functions (oops, methods)
+ * we constantly need. Basically said, these are simple
+ * bit-banging things, thus nothing complex.
  * 
- * @created Dec 12, 2014 8:36:39 PM
+ * created Dec 12, 2014 8:36:39 PM
  * @author coder037@xyz.ee
  */
 public class Func {
@@ -76,7 +76,7 @@ public class Func {
 	 * Method delay (int milliseconds) keeps internet requests a couple of
 	 * seconds apart. This is in order not to abuse services.
 	 * 
-	 * @param long milliSeconds to wait
+	 * @param someNumber milliSeconds to wait
 	 */
 	public static void delay(int someNumber) {
 		int kiikingNumber = variateTheTime(someNumber);
@@ -96,8 +96,8 @@ public class Func {
 	 * with these found. On the firstfound, we break the cycle and return a flag
 	 * to the calling program.
 	 * 
-	 * @param - a "link"/sitename to discard as invalid data
-	 * @return - the decision whether to discard the initial parameter
+	 * @param suspect URL/sitename to discard as invalid data
+	 * @return decision whether to discard the initial parameter
 	 */
 	public static boolean isSensible(String suspect) {
 
@@ -254,8 +254,7 @@ public class Func {
 	 * To be very sure, it can convert even from AS12345 to 12345 Altogether
 	 * used 2 times.
 	 * 
-	 * @param The
-	 *            number or an ASN in pseudo-int format ("12345")
+	 * @param source - number or an ASN in pseudo-int format ("12345")
 	 * @return the same ASN with "AS:" prepended -> AS:12345 to be directly
 	 *         usable against GSB
 	 */
@@ -287,7 +286,7 @@ public class Func {
 	 * Future plans: do not rip it off but save separately
 	 * 
 	 * @param source
-	 * @return
+	 * @return AS String with the description removed
 	 */
 	static String removeASDescr(String source) {
 		String cleanResult = source;
@@ -308,10 +307,8 @@ public class Func {
 
 	/**
 	 * The method will publicize some status data otherwise kept in the DBze.
-	 * E.g. we call it before killing the program and elsewhere
+	 * E.g. we could call it before killing the program and elsewhere
 	 * 
-	 * @param none
-	 * @return nothing but prints interesting thingz to StdOut.
 	 */
 	public static void publicizeStatistics() {
 

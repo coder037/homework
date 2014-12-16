@@ -36,12 +36,12 @@ import java.util.ArrayList;
 
 /**
  * GSB - Google Safe Browsing - a reputation service to indicate whether
- * aninternet site is clean or contaminated by the malware.
+ * an internet site is clean or contaminated by the malware.
  * 
  * This particular exercise ignores dates; "listed on GSB" means - has been
  * contaminated by malware within last 90 days".
  * 
- * @created Nov 28, 2014 8:56:32 AM
+ * created Nov 28, 2014 8:56:32 AM
  * @author coder037@xyz.ee
  */
 public class ParseGSB {
@@ -56,9 +56,9 @@ public class ParseGSB {
 	 * is being checked against the Google SafeBrowsing Interface (a reputation
 	 * service).
 	 * 
-	 * @param target
-	 *            which reputation is to be checked could be 1 of 3: a FQDN
-	 *            (xyz.ee/) or URL (xyz.ee/X/) or ASN (AS:12345)
+	 * @param source - a target which reputation is to be checked
+	 * could be 1 of 3:
+	 * a FQDN (xyz.ee/) or URL (xyz.ee/X/) or ASN (AS:12345)
 	 * @return array containing references to the badness. Should be clear that
 	 *         this is not we inventing badness. This is what Google thinks.
 	 * 

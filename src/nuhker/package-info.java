@@ -30,7 +30,7 @@
  * Launch it from CLI and it will gather some Open Source Intelligence
  * about malware sites being noticed within your TLD (top-level-domain).
  *  
- * @created Nov 23, 2014 4:30:12 AM
+ * created Nov 23, 2014 4:30:12 AM
  * @author coder037@xyz.ee
  * 
 

@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  * whether OR NOT it should implement file logging interface. Reason: the code
  * working with files, usually has some foreign copyright
  * 
- * @created Dec 10, 2014 11:18:09 AM
+ * created Dec 10, 2014 11:18:09 AM
  * @author coder037@xyz.ee
  */
 public class TypeWriter {
@@ -38,8 +38,9 @@ public class TypeWriter {
 // Later?	private final static String TAB = "\t";
 
 	/**
-	 * @param message
-	 *            to be written into file
+	 * Still ToDo.
+	 * @param candidate
+	 *            - a message to be written into file
 	 */
 	public static boolean isOfProperConstituency(String candidate) {
 		boolean returnValue = false;

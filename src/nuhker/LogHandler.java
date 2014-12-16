@@ -29,10 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class contains the manually kept enum database of country codes that
- * RIPE is serving. It also contains a boolean method isKosher(String candidate)
- * to calculate whether a particular country code is mentioned in this database.
- * 
+ * From here we initialize our Java logger.
  * created: Dec 14, 2014 11:10:05 PM
  * 
  * @author coder037@xyz.ee

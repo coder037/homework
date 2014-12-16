@@ -27,7 +27,7 @@ import joptsimple.OptionParser;
 // epic fail with - import java.util.logging.Level;
 
 /**
- * This class is depending on the joptsimple library and is used to describe the
+ * This class is depending on the jopt-simple library and is used to describe the
  * grammar of CLI options that Run.java takes.
  * 
  * created: Dec 02, 2014 08:00:00 AM
