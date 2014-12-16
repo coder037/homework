@@ -49,23 +49,22 @@ public class CLIGrammar extends OptionParser {
 
 	private final static String DEFAULT_LOGLEVEL = "ALL";
 	
-	public static OptionParser main() {
+	public static OptionParser description() {
 
-		
-		OptionParser preParser = new OptionParser();
+		OptionParser ourGrammar = new OptionParser();
 
-		preParser.acceptsAll(Arrays.asList("h", "?", "help"),
+		ourGrammar.acceptsAll(Arrays.asList("h", "?", "help"),
 				"Show the help msg").forHelp();
-		preParser
+		ourGrammar
 				.acceptsAll(Arrays.asList("C", OPT_COPYRIGHT),
 						"Formalism: requiring the author's name")
 				.withRequiredArg().ofType(String.class);
-		preParser
+		ourGrammar
 				.acceptsAll(Arrays.asList("c", OPT_COUNTRY),
 						"Enter country code to work with; default=EE")
 				.withRequiredArg().ofType(String.class);
 		
-		preParser
+		ourGrammar
 				.acceptsAll(Arrays.asList("d", "V", OPT_VERBOSE),
 						"Java logging level; default=" + DEFAULT_LOGLEVEL)
 						.withOptionalArg().ofType(String.class).defaultsTo(DEFAULT_LOGLEVEL);
@@ -81,34 +80,34 @@ public class CLIGrammar extends OptionParser {
 //		at nuhker.Run.main(Run.java:295)
 		
 
-		preParser
+		ourGrammar
 				.acceptsAll(Arrays.asList("M", OPT_MAXRUN),
 						"Max time in seconds we should run, kill then; default=80000 secs")
 				.withRequiredArg().ofType(Integer.class);
 		
 		// So far we do it with String.class identifier not File.Class
 		// (guess why ;) ) :
-		preParser
+		ourGrammar
 				.acceptsAll(Arrays.asList("o", "filename", OPT_OUTPUT),
 						"Name of the output file; default=output")
 				.withRequiredArg().ofType(String.class);
-		preParser
+		ourGrammar
 				.acceptsAll(Arrays.asList("R", OPT_RECURSIONLEVEL),
 						"recursion depth; default=4").withRequiredArg()
 				.ofType(Integer.class);
-		preParser
+		ourGrammar
 				.acceptsAll(Arrays.asList("t", OPT_TIMEOUT),
 						"Timeout between requests; default=2800 msecs or Google will block you")
 				.withRequiredArg().ofType(Integer.class);
-		preParser
+		ourGrammar
 				.acceptsAll(Arrays.asList("v", OPT_VER), "Show version number");
-		preParser.acceptsAll(Arrays.asList("x", OPT_XTRA),
+		ourGrammar.acceptsAll(Arrays.asList("x", OPT_XTRA),
 				"Some extra functionality we possible implement later");
 		
 		// These are some examples of the joptsimple power: 
 		// .withOptionalArg().ofType( Level.class ); vs
 		// .withRequiredArg().ofType(Integer.class):
 		
-		return preParser;
+		return ourGrammar;
 	}
 }

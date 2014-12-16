@@ -63,29 +63,29 @@ public class Run {
 		
 	// Here we first parse the argv line to be sure it is parsable nuff
 	/**
-	 * Depends on the jopt-simple library Makes a copy of the CLIGrammar and
-	 * then validates CLI options. No attempt is made to understand the options
-	 * - this is the preliminar pass. It it seems to the library that options
-	 * are correct and adhere to the Grammar, then returns Boolean true,
+	 * Depends on the jopt-simple library.
+	 * Take a copy of the CLIGrammar and then validate the actual
+	 * CLI options according to the grammar. No attempt is made
+	 * to understand the options - this is the preliminar pass.
+	 * 
+	 * If it seems to the library that options are correct and
+	 * adhere to the Grammar, then we return Boolean true,
 	 * otherwise false.
 	 * 
 	 * @param a copy of CLI option to be validated
 	 * @return boolean decision whether the conformancy was true or false
 	 */
 	public static boolean checkConformity(String[] arguments) {
-		OptionSet args = null; // declaration separated due to subsequent TRY
-								// clause
-		OptionParser preParser = CLIGrammar.main();
+		OptionSet args = null; 
+		OptionParser preParser = CLIGrammar.description();
 		LOG.info("   ===~ START: Option Conformity");
 
 		// ==== WARNING, NEXT 26 lines are not considered fully mine,
-		// but a neat trick from
+		// This kind of parsing is learnt from
 		// https://github.com/martinpaljak/GlobalPlatform/blob/master/src/openkms/gp/GPTool.java
 		// lines 133-147
 		try {
 			args = preParser.parse(arguments);
-			// Try to fetch all values so that their format is checked before
-			// actual usage
 			for (String s : preParser.recognizedOptions().keySet()) {
 				args.valuesOf(s);
 			}
@@ -97,12 +97,20 @@ public class Run {
 			} else {
 				LOG.severe("PARSE ERROR discovered with UNEXPLAINED reason: ");
 				LOG.severe(TAB + e.getMessage());
+				
 			}
-			// preParser.printHelpOn(System.err);
+			try {
+				LOG.info("Please check the command line options twice!");
+				preParser.printHelpOn(System.err);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 			// ==== END of foreign code
 			LOG.severe("ERROR: Non-conformant options. Bailout");
 			System.exit(78);
-			// according to http://www.opensource.apple.com/source/Libc/Libc-320/include/sysexits.h
+			// http://www.opensource.apple.com/source/Libc/Libc-320/include/sysexits.h
 		}
 		// END of the code which authorship is partially of somebody's else.
 		LOG.info("   ===~ DONE: Option Conformity");
@@ -113,9 +121,9 @@ public class Run {
 
 
 	/**
-	 * This is the most important method of the class. IT parses CLI options
-	 * depending on the jopt-simple library and a predefined in class
-	 * DefaultParms options.
+	 * This is the utmost important method of the class.
+	 * CLI options are parsed by means of the jopt-simple library
+	 * and recorded into DefaultParms runTimeParms options.
 	 * 
 	 * @param arguments
 	 *            to be parsed as options, taken straight from CLI
@@ -126,32 +134,14 @@ public class Run {
 	 */
 	public static DefaultParms parseContent(String[] arguments)
 			throws Exception {
-		OptionParser postParser = CLIGrammar.main();
+		OptionParser postParser = CLIGrammar.description();
 		OptionSet cliOptions = postParser.parse(arguments);
 
-		DefaultParms RunTimes = new DefaultParms();
+		DefaultParms runTimeParms = new DefaultParms();
 		LOG.fine("      ===-( CLI Option Parser");
 
 		// Somewhat special options FIRST
 
-		if (cliOptions.has("d")) {
-			LOG.finer(TAB + "Option d was found");
-			String subOption = String.valueOf(cliOptions.valueOf("d"));
-			LOG.finer(TAB + TAB + "and it had a suboption: "
-					+ subOption);
-			
-			if (Candidate.level.isKosher(subOption)) {
-			// Set the global DebugLevel from here
-			LOG.finer(TAB + "Setting current loglevel value as: "
-					+ subOption );
-			RunTimes.setLogLevel(subOption);
-			// =========== BUT HOW TO REALLY SET IT ?
-			} else {
-				LOG.severe(TAB + "As a punishment for |"
-						+ subOption + "|, debug level will be set to ||ALL||.");
-				RunTimes.setLogLevel("ALL");
-			}
-		} 
 
 		if (cliOptions.has("help")) {
 			postParser.printHelpOn(System.out);
@@ -163,12 +153,19 @@ public class Run {
 			System.exit(0);
 		}
 
+		if (cliOptions.has("x")) {
+			LOG.warning(TAB
+					+ "Option x was found which isn't yet implemented.");
+			LOG.info(TAB + TAB + "Anyway, thnx for supporting it!");
+		}
+		
 		if (cliOptions.has("c")) {
 			LOG.finest(TAB + "Option c was found");
 			String subOption = (String) cliOptions.valueOf("c");
 			if (CC.cc.isKosher(subOption)) {
 				LOG.info(TAB + TAB + "CountryCode is kosher: "
 						+ subOption);
+				runTimeParms.setCountryCodeToWorkWith(subOption);
 			} else {
 				LOG.warning(TAB + TAB + "Man, I deeply doubt *"
 						+ subOption + "* is a CountryCode RIPE is aware of.");
@@ -178,13 +175,27 @@ public class Run {
 
 		}
 
-		if (cliOptions.has("x")) {
-			LOG.warning(TAB
-					+ "Option x was found which isn't yet implemented.");
-			LOG.info(TAB + TAB + "Anyway, thnx for supporting it!");
-		}
 
-		// Special copyright copulation
+
+		if (cliOptions.has("d")) {
+			LOG.finer(TAB + "Option d was found");
+			String subOption = String.valueOf(cliOptions.valueOf("d"));
+			LOG.finer(TAB + TAB + "and it had a suboption: "
+					+ subOption);
+			
+			if (Candidate.level.isKosher(subOption)) {
+			// Set the global DebugLevel from here
+			LOG.finer(TAB + "Setting current loglevel value as: "
+					+ subOption );
+			runTimeParms.setLogLevel(subOption);
+			// =========== BUT HOW TO REALLY SET IT ?
+			} else {
+				LOG.severe(TAB + "As a punishment for |"
+						+ subOption + "|, debug level will be set to ||ALL||.");
+				runTimeParms.setLogLevel("ALL");
+			}
+		} 
+		// Special copyright routines
 
 		if (cliOptions.has("C")) {
 			LOG.fine(TAB
@@ -213,9 +224,9 @@ public class Run {
 					+ subOption);
 			LOG.finest(TAB + "Setting MaxRunTime value as: "
 					+ subOption + " secs.");
-			RunTimes.setMaxTimeToRunBeforeKilled(Integer.parseInt(subOption) * 1000); // DONE!!!
+			runTimeParms.setMaxTimeToRunBeforeKilled(Integer.parseInt(subOption) * 1000); // DONE!!!
 			LOG.fine(TAB + "Have set MaxRunTime value as: "
-					+ RunTimes.getMaxTimeToRunBeforeKilled() + " msecs.");
+					+ runTimeParms.getMaxTimeToRunBeforeKilled() + " msecs.");
 			// Inspiration to convert by means of Integer.parseInt from reznic
 			// http://stackoverflow.com/questions/5585779/converting-string-to-int-in-java
 		}
@@ -228,12 +239,12 @@ public class Run {
 			// Set recursion max level
 			LOG.finer(TAB + "Setting Max Recursion depth as : "
 					+ subOption);
-			RunTimes.setDepthOfRecursion(Integer.parseInt(subOption));
+			runTimeParms.setDepthOfRecursion(Integer.parseInt(subOption));
 			// Set relative level
 			LOG.finer(TAB
 					+ "Setting Current Recursion level the same: "
 					+ subOption);
-			RunTimes.setCurrentLevelOfRecursion(Integer.parseInt(subOption));
+			runTimeParms.setCurrentLevelOfRecursion(Integer.parseInt(subOption));
 
 		}
 
@@ -245,7 +256,7 @@ public class Run {
 			// set timeout
 			LOG.finer(TAB + "Setting GSB mandatory timeout >=: "
 					+ subOption + " msec.");
-			RunTimes.setMinTimeBetweenGSBRequests(Integer.parseInt(subOption));
+			runTimeParms.setMinTimeBetweenGSBRequests(Integer.parseInt(subOption));
 
 		}
 
@@ -257,13 +268,13 @@ public class Run {
 			// set filename
 			LOG.finer(TAB + "Setting Base Filename as requested: "
 					+ subOption);
-			RunTimes.setFilenameForOutput(subOption);
+			runTimeParms.setFilenameForOutput(subOption);
 		}
 
 		LOG.info("      ===-) END of Option Parser, phase 2");
 		LOG.info(TAB
 				+ "options init DONE according to the CLI values.");
-		return RunTimes;
+		return runTimeParms;
 	}
 
 	/**
@@ -281,7 +292,7 @@ public class Run {
 		
 		LOG.config("   0--------={Start}=--------0");
 		
-		// Alternatives for simulation (until we build the static CLI program)
+		// CLI alternatives for Eclipse simulation
 //		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
 //				"--xtra", "-o", "output", "-R", "15", "-t", "2500", "-d", "FINEST",
 //				"-M", "43200" };
@@ -295,7 +306,7 @@ public class Run {
 		
 		// Formal check of command line options syntax
 		checkConformity(effectiveOptions); // Else bailout
-		LOG.info(TAB + "DONE:  Options assessed");
+		LOG.info(TAB + "DONE:  Options conformity");
 		// Parse RIPE for that country
 		DefaultParms FinalOptions = parseContent(effectiveOptions);
 		FinalOptions.setStartTime(firstVariable); // Start our timer
@@ -310,7 +321,7 @@ public class Run {
 		}
 		
 		
-		// From this point on, the LOG output is correclty formatted
+		// From this point on, the LOG output is correctly formatted
 		LOG.info(TAB + "=================================");
 		// printout of ACTUAL options		
 		LOG.info(TAB + "~~~~~~~~ " + "Our Epoch started at: "
@@ -341,8 +352,9 @@ public class Run {
 				+ FinalOptions.getCurrentTarget());
 
 		LOG.info("==-> START of the actual launch of our business logic... ");
+		
 		DataDiver.entryPoint(FinalOptions);
-		// it took long ;)
+		// it will take long ;)
 		
 		long duration = (System.nanoTime() - FinalOptions.getStartTime());
 		LOG.info("<<<<<<< " + "The Epoch lasted: "
