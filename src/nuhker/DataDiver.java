@@ -93,11 +93,11 @@ public class DataDiver {
 		long thousand = 1000;
 		long runTimeSoFar = (nowTime - Current.getStartTime());
 		long remainedSecs= (Current.getMaxTimeToRunBeforeKilled() / thousand - (runTimeSoFar / billion));
-		LOG.finer(TAB + TAB + TAB + "Runtime so far: " + (runTimeSoFar / billion)+ " sec(s); remained: "  + (remainedSecs) + " sec(s) until killed.");
+		LOG.finer(TAB + TAB + TAB + "Runtime so far: " + (runTimeSoFar / billion)+ " sec(s); remained: "  + (remainedSecs) + " sec(s) until must be killed.");
 		
 		if (0 > remainedSecs) {
 			Func.publicizeStatistics();
-			LOG.warning("==== TIMEOUT REACHED - End Forced ===");
+			LOG.warning("==== TIMEOUT REACHED - Program End Forced ===");
 			LOG.finer(TAB + "might be we attempt some houskeeping before that.");
 			System.exit(0);
 		}
