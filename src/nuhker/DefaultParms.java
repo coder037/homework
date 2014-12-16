@@ -22,15 +22,15 @@
 package nuhker;
 
 /**
- * This class keeps important runtime parameters that the business
- * logic has to consider at any time.
+ * This class keeps important runtime parameters that the business logic has to
+ * consider at any time.
  * 
- * The parameters are mostly set while parsing the CLI options, this
- * is described in CLIGrammar class.
+ * The parameters are mostly set while parsing the CLI options, this is
+ * described in CLIGrammar class.
  * 
- * Some of the parameters are later manipulated between recursion
- * levels by DataDiver.main method.
- *           
+ * Some of the parameters are later manipulated between recursion levels by
+ * DataDiver.main method.
+ * 
  * created: Dec 1, 2014 2:33:48 AM
  * 
  * @author coder037@xyz.ee
@@ -45,13 +45,13 @@ public class DefaultParms {
 
 	private int maxTimeToRunBeforeKilled = 80000000; // in milliseconds
 	private int minTimeBetweenGSBRequests = 2500; // in milliseconds
-	private int depthOfRecursion = 7; // How deep we intend to go?
-	private int currentLevelOfRecursion = 7; // How deep we are?
+	private int depthOfRecursion = 4; // How deep we intend to go?
+	private int currentLevelOfRecursion = 0; // How deep we are?
 
 	// using loglevels in concordance with the Level class
 	private String logLevel = "ALL";
 	private String countryCodeToWorkWith = "EE";
-	private String filenameForOutput = "output";
+	private String filenameForOutput = "out";
 	private String currentTarget = "";
 
 	// Auto-generated getters-setters by Eclipse.
@@ -120,7 +120,7 @@ public class DefaultParms {
 
 	// Generally not a way to generate the filenames :)
 	public String getFilenameForOutput() {
-		return (filenameForOutput + "-" + startTime + ".txt");
+		return (filenameForOutput + "-" + startTime);
 	}
 
 	public void setFilenameForOutput(String filenameForOutput) {
@@ -134,7 +134,5 @@ public class DefaultParms {
 	public void setCurrentTarget(String currentTarget) {
 		this.currentTarget = currentTarget;
 	}
-
-
 
 }

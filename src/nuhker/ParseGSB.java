@@ -48,23 +48,24 @@ public class ParseGSB {
 
 	private final static String TAB = "\t";
 	private final static String AS = "AS";
-	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
+			.getStackTrace()[0].getClassName());
 
 	/**
 	 * The method is axial to the whole package. The name of a network resource
 	 * is being checked against the Google SafeBrowsing Interface (a reputation
 	 * service).
 	 * 
-	 * @param target which reputation is to be checked could be 1 of 3: a
-	 *            FQDN (xyz.ee/) or URL (xyz.ee/X/) or ASN (AS:12345)
-	 * @return array containing references to the badness. Should be
-	 *         clear that this is not we inventing badness. This is what Google
-	 *         thinks.
+	 * @param target
+	 *            which reputation is to be checked could be 1 of 3: a FQDN
+	 *            (xyz.ee/) or URL (xyz.ee/X/) or ASN (AS:12345)
+	 * @return array containing references to the badness. Should be clear that
+	 *         this is not we inventing badness. This is what Google thinks.
 	 * 
 	 *         We are not too precise within this experiment, we are satisfied
 	 *         with the 90 last days precision offered.
-	 * @link doc/Parsing-GSB-sitepages-010.pdf for a much more thorough assessment of
-	 *      the topic.
+	 * @link doc/Parsing-GSB-sitepages-010.pdf for a much more thorough
+	 *       assessment of the topic.
 	 * @exception There
 	 *                are chances that Google will modify the page format. If
 	 *                so, hopefully this exception remembers us about the
@@ -75,47 +76,50 @@ public class ParseGSB {
 		String baseURL = "https://safebrowsing.google.com/safebrowsing/diagnostic?site=";
 		ArrayList<String> temporaryList = new ArrayList<String>();
 		boolean glitch = true;
-		
+
 		while (glitch) {
-		try {
-			String url = (baseURL + source);
-			LOG.finer("===+ START badReputation");
-			LOG.fine(TAB + "URL visited: " + url);
+			try {
+				String url = (baseURL + source);
+				LOG.finer("===+ START badReputation");
+				LOG.fine(TAB + "URL visited: " + url);
 
-			Document doc = Jsoup.connect(url).get();
-			Elements meaningfulSections = doc.select("a");
+				Document doc = Jsoup.connect(url).get();
+				Elements meaningfulSections = doc.select("a");
 
-			// Some chemical laundry for the elements we don't need
-			for (Element found : meaningfulSections) {
-				nameOfTheCandidate = found.text();
-				// System.out.println(workspace);
+				// Some chemical laundry for the elements we don't need
+				for (Element found : meaningfulSections) {
+					nameOfTheCandidate = found.text();
+					// System.out.println(workspace);
 
-				// Exclude promo targets
-				if (Func.isSensible(nameOfTheCandidate)) {
-					temporaryList.add(nameOfTheCandidate);
-					Func.doSomeBookkeepingOnThe(nameOfTheCandidate);
-				}
-			} // FOR
-			glitch = false; // i.e. it succeeded
-		} // TRY
-		catch (IOException ex) {
-			LOG.severe(TAB + "!WARNING!   A NETWORK glitch against GSB discovered!" + ex);
-			glitch = true;
-			LOG.warning(TAB + TAB + "timeout: Let the Net rest for next 15 secs.");
-			Func.delay(15000);
-		}
-		// Who likes Chopin, but I like String[] array returns
-		// much more than ArrayLists<>. Dancing between the datatypes
-		// should be considered as fuzzing because it eveal bugs. ;)
-	} //WHILE
-		
+					// Exclude promo targets
+					if (Func.isSensible(nameOfTheCandidate)) {
+						temporaryList.add(nameOfTheCandidate);
+						Func.doSomeBookkeepingOnThe(nameOfTheCandidate);
+					}
+				} // FOR
+				glitch = false; // i.e. it succeeded
+			} // TRY
+			catch (IOException ex) {
+				LOG.severe(TAB
+						+ "!WARNING!   A NETWORK glitch against GSB discovered!"
+						+ ex);
+				glitch = true;
+				LOG.warning(TAB + TAB
+						+ "timeout: Let the Net rest for next 15 secs.");
+				Func.delay(15000);
+			}
+			// Who likes Chopin, but I like String[] array returns
+			// much more than ArrayLists<>. Dancing between the datatypes
+			// should be considered as fuzzing because it eveal bugs. ;)
+		} // WHILE
+
 		int count = temporaryList.size();
 		String[] someTargets = new String[count];
 		someTargets = temporaryList.toArray(someTargets);
 
 		if (count == 0) {
 			LOG.finer("---= badReputation: $#%&€ ... no badness discovered under "
-							+ source);
+					+ source);
 		} else {
 			LOG.finer("---= badReputation: Normal business: badness count under "
 					+ source + " is " + count);

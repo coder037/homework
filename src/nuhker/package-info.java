@@ -19,7 +19,6 @@
  *  readers earn with the help of that code, things might be different.
  */
 
-
 /**
  * Nuhkima - is the Estonian verb "to covertly obtain intelligence".
  * Nuhker - is the tool doing so.
@@ -34,6 +33,6 @@
  * @created Nov 23, 2014 4:30:12 AM
  * @author coder037@xyz.ee
  * 
- 
+
  */
 package nuhker;

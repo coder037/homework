@@ -42,7 +42,6 @@ import joptsimple.OptionSet;
 
 import java.security.MessageDigest;
 
-
 /**
  * 
  * No multi-threading at all. This is the runnable class intended to be launched
@@ -59,24 +58,24 @@ public class Run {
 
 	private final static String VERSION = "0.8";
 	private final static String TAB = "\t";
-	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
-		
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
+			.getStackTrace()[0].getClassName());
+
 	// Here we first parse the argv line to be sure it is parsable nuff
 	/**
-	 * Depends on the jopt-simple library.
-	 * Take a copy of the CLIGrammar and then validate the actual
-	 * CLI options according to the grammar. No attempt is made
-	 * to understand the options - this is the preliminar pass.
+	 * Depends on the jopt-simple library. Take a copy of the CLIGrammar and
+	 * then validate the actual CLI options according to the grammar. No attempt
+	 * is made to understand the options - this is the preliminar pass.
 	 * 
-	 * If it seems to the library that options are correct and
-	 * adhere to the Grammar, then we return Boolean true,
-	 * otherwise false.
+	 * If it seems to the library that options are correct and adhere to the
+	 * Grammar, then we return Boolean true, otherwise false.
 	 * 
-	 * @param a copy of CLI option to be validated
+	 * @param a
+	 *            copy of CLI option to be validated
 	 * @return boolean decision whether the conformancy was true or false
 	 */
 	public static boolean checkConformity(String[] arguments) {
-		OptionSet args = null; 
+		OptionSet args = null;
 		OptionParser preParser = CLIGrammar.description();
 		LOG.info("   ===~ START: Option Conformity");
 
@@ -97,7 +96,7 @@ public class Run {
 			} else {
 				LOG.severe("PARSE ERROR discovered with UNEXPLAINED reason: ");
 				LOG.severe(TAB + e.getMessage());
-				
+
 			}
 			try {
 				LOG.info("Please check the command line options twice!");
@@ -106,7 +105,7 @@ public class Run {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 			// ==== END of foreign code
 			LOG.severe("ERROR: Non-conformant options. Bailout");
 			System.exit(78);
@@ -117,13 +116,10 @@ public class Run {
 		return true; // We reached this point, thus no bailout
 	}
 
-
-
-
 	/**
-	 * This is the utmost important method of the class.
-	 * CLI options are parsed by means of the jopt-simple library
-	 * and recorded into DefaultParms runTimeParms options.
+	 * This is the utmost important method of the class. CLI options are parsed
+	 * by means of the jopt-simple library and recorded into DefaultParms
+	 * runTimeParms options.
 	 * 
 	 * @param arguments
 	 *            to be parsed as options, taken straight from CLI
@@ -142,7 +138,6 @@ public class Run {
 
 		// Somewhat special options FIRST
 
-
 		if (cliOptions.has("help")) {
 			postParser.printHelpOn(System.out);
 			System.exit(0);
@@ -154,62 +149,58 @@ public class Run {
 		}
 
 		if (cliOptions.has("x")) {
-			LOG.warning(TAB
-					+ "Option x was found which isn't yet implemented.");
+			LOG.warning(TAB + "Option x was found which isn't yet implemented.");
 			LOG.info(TAB + TAB + "Anyway, thnx for supporting it!");
 		}
-		
+
 		if (cliOptions.has("c")) {
 			LOG.finest(TAB + "Option c was found");
 			String subOption = (String) cliOptions.valueOf("c");
-			if (CC.cc.isKosher(subOption)) {
-				LOG.info(TAB + TAB + "CountryCode is kosher: "
-						+ subOption);
+			if (EnumOf.cc.isKosher(subOption)) {
+				LOG.info(TAB + TAB + "CountryCode is kosher: " + subOption);
 				runTimeParms.setCountryCodeToWorkWith(subOption);
 			} else {
-				LOG.warning(TAB + TAB + "Man, I deeply doubt *"
-						+ subOption + "* is a CountryCode RIPE is aware of.");
+				LOG.warning(TAB + TAB + "Man, I deeply doubt *" + subOption
+						+ "* is a CountryCode RIPE is aware of.");
 				LOG.severe("BailOut");
 				System.exit(1);
 			}
-
-		}
+		} // option c
 
 		if (cliOptions.has("d")) {
 			LOG.finer(TAB + "Option d was found");
 			String subOption = String.valueOf(cliOptions.valueOf("d"));
-			LOG.finer(TAB + TAB + "and it had a suboption: "
-					+ subOption);
+			LOG.finer(TAB + TAB + "and it had a suboption: " + subOption);
 
-			if (Candidate.level.isKosher(subOption.toUpperCase())) {
-			// Set the global DebugLevel from here
-			LOG.severe(TAB + "Setting current loglevel value as: "
-					+ subOption );
-			runTimeParms.setLogLevel(subOption);
+			if (EnumOf.level.isKosher(subOption.toUpperCase())) {
+				// Set the global DebugLevel from here
+				LOG.severe(TAB + "Setting current loglevel value as: "
+						+ subOption);
+				runTimeParms.setLogLevel(subOption);
 			} else {
-				LOG.severe(TAB + "As a punishment for yelling |"
-						+ subOption + "|, debug level will be set to ||ALL||.");
+				LOG.severe(TAB + "As a punishment for yelling |" + subOption
+						+ "|, debug level will be set to ||ALL||.");
 				runTimeParms.setLogLevel("ALL");
 			}
-		} 
+		} // option d
+
 		// Special copyright routines
 
 		if (cliOptions.has("C")) {
 			LOG.fine(TAB
 					+ "Option C was called to expose the copyright message");
 			String Suboption = (String) cliOptions.valueOf("C");
-			LOG.finer(TAB + TAB + "and it had a sub-option: "
-					+ Suboption);
+			LOG.finer(TAB + TAB + "and it had a sub-option: " + Suboption);
 
 			LOG.warning(Func.checkTheAuthorship(Suboption));
 			LOG.warning(TAB
-							+ "###############################################################################");
+					+ "###############################################################################");
 			LOG.warning(TAB
-							+ "# Small portions of foreign copyleft noted as such in code, expressis verbis. #");
+					+ "# Small portions of foreign copyleft noted as such in code, expressis verbis. #");
 			LOG.warning(TAB
-							+ "###############################################################################");
+					+ "###############################################################################");
 			LOG.info(TAB + "===-) END of Option Parser (phase 1)");
-		}
+		} // option C
 
 		// More generic options (coefficients / parameters) to the runtime
 
@@ -217,67 +208,93 @@ public class Run {
 		if (cliOptions.has("M")) {
 			LOG.finer(TAB + "Option M was found");
 			String subOption = String.valueOf(cliOptions.valueOf("M"));
-			LOG.finest(TAB + TAB + "and it had a suboption: "
-					+ subOption);
-			LOG.finest(TAB + "Setting MaxRunTime value as: "
-					+ subOption + " secs.");
-			runTimeParms.setMaxTimeToRunBeforeKilled(Integer.parseInt(subOption) * 1000); // DONE!!!
+			LOG.finest(TAB + TAB + "and it had a suboption: " + subOption);
+			LOG.finest(TAB + "Setting MaxRunTime value as: " + subOption
+					+ " secs.");
+			runTimeParms.setMaxTimeToRunBeforeKilled(Integer
+					.parseInt(subOption) * 1000); // DONE!!!
 			LOG.fine(TAB + "Have set MaxRunTime value as: "
 					+ runTimeParms.getMaxTimeToRunBeforeKilled() + " msecs.");
 			// Inspiration to convert by means of Integer.parseInt from reznic
 			// http://stackoverflow.com/questions/5585779/converting-string-to-int-in-java
-		}
+		} // option M
 
 		if (cliOptions.has("R")) {
 			LOG.fine(TAB + "Option R was found");
 			String subOption = String.valueOf(cliOptions.valueOf("R"));
-			LOG.finer(TAB + TAB + "and it had a suboption: "
-					+ subOption);
+			LOG.finer(TAB + TAB + "and it had a suboption: " + subOption);
 			// Set recursion max level
-			LOG.finer(TAB + "Setting Max Recursion depth as : "
-					+ subOption);
+			LOG.finer(TAB + "Setting Max Recursion depth as : " + subOption);
 			runTimeParms.setDepthOfRecursion(Integer.parseInt(subOption));
 			// Set relative level
-			LOG.finer(TAB
-					+ "Setting Current Recursion level the same: "
+			LOG.finer(TAB + "Setting Current Recursion level the same: "
 					+ subOption);
-			runTimeParms.setCurrentLevelOfRecursion(Integer.parseInt(subOption));
-
-		}
+			runTimeParms
+					.setCurrentLevelOfRecursion(Integer.parseInt(subOption));
+		} // option R
 
 		if (cliOptions.has("t")) {
 			LOG.fine(TAB + "Option t was found");
 			String subOption = String.valueOf(cliOptions.valueOf("t"));
-			LOG.finer(TAB + TAB + "and it had a suboption: "
-					+ subOption);
+			LOG.finer(TAB + TAB + "and it had a suboption: " + subOption);
 			// set timeout
-			LOG.finer(TAB + "Setting GSB mandatory timeout >=: "
-					+ subOption + " msec.");
-			runTimeParms.setMinTimeBetweenGSBRequests(Integer.parseInt(subOption));
-
-		}
+			LOG.finer(TAB + "Setting GSB mandatory timeout >=: " + subOption
+					+ " msec.");
+			runTimeParms.setMinTimeBetweenGSBRequests(Integer
+					.parseInt(subOption));
+		} // option t
 
 		if (cliOptions.has("o")) {
 			LOG.fine(TAB + "Option o was found");
 			String subOption = (String) cliOptions.valueOf("o");
-			LOG.finer(TAB + TAB + "and it had a suboption: "
-					+ subOption);
+			LOG.finer(TAB + TAB + "and it had a suboption: " + subOption);
 			// set filename
-			LOG.finer(TAB + "Setting Base Filename as requested: "
-					+ subOption);
+			LOG.finer(TAB + "Setting Base Filename as requested: " + subOption);
 			runTimeParms.setFilenameForOutput(subOption);
-		}
+		} // option o
 
 		LOG.info("      ===-) END of Option Parser, phase 2");
-		LOG.info(TAB
-				+ "options init DONE according to the CLI values.");
+		LOG.info(TAB + "options init DONE according to the CLI values.");
 		return runTimeParms;
 	}
 
+	public static void loggingBlock(DefaultParms values) {
+		// From this point on, the LOG output is correctly formatted
+		LOG.info(TAB + "=================================");
+		// printout of ACTUAL options
+		LOG.info(TAB + "~~~~~~~~ " + "Our Epoch started at: "
+				+ values.getStartTime());
+		LOG.warning(TAB + "Loglevel has been set on ||" + values.getLogLevel()
+				+ "|| level.");
+		LOG.fine(TAB + "We seek for Malwarized Sites in country: "
+				+ values.getCountryCodeToWorkWith());
+		LOG.fine(TAB + "Recursion depth has been limited to: "
+				+ values.getDepthOfRecursion());
+		LOG.fine(TAB + "Time allocated for the run is: "
+				+ values.getMaxTimeToRunBeforeKilled() + " millisecs");
+		LOG.fine(TAB + "START:     NanoSec Epoch Time was: "
+				+ values.getStartTime());
+		LOG.fine(TAB
+				+ " prediction: we will kill ourselves at: "
+				+ (values.getStartTime() + values.getMaxTimeToRunBeforeKilled()));
+		LOG.fine(TAB + "Guard time between any other GSB request is: "
+				+ values.getMinTimeBetweenGSBRequests() + " millisecs");
+		LOG.fine(TAB + "FILENAME for the output: "
+				+ values.getFilenameForOutput());
+
+		LOG.info(TAB
+				+ "All options are considered now. Forcing them downstairs");
+		values.setCurrentTarget(values.getCountryCodeToWorkWith());
+		LOG.info(TAB + "Launching DataDiver for the constituency: "
+				+ values.getCurrentTarget());
+
+	}
+
 	/**
-	 * The main routine Takes CLI options from the command line argv and passes
-	 * these. Has some commented out Strings to simulate and debug various CLI
-	 * options.
+	 * The main routine parses CLI options from the command line argv and sets
+	 * the running options according these.
+	 * 
+	 * Some simulated CLI option examples are left commented out.
 	 * 
 	 * @param argv
 	 *            CLI options passed to other methods
@@ -286,76 +303,47 @@ public class Run {
 	 */
 	public static void main(String[] argv) throws Exception {
 		long firstVariable = System.nanoTime();
-		
-		LOG.config("   0--------={Start}=--------0");
-		
-		// CLI alternatives for Eclipse simulation
-//		String[] simulation1 = { "--country", "EE", "--copyright", "Some Name",
-//				"--xtra", "-o", "output", "-R", "15", "-t", "2500", "-d", "FINEST",
-//				"-M", "43200" };
-//		String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000", "-n",
-//				"-o", "somefilename-001", "-R", "6", "-t", "2800" };
-//		String[] simulation3 = { "--help" };
-		String[] effectiveOptions = argv;
 
-	
+		LOG.config("   0--------={Start}=--------0");
+
+		// CLI alternatives for Eclipse simulation
+		// String[] simulation1 = { "--country", "EE", "--copyright",
+		// "Some Name",
+		// "--xtra", "-o", "output", "-R", "15", "-t", "2500", "-d", "FINEST",
+		// "-M", "43200" };
+		// String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000", "-n",
+		// "-o", "somefilename-001", "-R", "6", "-t", "2800" };
+		// String[] simulation3 = { "--help" };
+		String[] effectiveOptions = argv; // or some simulation
+
 		LOG.severe("============= Starting M A I N ==============");
-		
+
 		// Formal check of command line options syntax
 		checkConformity(effectiveOptions); // Else bailout
 		LOG.info(TAB + "DONE:  Options conformity");
+
 		// Parse RIPE for that country
 		DefaultParms FinalOptions = parseContent(effectiveOptions);
 		FinalOptions.setStartTime(firstVariable); // Start our timer
-		
+
 		String loggingLevel = FinalOptions.getLogLevel();
 		LOG.severe(TAB + "Trying to set logging level to: " + loggingLevel);
-		
-		
-		if (Candidate.level.isKosher(loggingLevel)) {
+		if (EnumOf.level.isKosher(loggingLevel)) {
 			LogHandler.setUpOnce(loggingLevel);
-			LOG.severe(TAB + "The logging level now: ||" + FinalOptions.getLogLevel() + "||.");
+			LOG.severe(TAB + "The logging level now: ||"
+					+ FinalOptions.getLogLevel() + "||.");
 		}
-		
-		
-		// From this point on, the LOG output is correctly formatted
-		LOG.info(TAB + "=================================");
-		// printout of ACTUAL options		
-		LOG.info(TAB + "~~~~~~~~ " + "Our Epoch started at: "
-				+ FinalOptions.getStartTime());
-		LOG.warning(TAB + "Loglevel has been set on ||"
-				+ FinalOptions.getLogLevel() + "|| level.");
-		LOG.fine(TAB + "We seek for Malwarized Sites in country: "
-				+ FinalOptions.getCountryCodeToWorkWith());
-		LOG.fine(TAB + "Recursion depth has been limited to: "
-				+ FinalOptions.getDepthOfRecursion());
-		LOG.fine(TAB + "Time allocated for the run is: "
-				+ FinalOptions.getMaxTimeToRunBeforeKilled() + " millisecs");
-		LOG.fine(TAB + "Start UNIX nsec Epoch Time  was: "
-				+ FinalOptions.getStartTime());
-		LOG.fine(TAB
-				+ "Time prognosis until the END is: "
-				+ (FinalOptions.getStartTime() + FinalOptions
-						.getMaxTimeToRunBeforeKilled()));
-		LOG.fine(TAB
-				+ "Guard time between any other GSB request is: "
-				+ FinalOptions.getMinTimeBetweenGSBRequests() + " millisecs");
-		LOG.fine(TAB + "FILENAME for the output: "
-				+ FinalOptions.getFilenameForOutput());
-		
-		LOG.info(TAB +"All options are considered now. Forcing them downstairs");
-		FinalOptions.setCurrentTarget(FinalOptions.getCountryCodeToWorkWith());	
-		LOG.info(TAB + "Launching DataDiver for the constituency: "
-				+ FinalOptions.getCurrentTarget());
+		// From this point on, the LOG output should be correctly formatted
+		loggingBlock(FinalOptions);
 
 		LOG.info("==-> START of the actual launch of our business logic... ");
-		
 		DataDiver.entryPoint(FinalOptions);
-		// it will take long ;)
-		
+		// The recursive grabber will work long ;)
+
+		// End Statements
 		long duration = (System.nanoTime() - FinalOptions.getStartTime());
-		LOG.info("<<<<<<< " + "The Epoch lasted: "
-				+ (duration / 1000000000) + " secs.");
+		LOG.info("<<<<<<< " + "The Epoch lasted: " + (duration / 1000000000)
+				+ " secs.");
 		LOG.info("================  END of MAIN  ==========");
 		System.exit(0);
 	}

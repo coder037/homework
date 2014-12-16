@@ -48,9 +48,6 @@ public class Func {
 	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
 			.getStackTrace()[0].getClassName());
 
-
-
-	
 	/**
 	 * Method delay(long milliSeconds) introduces a couple of seconds delay
 	 * between the internet requests, not to overload the services used.
@@ -65,7 +62,8 @@ public class Func {
 		LOG.finer(TAB + "variateTheTime");
 		LOG.finest("Basetime: " + base);
 		Random generator = new Random();
-		// ToDo: Actually we should go to float and multiply the base to margin where margin is 1.5.
+		// ToDo: Actually we should go to float and multiply the base to margin
+		// where margin is 1.5.
 		int empiricTambovConstant = 1800;
 		int value = generator.nextInt(empiricTambovConstant);
 		LOG.finest("Random Value: " + value);
@@ -117,7 +115,7 @@ public class Func {
 			}
 		} // FOR
 		if (!thisIsCrap) {
-		LOG.finer(TAB + "---<" + suspect + " is a Sensible Candidate");
+			LOG.finer(TAB + "---<" + suspect + " is a Sensible Candidate");
 		}
 		whetherToKeep = !thisIsCrap; // ;) 3x
 		return whetherToKeep;
@@ -126,22 +124,22 @@ public class Func {
 	public static void doSomeBookkeepingOnThe(String suspect) {
 		// ArrayList<String> validSites = new ArrayList<String>();
 		String verdict = Func.whatIsIt(suspect);
-		
+
 		// WARNIG - a NOGO - AS AS AS AS
 		if (verdict.equals(AS)) {
 			// It is an AS and should go to that Arraylist
 			LOG.finer(TAB + "AS info found: " + suspect);
 
 		} else {
-			
-			if (verdict.equals("URL")) {
-			// it is an URL and should go to THIS ArrayList
-			LOG.finer(TAB + "Malsite found: " + suspect);
 
-		} else {
-			// it is numeric ipv4
-			LOG.finer(TAB + "IPV4 Malsite : " + suspect);
-		}
+			if (verdict.equals("URL")) {
+				// it is an URL and should go to THIS ArrayList
+				LOG.finer(TAB + "Malsite found: " + suspect);
+
+			} else {
+				// it is numeric ipv4
+				LOG.finer(TAB + "IPV4 Malsite : " + suspect);
+			}
 		}
 		// ToDo: there exist a rare case when the suspect is numeric,
 		// probably should it be reverse-resolved or compared
@@ -172,80 +170,83 @@ public class Func {
 	// return destination;
 	// }
 
-	
-	
 	/**
-	 * An especially freaky regexp method to distinguish between AS name,
-	 * an URL/FQDN and (last but not least) an IPv4 address. No hopes
-	 * that no errors. This is RegExp.
+	 * An especially freaky regexp method to distinguish between AS name, an
+	 * URL/FQDN and (last but not least) an IPv4 address. No hopes that no
+	 * errors. This is RegExp.
 	 * 
-	 * DataDiver is using our decision to work properly with each
-	 * of these categories.
-	 * We expect following data:
-	 *    - AS29024 (BALLOU-AS) -> AS
-	 *    - bjornsweden.com/ -> URL
-	 *    - facebook.com/NASDAQOMXStockholm/ - URL
-	 *    - 192.168.2.0/whatever/ -> IPV4
+	 * DataDiver is using our decision to work properly with each of these
+	 * categories. We expect following data: - AS29024 (BALLOU-AS) -> AS -
+	 * bjornsweden.com/ -> URL - facebook.com/NASDAQOMXStockholm/ - URL -
+	 * 192.168.2.0/whatever/ -> IPV4
 	 * 
-	 * @param candidate to check
+	 * @param candidate
+	 *            to check
 	 * @return the decision - choice of 3 or ERROR
 	 */
 	static String whatIsIt(String candidate) {
 		String decision = "ERROR";
 		String workspace = "";
-		String pattern = ""; 
+		String pattern = "";
 		LOG.finer(TAB + "whatIsIt START");
-		
+
 		LOG.fine(TAB + TAB + "SRC: |" + candidate + "|.");
 		// Pattern: Caret , AS
 		// Bastard AS55592 has no description ;)
 		if (candidate.matches("^AS\\d+.*")) {
-			
-//		}
-//		workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1$2");
-//		workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1$2");
-//		// workspace = candidate.replaceAll("(^AS)(\\d+)", "$1"); // and possibly no (Description)
-//		pattern = ( AS );
-//		LOG.fine(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
-//		if (pattern.equals(workspace))
-//		{
-			decision = ( AS ) ;
+
+			// }
+			// workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1$2");
+			// workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1$2");
+			// // workspace = candidate.replaceAll("(^AS)(\\d+)", "$1"); // and
+			// possibly no (Description)
+			// pattern = ( AS );
+			// LOG.fine(TAB + TAB + "MID: |" + workspace + "| and |" + pattern +
+			// "|.");
+			// if (pattern.equals(workspace))
+			// {
+			decision = (AS);
 			LOG.finest(TAB + TAB + " chosen: " + decision);
-			
+
 		}
-		
+
 		// URL or IPV4?
-		
+
 		// Pattern Beginning, Decimal.dotted.IP , Slash
 		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
-		workspace = candidate.replaceAll("(^\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\/)(\\/*$)", "$2$4$6$8");
-		pattern = ".../"; // Disregard numbers - 3 dots and slash 
-		LOG.finest(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
+		workspace = candidate.replaceAll(
+				"(^\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\.)(\\d+)(\\/)(\\/*$)",
+				"$2$4$6$8");
+		pattern = ".../"; // Disregard numbers - 3 dots and slash
+		LOG.finest(TAB + TAB + "MID: |" + workspace + "| and |" + pattern
+				+ "|.");
 		if (pattern.equals(workspace)) {
 			decision = "IPV4";
 			LOG.finest(TAB + TAB + " chosen: " + decision);
 		} else {
-				
-		// Pattern Caret, Whatever, Slash+END
-		LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
-		workspace = candidate.replaceAll("(^)(.*)(\\/$)", "$3");
-		pattern = "/";
-		LOG.finest(TAB + TAB + "MID: |" + workspace + "| and |" + pattern + "|.");
-		if (pattern.equals(workspace)) {
-			decision = "URL";
-			LOG.finest(TAB + TAB + " chosen: " + decision);
+
+			// Pattern Caret, Whatever, Slash+END
+			LOG.finest(TAB + TAB + "SRC: |" + candidate + "|.");
+			workspace = candidate.replaceAll("(^)(.*)(\\/$)", "$3");
+			pattern = "/";
+			LOG.finest(TAB + TAB + "MID: |" + workspace + "| and |" + pattern
+					+ "|.");
+			if (pattern.equals(workspace)) {
+				decision = "URL";
+				LOG.finest(TAB + TAB + " chosen: " + decision);
+			}
+
 		}
-		
-	}
 		// TEMPORARY THINGY to check the validity of the IPv4 pattern:
 		if (decision.equals("ERROR")) {
-			LOG.severe(TAB + "---+---+---+---> whatIsIt made decision=" + decision + " for target " + candidate);
+			LOG.severe(TAB + "---+---+---+---> whatIsIt made decision="
+					+ decision + " for target " + candidate);
 			System.exit(1);
 		}
 		LOG.finer(TAB + "---+---+---+---> whatIsIt decision=" + decision);
 		return decision;
 	}
-	
+
 	/**
 	 * The method does the conversion from int ASN to a Google preferred
 	 * AS:12345 format
@@ -315,23 +316,23 @@ public class Func {
 	public static void publicizeStatistics() {
 
 		LOG.info("===---===---===---===---===---> knownSites        COUNT: "
-				+ DBze.knownSites.size() + " records");
-		
+				+ DBface.knownSites.size() + " records");
+
 		LOG.info("===---===---===---===---===---> knownDomains      COUNT: "
-				+ DBze.knownDomains.size() + " records");
-		
+				+ DBface.knownDomains.size() + " records");
+
 		LOG.info("===---===---===---===---===---> DomainsInCC       COUNT: "
-				+ DBze.knownDomainsInCC.size() + " records");
-		
+				+ DBface.knownDomainsInCC.size() + " records");
+
 		LOG.info("===---===---===---===---===---> knownASNs         COUNT: "
-				+ DBze.knownASNs.size() + " records");
+				+ DBface.knownASNs.size() + " records");
 		// Can only be done if a separate array of CC ASNs exist
-//		LOG.info("===---===---===---===---===---> knownASNsInCC     COUNT: "
-//				+ DBze.knownASNsInCC.size() + " records");
+		// LOG.info("===---===---===---===---===---> knownASNsInCC     COUNT: "
+		// + DBze.knownASNsInCC.size() + " records");
 
 		LOG.info("===---===---===---===---===---> knownNumericSites COUNT: "
-				+ DBze.knownNumericSites.size() + " records");
-		
+				+ DBface.knownNumericSites.size() + " records");
+
 		return;
 	}
 

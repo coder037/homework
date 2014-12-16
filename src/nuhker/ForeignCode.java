@@ -14,8 +14,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
 
 /**
- * Foreign code is kept in this Class, i.e. the code whose authors
- * are not precisely known. This is to mitigate the plagiate risk.
+ * Foreign code is kept in this Class, i.e. the code whose authors are not
+ * precisely known. This is to mitigate the plagiate risk.
  * 
  * @author various sources
  * 
@@ -23,23 +23,26 @@ import java.util.logging.Logger;
 public class ForeignCode {
 
 	private final static String TAB = "\t";
-	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
-	
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
+			.getStackTrace()[0].getClassName());
+
 	/**
-	 * This is the web downloader of a specific purpose.
-	 *     NB! The code has been put into a separate subroutine
-	 *     because of it contains lines with SOMEBODY's copyright.
+	 * This is the web downloader of a specific purpose. NB! The code has been
+	 * put into a separate subroutine because of it contains lines with
+	 * SOMEBODY's copyright.
 	 * 
-	 * However, because of no responsibility, it is nice to play
-	 * with a truckload of try/catch blocks.
+	 * However, because of no responsibility, it is nice to play with a
+	 * truckload of try/catch blocks.
 	 * 
-	 * Authors are unknown. The code represents an industry standard
-	 * example represented in many textbooks. And ... some lines of
-	 * the code are mine, is this too risky to claim?
+	 * Authors are unknown. The code represents an industry standard example
+	 * represented in many textbooks. And ... some lines of the code are mine,
+	 * is this too risky to claim?
 	 * 
-	 * @param urlToDL download link at RIPE
+	 * @param urlToDL
+	 *            download link at RIPE
 	 * @return byteArray[] to further convert into a String
-	 * @throws IOException if socket transfer to/from the RIPE failed
+	 * @throws IOException
+	 *             if socket transfer to/from the RIPE failed
 	 */
 	public static byte[] downLoader(String urlToDL) {
 		byte[] byteArray = null;
@@ -58,8 +61,7 @@ public class ForeignCode {
 		// input comes from here:
 		InputStream networkSource = null;
 		try {
-			networkSource = new BufferedInputStream(
-					urlToVisit.openStream());
+			networkSource = new BufferedInputStream(urlToVisit.openStream());
 		} catch (IOException e) {
 			LOG.severe("Some error happened trying to contact RIPE server" + e);
 			e.printStackTrace();
@@ -80,19 +82,22 @@ public class ForeignCode {
 				httpResult.write(queueBuffer, 0, n);
 			}
 		} catch (IOException e) {
-			LOG.severe("You only see this message when the network to RIPE is down" +e);
+			LOG.severe("You only see this message when the network to RIPE is down"
+					+ e);
 			e.printStackTrace();
 		}
 		try {
 			httpResult.close();
 		} catch (IOException e) {
-			LOG.warning("Wow! I was able to open the Byte Stream but not to close it" + e);
+			LOG.warning("Wow! I was able to open the Byte Stream but not to close it"
+					+ e);
 			e.printStackTrace();
 		}
 		try {
 			networkSource.close();
 		} catch (IOException e) {
-			LOG.severe("Copying a ByteStream to the ResultArray[] failed miserably" + e);
+			LOG.severe("Copying a ByteStream to the ResultArray[] failed miserably"
+					+ e);
 			e.printStackTrace();
 		}
 		byteArray = httpResult.toByteArray();
@@ -100,7 +105,6 @@ public class ForeignCode {
 		// END of the FOREIGN COPYRIGHT WARNING
 		return byteArray;
 	}
-	
 
 	/**
 	 * Because the general warning by NSA is - never make crypto at home - I
@@ -118,16 +122,17 @@ public class ForeignCode {
 	public static String calculateHash(String argument) {
 		String digest = null;
 		LOG.fine(TAB + "==- Calculating the hash.");
-		
+
 		MessageDigest hash = null;
 		try {
 			hash = MessageDigest.getInstance("SHA-512");
 		} catch (NoSuchAlgorithmException e) {
-			LOG.severe(TAB + "Calulation of the hash did not succeed" );
+			LOG.severe(TAB + "Calulation of the hash did not succeed");
 			e.printStackTrace();
 		}
-		
-		// ### WARNING: NEXT 10 lines of code mostly are of SOMEBODY'S ELSE authorship:
+
+		// ### WARNING: NEXT 10 lines of code mostly are of SOMEBODY'S ELSE
+		// authorship:
 		// Inspiration:
 		// http://stackoverflow.com/questions/3103652/hash-string-via-sha-256-in-java
 		byte[] sha512bytes = hash.digest(argument.getBytes());

@@ -21,8 +21,6 @@
 
 package nuhker;
 
-
-
 // Inspiration sources:
 //    API PRINCIPLES: https://stat.ripe.net/docs/data_api
 //    Inspiration: http://runnable.com/Uu83dm5vSScIAACw/download-a-file-from-the-web-for-java-files-and-save
@@ -50,9 +48,8 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * The ParseRIPE class is to raise an argument against RIPE
- * public interface to return the constituency (extent of IP
- * networks) of a country.
+ * The ParseRIPE class is to raise an argument against RIPE public interface to
+ * return the constituency (extent of IP networks) of a country.
  * 
  * @created Nov 26, 2014 11:18:09 PM
  * @author coder037@xyz.ee
@@ -60,23 +57,24 @@ import java.util.logging.Logger;
 public class ParseRIPE {
 	// Some like Chopin, me like constants.
 	private final static String TAB = "\t";
-	private static final Logger LOG = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName() );
-
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
+			.getStackTrace()[0].getClassName());
 
 	/**
-	 * This is the wrapper method around downLoader method.
-	 * It basically does nothing except converting byte[] array
-	 * into a String
+	 * This is the wrapper method around downLoader method. It basically does
+	 * nothing except converting byte[] array into a String
 	 * 
-	 * @param countryCode - two letter ISO 3166-1 code
-	 * @return String with the constituency extent of that particular country described
+	 * @param countryCode
+	 *            - two letter ISO 3166-1 code
+	 * @return String with the constituency extent of that particular country
+	 *         described
 	 * @throws IOException
 	 */
 	public static String grabCountryDescription(String countryCode)
 			throws IOException {
 		String jsonDataObtained = "{\"status\": \"not OK\"}";
 		LOG.fine(TAB + "START of grabCountryDescription(" + countryCode + ").");
-		
+
 		// 1. Form the URL we plan to grab and parse
 		String parameterToURL = countryCode.toLowerCase();
 		String QueryBaseLink = "https://stat.ripe.net/data/country-resource-list/data.json?resource=";
@@ -86,33 +84,34 @@ public class ParseRIPE {
 		byte[] response = ForeignCode.downLoader(fullUrl);
 		LOG.finer(TAB + "Chars in the array: " + response.length);
 		jsonDataObtained = new String(response);
-		
+
 		// WARNING! Is it safe to convert use hyperLONG Strings?
 		// (danger of eventual linesize limits).
 		// Results approx 10kchars in case of EE
-		LOG.fine(TAB + "RETURN from grabCountryDescription(" + countryCode + ").");
+		LOG.fine(TAB + "RETURN from grabCountryDescription(" + countryCode
+				+ ").");
 		LOG.finest(TAB + TAB + "with BlobString: " + jsonDataObtained);
 		return jsonDataObtained;
 	}
 
 	/**
-	 * This is the most important method of the class.
-	 * It takes the description of a country's Internet obtained from
-	 * RIPE and parses it into a usable form.
+	 * This is the most important method of the class. It takes the description
+	 * of a country's Internet obtained from RIPE and parses it into a usable
+	 * form.
 	 * 
 	 * Depends on external json-simple library.
 	 * 
-	 * Currently we only use AS numbers out of the RIPE description.
-	 * There are yet IPv4 and IPv6 lists available
-	 * which we are currently not interested.
+	 * Currently we only use AS numbers out of the RIPE description. There are
+	 * yet IPv4 and IPv6 lists available which we are currently not interested.
 	 * 
-	 * @param jsonedASNList - A JSONPArser object with data structures
-	 * @return String[] array with all ASNs (int) nicely listed 
+	 * @param jsonedASNList
+	 *            - A JSONPArser object with data structures
+	 * @return String[] array with all ASNs (int) nicely listed
 	 */
 	public static String[] asnJsonParser(String jsonedASNList) {
 		String[] arrayedASNList = null;
 		LOG.fine("===~ STARTing RIPE parsing method.");
-		
+
 		// We parse a 3-level json hierarchy here
 		// and obtain asn names from the 4-th level
 
@@ -135,8 +134,7 @@ public class ParseRIPE {
 			JSONObject jsonObject2 = (JSONObject) midObject;
 
 			String timeValue = (String) jsonObject2.get("query_time");
-			LOG.finer(TAB + "Data claimed valid at: "
-					+ timeValue);
+			LOG.finer(TAB + "Data claimed valid at: " + timeValue);
 
 			// Hierarchy Level 3 - ASN record list from "resources"
 			Object innerObject = (jsonObject2.get("resources"));
@@ -164,17 +162,19 @@ public class ParseRIPE {
 		}
 
 		return arrayedASNList;
-	} // METHOD// 
+	} // METHOD//
 
-	
 	// ===========================================
 	// Main method is intended for debugging only.
-	
+
 	/**
-	 * Main method has been kept to enable simple debugging.
-	 * No actual use, other classes do not call this.
-	 * @param args not used
-	 * @throws IOException actually ignored :)
+	 * Main method has been kept to enable simple debugging. No actual use,
+	 * other classes do not call this.
+	 * 
+	 * @param args
+	 *            not used
+	 * @throws IOException
+	 *             actually ignored :)
 	 */
 	public static void main(String[] args) throws IOException {
 

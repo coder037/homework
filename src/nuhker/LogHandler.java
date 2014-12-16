@@ -38,60 +38,58 @@ import java.util.logging.Logger;
  * @author coder037@xyz.ee
  */
 public class LogHandler {
-	
-private static final Logger LOG = Logger.getLogger(Thread.currentThread()
-		.getStackTrace()[0].getClassName());
-private final static String TAB = "\t";
 
-public static void setUpOnce(String logLevel) {
-	logLevel = logLevel.toUpperCase(); 
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
+			.getStackTrace()[0].getClassName());
+	private final static String TAB = "\t";
 
-	// Set LOGGER level first, handlers' levels later
-	LOG.setLevel(Level.parse(logLevel));
-	
-	Handler consoleHandler = null;
-	Handler fileHandler = null;
+	public static void setUpOnce(String logLevel) {
+		logLevel = logLevel.toUpperCase();
 
-	try {
-		SyslogLikeFormatter humanWay = new SyslogLikeFormatter();
+		// Set LOGGER level first, handlers' levels later
+		LOG.setLevel(Level.parse(logLevel));
 
-		// Creating consoleHandler
-		consoleHandler = new ConsoleHandler();
-		consoleHandler.setFormatter(humanWay);
-		
-		// binding handler to our LOGGER object
-		LOG.addHandler(consoleHandler);
-		// Setting loglevel for this particular handler
-		LOG.severe(" The loglevel should be: " + logLevel);
-		// consoleHandler.setLevel(Level.parse(logLevel));
-		consoleHandler.setLevel(Level.FINER);
-		Level such = consoleHandler.getLevel();
-		String currentLevel = such.toString();
-		LOG.severe(" The loglevel actually is: " + currentLevel);
+		Handler consoleHandler = null;
+		Handler fileHandler = null;
 
-		// Creating  fileHandler
-		fileHandler = new FileHandler("./temporary.log");
-		// Assigning handler to our LOGGER object
-		LOG.addHandler(fileHandler);
-		// Setting loglevels to this particular handler
-		fileHandler.setLevel(Level.ALL);
+		try {
+			SyslogLikeFormatter humanWay = new SyslogLikeFormatter();
 
+			// Creating consoleHandler
+			consoleHandler = new ConsoleHandler();
+			consoleHandler.setFormatter(humanWay);
 
-		
-		LOG.setUseParentHandlers(false);
-		LOG.config(" Parent logger HAS BEEN SUSPENDED for esthetical reasons");
-		LOG.config(TAB
-				+ "do manually switch over to the DEBUG mode to see more");
-		// final Statements
-		LOG.config(" Logger configuration done.");
-		String loggerName = LOG.getName();
-		LOG.info("   Logger Name is : " + loggerName);
+			// binding handler to our LOGGER object
+			LOG.addHandler(consoleHandler);
+			// Setting loglevel for this particular handler
+			LOG.severe(" The loglevel should be: " + logLevel);
+			// consoleHandler.setLevel(Level.parse(logLevel));
+			consoleHandler.setLevel(Level.FINER);
+			Level such = consoleHandler.getLevel();
+			String currentLevel = such.toString();
+			LOG.severe(" The loglevel actually is: " + currentLevel);
+
+			// Creating fileHandler
+			fileHandler = new FileHandler("./temporary.log");
+			// Assigning handler to our LOGGER object
+			LOG.addHandler(fileHandler);
+			// Setting loglevels to this particular handler
+			fileHandler.setLevel(Level.ALL);
+
+			LOG.setUseParentHandlers(false);
+			LOG.config(" Parent logger HAS BEEN SUSPENDED for esthetical reasons");
+			LOG.config(TAB
+					+ "do manually switch over to the DEBUG mode to see more");
+			// final Statements
+			LOG.config(" Logger configuration done.");
+			String loggerName = LOG.getName();
+			LOG.info("   Logger Name is : " + loggerName);
+		}
+		// Should never happen but who knows
+		catch (IOException ex) {
+			LOG.log(Level.SEVERE,
+					"Some ERROR occured in FileHandler or (less likely, in Consolehandler).",
+					ex);
+		}
 	}
-	// Should never happen but who know
-	catch (IOException ex) {
-		LOG.log(Level.SEVERE,
-				"Some ERROR occured in FileHandler or (less likely, in Consolehandler).",
-				ex);
-	}
-}
 }
