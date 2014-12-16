@@ -175,22 +175,19 @@ public class Run {
 
 		}
 
-
-
 		if (cliOptions.has("d")) {
 			LOG.finer(TAB + "Option d was found");
 			String subOption = String.valueOf(cliOptions.valueOf("d"));
 			LOG.finer(TAB + TAB + "and it had a suboption: "
 					+ subOption);
-			
-			if (Candidate.level.isKosher(subOption)) {
+
+			if (Candidate.level.isKosher(subOption.toUpperCase())) {
 			// Set the global DebugLevel from here
-			LOG.finer(TAB + "Setting current loglevel value as: "
+			LOG.severe(TAB + "Setting current loglevel value as: "
 					+ subOption );
 			runTimeParms.setLogLevel(subOption);
-			// =========== BUT HOW TO REALLY SET IT ?
 			} else {
-				LOG.severe(TAB + "As a punishment for |"
+				LOG.severe(TAB + "As a punishment for yelling |"
 						+ subOption + "|, debug level will be set to ||ALL||.");
 				runTimeParms.setLogLevel("ALL");
 			}
