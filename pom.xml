@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ee.xyz</groupId>
   <artifactId>homework</artifactId>
-  <version>0.0.2</version>
+  <version>0.8</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
@@ -18,7 +18,7 @@
   		<artifactId>maven-assembly-plugin</artifactId>
   		<configuration>
     			<archive>
-      				<manifest><mainClass>nuhker.Run.main</mainClass></manifest>
+      				<manifest><mainClass>nuhker.Run</mainClass></manifest>
     			</archive>
     			<descriptorRefs><descriptorRef>jar-with-dependencies</descriptorRef></descriptorRefs>
   		</configuration>
