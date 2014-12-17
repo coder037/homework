@@ -175,7 +175,7 @@ public class Run {
 				// Set the global DebugLevel from here
 				LOG.severe(TAB + "Setting current loglevel value as: "
 						+ subOption);
-				runTimeParms.setLogLevel(subOption);
+				runTimeParms.setLogLevel(subOption.toUpperCase());
 			} else {
 				LOG.severe(TAB + "As a punishment for yelling |" + subOption
 						+ "|, debug level will be set to ||ALL||.");
@@ -188,10 +188,10 @@ public class Run {
 		if (cliOptions.has("C")) {
 			LOG.fine(TAB
 					+ "Option C was called to expose the copyright message");
-			String Suboption = (String) cliOptions.valueOf("C");
-			LOG.finer(TAB + TAB + "and it had a sub-option: " + Suboption);
+			String subOption = (String) cliOptions.valueOf("C");
+			LOG.finer(TAB + TAB + "and it had a sub-option: " + subOption);
 
-			LOG.warning(Func.checkTheAuthorship(Suboption));
+			LOG.warning(Func.checkTheAuthorship(subOption));
 			LOG.warning(TAB
 					+ "###############################################################################");
 			LOG.warning(TAB
@@ -321,25 +321,25 @@ public class Run {
 		LOG.info(TAB + "DONE:  Options conformity");
 
 		// Parse RIPE for that country
-		DefaultParms FinalOptions = parseContent(effectiveOptions);
-		FinalOptions.setStartTime(firstVariable); // Start our timer
+		DefaultParms finalOptions = parseContent(effectiveOptions);
+		finalOptions.setStartTime(firstVariable); // Start our timer
 
-		String loggingLevel = FinalOptions.getLogLevel();
+		String loggingLevel = finalOptions.getLogLevel();
 		LOG.severe(TAB + "Trying to set logging level to: " + loggingLevel);
 		if (EnumOf.level.isKosher(loggingLevel)) {
 			LogHandler.setUpOnce(loggingLevel);
 			LOG.severe(TAB + "The logging level now: ||"
-					+ FinalOptions.getLogLevel() + "||.");
+					+ finalOptions.getLogLevel() + "||.");
 		}
 		// From this point on, the LOG output should be correctly formatted
-		loggingBlock(FinalOptions);
+		loggingBlock(finalOptions);
 
 		LOG.info("==-> START of the actual launch of our business logic... ");
-		DataDiver.entryPoint(FinalOptions);
+		DataDiver.entryPoint(finalOptions);
 		// The recursive grabber will work long ;)
 
 		// End Statements
-		long duration = (System.nanoTime() - FinalOptions.getStartTime());
+		long duration = (System.nanoTime() - finalOptions.getStartTime());
 		LOG.info("<<<<<<< " + "The Epoch lasted: " + (duration / 1000000000)
 				+ " secs.");
 		LOG.info("================  END of MAIN  ==========");
