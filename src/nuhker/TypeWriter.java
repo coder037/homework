@@ -22,50 +22,46 @@
 package nuhker;
 
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 /**
- * This class is NOT READY yet. Currently it does next to nothing. We consider
- * whether OR NOT it should implement file logging interface. Reason: the code
- * working with files, usually has some foreign copyright
+ * The class handles some simpliest kind of the file logging.
  * 
  * created Dec 10, 2014 11:18:09 AM
+ * 
  * @author coder037@xyz.ee
+ * @param fileName
+ *            which file to append to, filenames are calculated by Accountant
+ *            class
+ * @param message
+ *            line which is to be appended to the logfile
  */
 public class TypeWriter {
-
-// Later?	private final static String TAB = "\t";
+	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
+			.getStackTrace()[0].getClassName());
 
 	/**
-	 * Still ToDo.
-	 * @param candidate
-	 *            - a message to be written into file
+	 * 
+	 * @param fileName
+	 *            - which file to append to; filenames are provided by
+	 *            Accountant class
+	 * @param message
+	 *            - the line to append to the file
+	 * @throws IOException
+	 *             - if appending to the file or creating the file was
+	 *             unsuccessful
 	 */
-	public static boolean isOfProperConstituency(String candidate) {
-		boolean returnValue = false;
-		// Regexp: Only pass if contains ".ee/" string
-
-		return returnValue;
-	}
-
-	// This is a non-threaded and very SIMPLE logger.
-
-	public static void main(String fileName, String lineToWrite) {
-
-		// DEBUG System.out.println("===-> Writing another line to " +
-		// fileName);
-		// DEBUG System.out.println(TAB + lineToWrite);
-		// try-catch
-		// DEBUG System.out.println("        succesfully.");
+	public static void main(String fileName, String message) throws IOException {
+		// Ideas: http://www.homeandlearn.co.uk/java/write_to_textfile.html
+		LOG.finest("===+ START FileWriter" + fileName + " to append the prey "
+				+ message);
+		boolean weAreAppending = true;
+		FileWriter write = new FileWriter(fileName, weAreAppending);
+		PrintWriter oneliner = new PrintWriter(write);
+		oneliner.printf("%s" + "%n", message);
+		oneliner.close();
 		return;
 	}
-
-	// Funny thing seen at a source. Should we use it elsewhere?
-	// SRC1: http://tutorials.jenkov.com/java-logging/logger.html
-	// SRC2: http://www.vogella.com/tutorials/Logging/article.html
-	// catch (IOException ex) {
-	// Logger.getLogger(ParseGSBReputation.class.getName()).log(
-	// Level.SEVERE, null, ex);
-
 }

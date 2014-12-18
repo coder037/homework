@@ -28,9 +28,9 @@ import java.util.ArrayList;
  * EXTERNAL (to classes) and GLOBAL (to the package) to be used from multiple
  * classes and through the multi level recursions.
  * 
- * ArrayList knownSites is the Global Database of targets found throughout the
- * recursive run. This way, we will not spend time asking for the reputation of
- * a site twice.
+ * ArrayList of knownSites is the Global Database for targets found
+ * throughout the recursive run. This way, we will not spend time
+ * asking for the reputation of a site twice.
  * 
  * However, a separate task is responsible for writing down (at FS level) the
  * data gathered, doing so right before the end.
@@ -39,9 +39,11 @@ import java.util.ArrayList;
  * @author coder037@xyz.ee
  * 
  */
-public interface DBface {
+public interface DbFace {
 
 	// Master list
+	ArrayList<String> initialASNs = new ArrayList<String>();
+	// A sub-subset of these in target constituency (option -c EE)
 	ArrayList<String> knownSites = new ArrayList<String>();
 	// Only URLs/FQDNs but not ASNs
 	ArrayList<String> knownDomains = new ArrayList<String>();
@@ -54,8 +56,11 @@ public interface DBface {
 	// Could be I am not lazy and will separate numerics:
 	ArrayList<String> knownNumericSites = new ArrayList<String>();
 
-	// Future deas: ArrayList of Structures
+	// Future ideas: ArrayList of Structures
 	// to count occurrencies of each
 	// and to get the statistics about the run.
+	//
+	// http://stackoverflow.com/questions/19337788/java-arraylist-of-multidimensional-arrays-or-arraylist-of-multidimensional-arr
+	
 
 }

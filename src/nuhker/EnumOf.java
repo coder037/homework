@@ -121,4 +121,38 @@ public class EnumOf {
 		}
 	} // ENUM
 
+	/**
+	 * Target sorting ontology - any of these is a kind of target we wish to
+	 * account.
+	 * 
+	 * @author coder037@xyz.ee
+	 * 
+	 */
+	public enum preyCodeWord {
+		InitialASN, Site, Domain, DomainCC, ASN, ASNCC, Numeric;
+
+		/**
+		 * Checking the prey code (a target discovered and need to be accounted
+		 * of).
+		 * 
+		 * @param candidate
+		 *            - a choice from 5 target categories
+		 * @return boolean value whether the code is known
+		 */
+		public static boolean isKosher(String candidate) {
+			LOG.info(TAB + TAB + "==- Prey Kosherness Check");
+			try {
+				cc.valueOf(candidate);
+				LOG.fine(TAB + TAB + "Prey code within the list");
+				return true;
+
+			} catch (Exception e) {
+				LOG.info(TAB + TAB + "An UNEXPECTED pray code.");
+				LOG.severe(TAB + TAB
+						+ "Prey code isKOsher returned a SURPRISE:" + candidate);
+				return false;
+			}
+
+		}
+	} // ENUM
 }

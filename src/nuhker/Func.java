@@ -290,7 +290,7 @@ public class Func {
 	 */
 	static String removeASDescr(String source) {
 		String cleanResult = source;
-		LOG.fine(TAB + "---> removeASDescr (" + source + ").");
+		LOG.fine(TAB + "---> removeASDescr |" + source + "|.");
 		LOG.finest(TAB + "---> SRC: " + source);
 		cleanResult = cleanResult.replaceAll("(\\d+)(\\s.*)", "$1");
 		LOG.finest(TAB + "---> MID: " + cleanResult);
@@ -303,34 +303,6 @@ public class Func {
 		LOG.finest(TAB + "---> FIN: " + cleanResult);
 		LOG.finer(TAB + "---< removeASDescr");
 		return cleanResult;
-	}
-
-	/**
-	 * The method will publicize some status data otherwise kept in the DBze.
-	 * E.g. we could call it before killing the program and elsewhere
-	 * 
-	 */
-	public static void publicizeStatistics() {
-
-		LOG.info("===---===---===---===---===---> knownSites        COUNT: "
-				+ DBface.knownSites.size() + " records");
-
-		LOG.info("===---===---===---===---===---> knownDomains      COUNT: "
-				+ DBface.knownDomains.size() + " records");
-
-		LOG.info("===---===---===---===---===---> DomainsInCC       COUNT: "
-				+ DBface.knownDomainsInCC.size() + " records");
-
-		LOG.info("===---===---===---===---===---> knownASNs         COUNT: "
-				+ DBface.knownASNs.size() + " records");
-		// Can only be done if a separate array of CC ASNs exist
-		// LOG.info("===---===---===---===---===---> knownASNsInCC     COUNT: "
-		// + DBze.knownASNsInCC.size() + " records");
-
-		LOG.info("===---===---===---===---===---> knownNumericSites COUNT: "
-				+ DBface.knownNumericSites.size() + " records");
-
-		return;
 	}
 
 	/**
