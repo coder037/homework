@@ -61,17 +61,17 @@ public class LogHandler {
 			// Setting loglevel for this particular handler
 			LOG.severe(" The loglevel should be: " + logLevel);
 			// consoleHandler.setLevel(Level.parse(logLevel));
-			consoleHandler.setLevel(Level.FINER);
+			consoleHandler.setLevel(Level.parse(logLevel));
 			Level such = consoleHandler.getLevel();
 			String currentLevel = such.toString();
 			LOG.severe(" The loglevel actually is: " + currentLevel);
 
 			// Creating fileHandler
-			fileHandler = new FileHandler("./temporary.log");
+			fileHandler = new FileHandler("./nuhker-DEBUG.xml");
 			// Assigning handler to our LOGGER object
 			LOG.addHandler(fileHandler);
 			// Setting loglevels to this particular handler
-			fileHandler.setLevel(Level.ALL);
+			fileHandler.setLevel(Level.parse(logLevel));
 
 			LOG.setUseParentHandlers(false);
 			LOG.config(" Parent logger HAS BEEN SUSPENDED for esthetical reasons");

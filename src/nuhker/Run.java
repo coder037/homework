@@ -306,14 +306,14 @@ public class Run {
 		LOG.config("   0--------={Start}=--------0");
 
 		// CLI alternatives for Eclipse simulation
-		String[] simulation1 = { "--country", "EE", "--copyright",
-		"Some Name", "--xtra", "-o", "output", "-R", "15",
-		"-t", "2500", "-d", "FINEST", "-M", "43200" };
+		// String[] simulation1 = { "--country", "EE", "--copyright",
+		// "Some Name", "--xtra", "-o", "output", "-R", "15",
+		// "-t", "2500", "-d", "FINEST", "-M", "43200" };
 		// String[] simulation2 = { "-c", "EE", "-d", "5", "-M", "80000",
 		// "-n", "-o", "somefilename-001", "-R", "6", "-t", "2800" };
 		// String[] simulation3 = { "--help" };
 		// String[] effectiveOptions = argv; // or simulation{1,2.3}
-		String[] effectiveOptions = simulation1;
+		String[] effectiveOptions = argv;
 		
 		LOG.severe("============= Starting M A I N ==============");
 

@@ -129,7 +129,7 @@ public class EnumOf {
 	 * 
 	 */
 	public enum preyCodeWord {
-		InitialASN, Site, Domain, DomainCC, ASN, ASNCC, Numeric;
+		InitialASN, AllSites, Domain, DomainCC, ASN, ASNCC, Numeric;
 
 		/**
 		 * Checking the prey code (a target discovered and need to be accounted

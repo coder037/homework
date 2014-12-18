@@ -85,7 +85,7 @@ public class Accountant {
 			// adding to Knownsites Database
 			DbFace.knownSites.add(prey);
 			// Also adding to knownsites FILE
-			fullFileName = (baseFileName + "-" + "Site" + fileSuffix);
+			fullFileName = (baseFileName + "-" + "AllSites" + fileSuffix);
 			LOG.fine("===---===---===---===---===---> knownSites        COUNT: "
 					+ DbFace.knownSites.size() + " records");
 			try {
