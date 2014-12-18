@@ -125,37 +125,37 @@ public class Accountant {
 		if (switchWord.equals("AllSites")) {
 			DbFace.knownSites.add(target);
 			LOG.fine(arrow + "AllSites          COUNT: "
-					+ (DbFace.knownSites.size() - 1) + " records");
+					+ DbFace.knownSites.size() + " records");
 		}
 		// DbFace.knownASNs.add(prey);
 		if (switchWord.equals("ASN")) {
 			DbFace.knownASNs.add(target);
 			LOG.fine(arrow + "knownASNs         COUNT: "
-					+ (DbFace.knownASNs.size() - 1) + " records");
+					+ DbFace.knownASNs.size() + " records");
 		}
 		// DbFace.knownASNsInCC.add(prey);
 		if (switchWord.equals("ASNCC")) {
 			DbFace.knownASNsInCC.add(target);
 			LOG.fine(arrow + "knownASNsinCC     COUNT: "
-					+ (DbFace.knownASNsInCC.size() - 1) + " records");
+					+ DbFace.knownASNsInCC.size() + " records");
 		}
 		// DbFace.knownDomains.add(prey);
 		if (switchWord.equals("Domain")) {
 			DbFace.knownDomains.add(target);
 			LOG.fine(arrow + "knownDomains      COUNT: "
-					+ (DbFace.knownDomains.size() - 1) + " records");
+					+ DbFace.knownDomains.size() + " records");
 		}
 		// DbFace.knownDomainsInCC.add(prey);
 		if (switchWord.equals("DomainCC")) {
 			DbFace.knownDomainsInCC.add(target);
 			LOG.fine(arrow + "knownDomainsInCC  COUNT: "
-					+ (DbFace.knownDomainsInCC.size() - 1) + " records");
+					+ DbFace.knownDomainsInCC.size() + " records");
 		}
 		// DbFace.knownNumericSites.add(prey);
 		if (switchWord.equals("Numeric")) {
 			DbFace.knownNumericSites.add(target);
 			LOG.fine(arrow + "knownNumericSites COUNT: "
-					+ (DbFace.knownNumericSites.size() - 1) + " records");
+					+ DbFace.knownNumericSites.size() + " records");
 		}
 
 		// Also adding the pray to the file
@@ -232,22 +232,22 @@ public class Accountant {
 	public static void publicizeStatistics() {
 		String arrow = "STAT--===---===---===---===---> ";
 		LOG.info(arrow + "AllSites          COUNT: "
-				+ (DbFace.knownSites.size() - 1) + " records");
+				+ DbFace.knownSites.size() + " records");
 
 		LOG.info(arrow + "knownDomains      COUNT: "
-				+ (DbFace.knownDomains.size() - 1) + " records");
+				+ DbFace.knownDomains.size() + " records");
 
 		LOG.info(arrow + "DomainsInCC       COUNT: "
-				+ (DbFace.knownDomainsInCC.size() - 1) + " records");
+				+ DbFace.knownDomainsInCC.size() + " records");
 
 		LOG.info(arrow + "knownASNs         COUNT: "
-				+ (DbFace.knownASNs.size() - 1) + " records");
+				+ DbFace.knownASNs.size() + " records");
 
 		LOG.info(arrow + "knownASNsInCC     COUNT: "
-				+ (DbFace.knownASNsInCC.size() - 1) + " records");
+				+ DbFace.knownASNsInCC.size() + " records");
 
 		LOG.info(arrow + "knownNumericSites COUNT: "
-				+ (DbFace.knownNumericSites.size() - 1) + " records");
+				+ DbFace.knownNumericSites.size() + " records");
 
 		return;
 	}
