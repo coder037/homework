@@ -43,15 +43,15 @@ public class LogHandler {
 	public static void setUpOnce(String logLevel) {
 		logLevel = logLevel.toUpperCase();
 
-		// Set LOGGER level first, handlers' levels later
-		LOG.setLevel(Level.parse(logLevel));
-
 		Handler consoleHandler = null;
 		Handler fileHandler = null;
 
 		try {
 			SyslogLikeFormatter humanWay = new SyslogLikeFormatter();
-
+			
+			// Set LOGGER level first, handlers' levels later
+			LOG.setLevel(Level.parse(logLevel));
+			
 			// Creating consoleHandler
 			consoleHandler = new ConsoleHandler();
 			consoleHandler.setFormatter(humanWay);
@@ -82,7 +82,7 @@ public class LogHandler {
 			String loggerName = LOG.getName();
 			LOG.info("   Logger Name is : " + loggerName);
 		}
-		// Should never happen but who knows
+		// Should never happen but we never know
 		catch (IOException ex) {
 			LOG.log(Level.SEVERE,
 					"Some ERROR occured in FileHandler or (less likely, in Consolehandler).",

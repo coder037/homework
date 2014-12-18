@@ -117,54 +117,7 @@ public class Func {
 		return whetherToKeep;
 	}
 
-//	public static void doSomeBookkeepingOnThe(String suspect) {
-//		// ArrayList<String> validSites = new ArrayList<String>();
-//		String verdict = Func.whatIsIt(suspect);
-//
-//		// WARNIG - a NOGO - AS AS AS AS
-//		if (verdict.equals(AS)) {
-//			// It is an AS and should go to that Arraylist
-//			LOG.finer(TAB + "AS info found: " + suspect);
-//
-//		} else {
-//
-//			if (verdict.equals("URL")) {
-//				// it is an URL and should go to THIS ArrayList
-//				LOG.finer(TAB + "Malsite found: " + suspect);
-//
-//			} else {
-//				// it is numeric ipv4
-//				LOG.finer(TAB + "IPV4 Malsite : " + suspect);
-//			}
-//		}
-//		// ToDo: there exist a rare case when the suspect is numeric,
-//		// probably should it be reverse-resolved or compared
-//		// to the ASN list of the constituency?
-//
-//		return;
-//	}
 
-	// /**
-	// * A formal conversion method AS:12345 -> 12345. Several checks and
-	// * consequential format transformations are included to be VERY SURE
-	// * about our assumptions how Google uses its data at GSB.
-	// *
-	// * @param The number or an ASN in numeric form (12345)
-	// * @return Google proprietary AS:12345 format converted to int 12345
-	// */
-	// static String as2ASN(String source) {
-	//
-	// LOG.fine(TAB + "---> as2ASN (" + source + ")");
-	// String destination = source.replaceAll("^AS", "");
-	// destination = destination.replaceAll(":", "");
-	// LOG.finer(TAB + TAB + "FIN: " + destination);
-	// // to be extremely sure canalize it through the snakes dick:
-	// int sourceNo = Integer.parseInt(destination);
-	// destination = Integer.toString(sourceNo);
-	// LOG.finer(TAB + "---< as2ASN converted |" + source + "| to |" +
-	// destination + "|.");
-	// return destination;
-	// }
 
 	/**
 	 * An especially freaky regexp method to distinguish between AS name, an
