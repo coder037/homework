@@ -21,10 +21,21 @@
 
 package nuhker;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
+import java.util.logging.Logger;
+import java.io.IOException;
+
+/**
+ * The class supports main routines datawise,
+ * makes decisions on whether or not to deal
+ * with next target, depending on the recorded
+ * "database".
+ * 
+ * The class serves DataDiver class, uses interface
+ * defined in DbFace and logs according to LogHandler.
+ * @author coder037@xyz.ee
+ *
+ */
 public class Accountant {
 
 	private final static String AS = "AS";
@@ -34,28 +45,39 @@ public class Accountant {
 	// Src: http://www.mkyong.com/regular-expressions/domain-name-regular-expression-example/
 	private static final String PARTIAL_DOMAIN_NAME_PATTERN = "^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\.)";
 
-	public static boolean init(String countryCode, String fileWritingBasename) {
-		boolean success = false;
+	/**
+	 * The method initializes log files via TypeWriter.
+	 * Called only once from Accountant class.
+	 * 
+	 * @param countryCode - a 2-letter countrycode according to EnumOf.cc
+	 * @param fileWritingBasename - a Basename used for most files.
+	 */
+	public static void init(String countryCode, String fileWritingBasename) {
 		// the countryCode has already been checked being a kosher one
-
 		String fileSuffix = ".txt";
-
-		String dummyHeader = "*** Prey list while hunting within country code "
+		String dummyHeader = "*** Target list while hunting for country code "
 				+ countryCode + " ***";
 		for (EnumOf.preyCodeWord next : EnumOf.preyCodeWord.values()) {
 			LOG.info(TAB + "Initializing output file for the category " + next);
 			String fullFileName = (fileWritingBasename + "-" + next + fileSuffix);
 			try {
-				TypeWriter.main(fullFileName, dummyHeader);
+				TypeWriter.main(fullFileName, dummyHeader + " Category: next ***");
 			} catch (IOException e) {
 				LOG.severe(TAB + "FAILURE to open a new file:" + fullFileName
 						+ e);
 				// e.printStackTrace();
 			}
 		}
-		return success;
 	}
 
+	/**
+	 *  This method writes down the initial set of ASN
+	 *  values got from RIPE. This is done for 2 reasons,
+	 *  to have a clear input trail and, to obtain AS
+	 *  descriptions later. 
+	 * @param asn - one AS name in format AS12345
+	 * @param baseFileName - a timevalue used in filename
+	 */
 	public static void initialASRegistration(String asn, String baseFileName) {
 		String fileSuffix = ".txt";
 		String fullFileName = "";
@@ -68,11 +90,22 @@ public class Accountant {
 			} catch (IOException e) {
 				LOG.severe(TAB + "FAILURE to open a new file:" + fullFileName
 						+ e);
-				e.printStackTrace();
+				// e.printStackTrace();
 			}
 		}
 	}
 
+	/**
+	 * The decision method - makes decision about
+	 * the target being ASN, URL or numeric ASN.
+	 * Some extra decisions are made - to catch
+	 * ASNs related to the country being harvested
+	 * and 
+	 * @param countrycode - a parameter defining "own" country so that own resources can be separated into different result files
+	 * @param prey - next target to be analyzed - an AS or an URL 
+	 * @param baseFileName - a timevalue string used as a part for logfile names
+	 * @return wasFreshMeat - a boolean value indicating whether the target was new or was already seen earlier
+	 */
 	public static boolean saysWorthToDive(String countrycode, String prey,
 			String baseFileName) {
 		boolean wasFreshMeat = false;
@@ -205,21 +238,13 @@ public class Accountant {
 		return;
 	}
 
+	/**
+	 * A formal method to present some run statistics.
+	 */
 	public static void finalStatements() {
-
-		// ToDo
-		// long startTime = 000;
-		// long endTime = 000;
-		// String targetCC = "NIPITIRI";
-		// int recursionLevel = 777;
-		// int total = 0;
-		// int noOfUniqueTargets = 0;
-		// int noOfASNs = 0;
-		// int noOfASNsInCC = 0;
-		// int noOfURLs = 0;
-		// int noOfURLsInCC = 0;
-		// int noOfNumericIPv4 = 0;
-		// String reasonOfStop = "unknown";
+		LOG.warning("WARNING: End of the Epoch - we are forced to close the business.");
+		LOG.warning("The statistics about the run:");
+		publicizeStatistics();
 
 	}
 
