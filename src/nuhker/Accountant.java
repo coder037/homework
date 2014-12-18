@@ -21,20 +21,18 @@
 
 package nuhker;
 
-
 import java.util.logging.Logger;
 import java.io.IOException;
 
 /**
- * The class supports main routines datawise,
- * makes decisions on whether or not to deal
- * with next target, depending on the recorded
- * "database".
+ * The class supports main routines datawise, makes decisions on whether or not
+ * to deal with next target, depending on the recorded "database".
  * 
- * The class serves DataDiver class, uses interface
- * defined in DbFace and logs according to LogHandler.
+ * The class serves DataDiver class, uses interface defined in DbFace and logs
+ * according to LogHandler.
+ * 
  * @author coder037@xyz.ee
- *
+ * 
  */
 public class Accountant {
 
@@ -42,15 +40,18 @@ public class Accountant {
 	private final static String TAB = "\t";
 	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
 			.getStackTrace()[0].getClassName());
-	// Src: http://www.mkyong.com/regular-expressions/domain-name-regular-expression-example/
+	// Src:
+	// http://www.mkyong.com/regular-expressions/domain-name-regular-expression-example/
 	private static final String PARTIAL_DOMAIN_NAME_PATTERN = "^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\.)";
 
 	/**
-	 * The method initializes log files via TypeWriter.
-	 * Called only once from Accountant class.
+	 * The method initializes log files via TypeWriter. Called only once from
+	 * Accountant class.
 	 * 
-	 * @param countryCode - a 2-letter countrycode according to EnumOf.cc
-	 * @param fileWritingBasename - a Basename used for most files.
+	 * @param countryCode
+	 *            - a 2-letter countrycode according to EnumOf.cc
+	 * @param fileWritingBasename
+	 *            - a Basename used for most files.
 	 */
 	public static void init(String countryCode, String fileWritingBasename) {
 		// the countryCode has already been checked being a kosher one
@@ -61,7 +62,8 @@ public class Accountant {
 			LOG.info(TAB + "Initializing output file for the category " + next);
 			String fullFileName = (fileWritingBasename + "-" + next + fileSuffix);
 			try {
-				TypeWriter.main(fullFileName, dummyHeader + " Category: " + next + " ***");
+				TypeWriter.main(fullFileName, dummyHeader + " Category: "
+						+ next + " ***");
 			} catch (IOException e) {
 				LOG.severe(TAB + "FAILURE to open a new file:" + fullFileName
 						+ e);
@@ -71,12 +73,14 @@ public class Accountant {
 	}
 
 	/**
-	 *  This method writes down the initial set of ASN
-	 *  values got from RIPE. This is done for 2 reasons,
-	 *  to have a clear input trail and, to obtain AS
-	 *  descriptions later. 
-	 * @param asn - one AS name in format AS12345
-	 * @param baseFileName - a timevalue used in filename
+	 * This method writes down the initial set of ASN values got from RIPE. This
+	 * is done for 2 reasons, to have a clear input trail and, to obtain AS
+	 * descriptions later.
+	 * 
+	 * @param asn
+	 *            - one AS name in format AS12345
+	 * @param baseFileName
+	 *            - a timevalue used in filename
 	 */
 	public static void initialASRegistration(String asn, String baseFileName) {
 		String fileSuffix = ".txt";
@@ -96,113 +100,113 @@ public class Accountant {
 	}
 
 	/**
-	 * The decision method - makes decision about
-	 * the target being ASN, URL or numeric ASN.
-	 * Some extra decisions are made - to catch
-	 * ASNs related to the country being harvested
-	 * and 
-	 * @param countrycode - a parameter defining "own" country so that own resources can be separated into different result files
-	 * @param prey - next target to be analyzed - an AS or an URL 
-	 * @param baseFileName - a timevalue string used as a part for logfile names
-	 * @return wasFreshMeat - a boolean value indicating whether the target was new or was already seen earlier
+	 * 
+	 * @param switchWord
+	 * @param target
+	 * @param baseFileName
+	 */
+	public static void outsourceLogging(String switchWord, String target,
+			String baseFileName) {
+		String fullFileName = "";
+		String fileSuffix = ".txt";
+		String arrow = "===---===---===---===---===---> ";
+
+		// SWITCH
+		if (switchWord.equals("AllSites")) {
+			DbFace.knownSites.add(target);
+			LOG.fine(arrow + "AllSites          COUNT: "
+					+ (DbFace.knownSites.size() - 1) + " records");
+		}
+		// DbFace.knownASNs.add(prey);
+		if (switchWord.equals("ASN")) {
+			DbFace.knownASNs.add(target);
+			LOG.fine(arrow + "knownASNs         COUNT: "
+					+ (DbFace.knownASNs.size() - 1) + " records");
+		}
+		// DbFace.knownASNsInCC.add(prey);
+		if (switchWord.equals("ASNCC")) {
+			DbFace.knownASNsInCC.add(target);
+			LOG.fine(arrow + "knownASNsinCC     COUNT: "
+					+ (DbFace.knownASNsInCC.size() - 1) + " records");
+		}
+		// DbFace.knownDomains.add(prey);
+		if (switchWord.equals("Domain")) {
+			DbFace.knownDomains.add(target);
+			LOG.fine(arrow + "knownDomains      COUNT: "
+					+ (DbFace.knownDomains.size() - 1) + " records");
+		}
+		// DbFace.knownDomainsInCC.add(prey);
+		if (switchWord.equals("DomainCC")) {
+			DbFace.knownDomainsInCC.add(target);
+			LOG.fine(arrow + "knownDomainsInCC  COUNT: "
+					+ (DbFace.knownDomainsInCC.size() - 1) + " records");
+		}
+		// DbFace.knownNumericSites.add(prey);
+		if (switchWord.equals("Numeric")) {
+			DbFace.knownNumericSites.add(target);
+			LOG.fine(arrow + "knownNumericSites COUNT: "
+					+ (DbFace.knownNumericSites.size() - 1) + " records");
+		}
+
+		// Also adding value to the file
+		fullFileName = (baseFileName + "-" + switchWord + fileSuffix);
+
+		try {
+			TypeWriter.main(fullFileName, target);
+		} catch (IOException e) {
+			LOG.severe(TAB + "FAILURE to open file " + fullFileName
+					+ " for appending " + e);
+		}
+	} // END of method
+
+	/**
+	 * The decision method - makes decision about the target being ASN, URL or
+	 * numeric ASN. Some extra decisions are made - to catch ASNs related to the
+	 * country being harvested and
+	 * 
+	 * @param countrycode
+	 *            - a parameter defining "own" country so that own resources can
+	 *            be separated into different result files
+	 * @param prey
+	 *            - next target to be analyzed - an AS or an URL
+	 * @param baseFileName
+	 *            - a timevalue string used as a part for logfile names
+	 * @return wasFreshMeat - a boolean value indicating whether the target was
+	 *         new or was already seen earlier
 	 */
 	public static boolean saysWorthToDive(String countrycode, String prey,
 			String baseFileName) {
 		boolean wasFreshMeat = false;
-		String fileSuffix = ".txt";
-		String fullFileName = "";
 
 		// For ALL unknown prey names
 		if (!DbFace.knownSites.contains(prey)) {
 			wasFreshMeat = true;
 			// adding to Knownsites Database
-			DbFace.knownSites.add(prey);
-			// Also adding to knownsites FILE
-			fullFileName = (baseFileName + "-" + "AllSites" + fileSuffix);
-			LOG.fine("===---===---===---===---===---> knownSites        COUNT: "
-					+ DbFace.knownSites.size() + " records");
-			try {
-				TypeWriter.main(fullFileName, prey);
-			} catch (IOException e) {
-				LOG.severe(TAB + "FAILURE to open file " + fullFileName
-						+ " for appending " + e);
-			}
+			outsourceLogging("AllSites", prey, baseFileName);
 
+			// Now asking: what kind of meat it is?
 			String resultWord = Func.whatIsIt(prey);
 			// For all prey that occurs to be AS
 			if (AS.equals(resultWord)) {
-
-				DbFace.knownASNs.add(prey);
-				fullFileName = (baseFileName + "-" + "ASN" + fileSuffix);
-				LOG.fine("===---===---===---===---===---> knownASNs         COUNT: "
-						+ DbFace.knownASNs.size() + " records");
-				try {
-					TypeWriter.main(fullFileName, prey);
-				} catch (IOException e) {
-					LOG.severe(TAB + "FAILURE to open file:" + fullFileName
-							+ " for appending " + e);
-				}
+				outsourceLogging("ASN", prey, baseFileName);
 
 				// Recording Full descriptions for initial/CC ASNs
 				if (DbFace.initialASNs.contains(Func.removeASDescr(prey))) {
-					DbFace.knownASNsInCC.add(prey);
-					fullFileName = (baseFileName + "-" + "ASNCC" + fileSuffix);
-					LOG.fine("===---===---===---===---===---> knownASNsInCC     COUNT: "
-							+ DbFace.knownASNsInCC.size() + " records");
-					try {
-						TypeWriter.main(fullFileName, prey);
-					} catch (IOException e) {
-						LOG.severe(TAB + "FAILURE to open file:" + fullFileName
-								+ " for appending " + e);
-					}
+					outsourceLogging("ASNCC", prey, baseFileName);
 				}
 			} // Well, it wasn't an AS
-
 			if (resultWord.equals("URL")) {
-
-				DbFace.knownDomains.add(prey);
-				fullFileName = (baseFileName + "-" + "Domain" + fileSuffix);
-				LOG.fine("===---===---===---===---===---> knownDomains      COUNT: "
-						+ DbFace.knownDomains.size() + " records");
-				try {
-					TypeWriter.main(fullFileName, prey);
-				} catch (IOException e) {
-					LOG.severe(TAB + "FAILURE to open file:" + fullFileName
-							+ " for appending " + e);
-				}
+				outsourceLogging("Domain", prey, baseFileName);
 
 				// A strange method to determine local CC URLS
-				
-				String freakyPattern = ( PARTIAL_DOMAIN_NAME_PATTERN + countrycode.toLowerCase() + "\\/.*$");
+				String freakyPattern = (PARTIAL_DOMAIN_NAME_PATTERN
+						+ countrycode.toLowerCase() + "\\/.*$");
 				if (prey.matches(freakyPattern)) {
-
-					DbFace.knownDomainsInCC.add(prey);
-					fullFileName = (baseFileName + "-" + "DomainCC" + fileSuffix);
-					LOG.fine("===---===---===---===---===---> knownDomainsInCC  COUNT: "
-							+ DbFace.knownDomainsInCC.size() + " records");
-					try {
-						TypeWriter.main(fullFileName, prey);
-					} catch (IOException e) {
-						LOG.severe(TAB + "FAILURE to open file:" + fullFileName
-								+ " for appending " + e);
-					}
+					outsourceLogging("DomainCC", prey, baseFileName);
 				}
-
 			} // URL
-
 			if (resultWord.equals("IPV4")) {
-
-				DbFace.knownNumericSites.add(prey);
-				fullFileName = (baseFileName + "-" + "Numeric" + fileSuffix);
-				LOG.fine("===---===---===---===---===---> knownNumericSites COUNT: "
-						+ DbFace.knownNumericSites.size() + " records");
-				try {
-					TypeWriter.main(fullFileName, prey);
-				} catch (IOException e) {
-					LOG.severe(TAB + "FAILURE to open file:" + fullFileName
-							+ " for appending " + e);
-				}
-
+				outsourceLogging("Numeric", prey, baseFileName);
 			} // IPV4
 
 		} else {
@@ -212,28 +216,28 @@ public class Accountant {
 	} // method
 
 	/**
-	 * The method will publicize some status data otherwise kept in the DBze.
+	 * The method will publicize some status data managed via the DbFace.
 	 * 
 	 */
 	public static void publicizeStatistics() {
+		String arrow = "STAT--===---===---===---===---> ";
+		LOG.info(arrow + "AllSites          COUNT: "
+				+ (DbFace.knownSites.size() - 1) + " records");
 
-		LOG.info("STAT--===---===---===---===---> knownSites        COUNT: "
-				+ DbFace.knownSites.size() + " records");
+		LOG.info(arrow + "knownDomains      COUNT: "
+				+ (DbFace.knownDomains.size() - 1) + " records");
 
-		LOG.info("STAT--===---===---===---===---> knownDomains      COUNT: "
-				+ DbFace.knownDomains.size() + " records");
+		LOG.info(arrow + "DomainsInCC       COUNT: "
+				+ (DbFace.knownDomainsInCC.size() - 1) + " records");
 
-		LOG.info("STAT--===---===---===---===---> DomainsInCC       COUNT: "
-				+ DbFace.knownDomainsInCC.size() + " records");
+		LOG.info(arrow + "knownASNs         COUNT: "
+				+ (DbFace.knownASNs.size() - 1) + " records");
 
-		LOG.info("STAT--===---===---===---===---> knownASNs         COUNT: "
-				+ DbFace.knownASNs.size() + " records");
+		LOG.info(arrow + "knownASNsInCC     COUNT: "
+				+ (DbFace.knownASNsInCC.size() - 1) + " records");
 
-		LOG.info("STAT--===---===---===---===---> knownASNsInCC     COUNT: "
-				+ DbFace.knownASNsInCC.size() + " records");
-
-		LOG.info("STAT--===---===---===---===---> knownNumericSites COUNT: "
-				+ DbFace.knownNumericSites.size() + " records");
+		LOG.info(arrow + "knownNumericSites COUNT: "
+				+ (DbFace.knownNumericSites.size() - 1) + " records");
 
 		return;
 	}
@@ -245,7 +249,6 @@ public class Accountant {
 		LOG.warning("WARNING: End of the Epoch - we are forced to close the business.");
 		LOG.warning("The statistics about the run:");
 		publicizeStatistics();
-
+		LOG.info("Logs are available in Run directory.");
 	}
-
 }
