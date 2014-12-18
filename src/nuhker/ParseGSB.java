@@ -27,8 +27,6 @@ import java.util.logging.*;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
-
-import java.util.regex.*;
 import java.util.ArrayList;
 
 // INSPIRATION to use jsoup got from M.M. 
@@ -94,7 +92,7 @@ public class ParseGSB {
 					// Exclude promo targets
 					if (Func.isSensible(nameOfTheCandidate)) {
 						temporaryList.add(nameOfTheCandidate);
-						Func.doSomeBookkeepingOnThe(nameOfTheCandidate);
+						// Func.doSomeBookkeepingOnThe(nameOfTheCandidate);
 					}
 				} // FOR
 				glitch = false; // i.e. it succeeded

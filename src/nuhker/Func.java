@@ -21,12 +21,8 @@
 
 package nuhker;
 
-import java.io.IOException;
+
 import java.util.*;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -121,32 +117,32 @@ public class Func {
 		return whetherToKeep;
 	}
 
-	public static void doSomeBookkeepingOnThe(String suspect) {
-		// ArrayList<String> validSites = new ArrayList<String>();
-		String verdict = Func.whatIsIt(suspect);
-
-		// WARNIG - a NOGO - AS AS AS AS
-		if (verdict.equals(AS)) {
-			// It is an AS and should go to that Arraylist
-			LOG.finer(TAB + "AS info found: " + suspect);
-
-		} else {
-
-			if (verdict.equals("URL")) {
-				// it is an URL and should go to THIS ArrayList
-				LOG.finer(TAB + "Malsite found: " + suspect);
-
-			} else {
-				// it is numeric ipv4
-				LOG.finer(TAB + "IPV4 Malsite : " + suspect);
-			}
-		}
-		// ToDo: there exist a rare case when the suspect is numeric,
-		// probably should it be reverse-resolved or compared
-		// to the ASN list of the constituency?
-
-		return;
-	}
+//	public static void doSomeBookkeepingOnThe(String suspect) {
+//		// ArrayList<String> validSites = new ArrayList<String>();
+//		String verdict = Func.whatIsIt(suspect);
+//
+//		// WARNIG - a NOGO - AS AS AS AS
+//		if (verdict.equals(AS)) {
+//			// It is an AS and should go to that Arraylist
+//			LOG.finer(TAB + "AS info found: " + suspect);
+//
+//		} else {
+//
+//			if (verdict.equals("URL")) {
+//				// it is an URL and should go to THIS ArrayList
+//				LOG.finer(TAB + "Malsite found: " + suspect);
+//
+//			} else {
+//				// it is numeric ipv4
+//				LOG.finer(TAB + "IPV4 Malsite : " + suspect);
+//			}
+//		}
+//		// ToDo: there exist a rare case when the suspect is numeric,
+//		// probably should it be reverse-resolved or compared
+//		// to the ASN list of the constituency?
+//
+//		return;
+//	}
 
 	// /**
 	// * A formal conversion method AS:12345 -> 12345. Several checks and

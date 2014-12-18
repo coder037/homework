@@ -52,11 +52,11 @@ import java.security.MessageDigest;
  * 
  * created Nov 23, 2014 12:44:46 AM
  * @author coder037@xyz.ee
- * @version 0.9.1 so far
+ * @version 0.9.2 so far
  */
 public class Run {
 
-	private final static String VERSION = "0.9";
+	private final static String VERSION = "0.9.2";
 	private final static String TAB = "\t";
 	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
 			.getStackTrace()[0].getClassName());
