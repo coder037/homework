@@ -147,7 +147,7 @@ public class EnumOf {
 				return true;
 
 			} catch (Exception e) {
-				LOG.info(TAB + TAB + "An UNEXPECTED pray code.");
+				LOG.info(TAB + TAB + "An UNEXPECTED pray code discovered.");
 				LOG.severe(TAB + TAB
 						+ "Prey code isKOsher returned a SURPRISE:" + candidate);
 				return false;

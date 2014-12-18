@@ -86,8 +86,8 @@ public class Accountant {
 		String fileSuffix = ".txt";
 		String fullFileName = "";
 
-		if (!DbFace.initialASNs.contains(asn)) {
-			DbFace.initialASNs.add(asn);
+		if (!DbFace.initialASN.contains(asn)) {
+			DbFace.initialASN.add(asn);
 			fullFileName = (baseFileName + "-" + "InitialASN" + fileSuffix);
 			try {
 				TypeWriter.main(fullFileName, asn);
@@ -98,7 +98,9 @@ public class Accountant {
 			}
 		}
 	}
-
+	// ESTHETICAL WARNING - below is some MOST unstructured code of the package.
+	// Take your medicine before actually looking at it.
+	
 	/**
 	 * The method sits between upper level saysWorthToDive() method and lower
 	 * level TypeWriter class and DbFace interface, trying to screen a big
@@ -123,39 +125,39 @@ public class Accountant {
 
 		// a SWITCH substitute
 		if (switchWord.equals("AllSites")) {
-			DbFace.knownSites.add(target);
-			LOG.fine(arrow + "AllSites          COUNT: "
-					+ DbFace.knownSites.size() + " records");
+			DbFace.AllSites.add(target);
+			LOG.fine(arrow + "AllSites      COUNT: "
+					+ DbFace.AllSites.size() + " records");
 		}
 		// DbFace.knownASNs.add(prey);
 		if (switchWord.equals("ASN")) {
-			DbFace.knownASNs.add(target);
-			LOG.fine(arrow + "knownASNs         COUNT: "
-					+ DbFace.knownASNs.size() + " records");
+			DbFace.ASN.add(target);
+			LOG.fine(arrow + "ASN           COUNT: "
+					+ DbFace.ASN.size() + " records");
 		}
 		// DbFace.knownASNsInCC.add(prey);
 		if (switchWord.equals("ASNCC")) {
-			DbFace.knownASNsInCC.add(target);
-			LOG.fine(arrow + "knownASNsinCC     COUNT: "
-					+ DbFace.knownASNsInCC.size() + " records");
+			DbFace.ASNCC.add(target);
+			LOG.fine(arrow + "knownASNsinCC COUNT: "
+					+ DbFace.ASNCC.size() + " records");
 		}
 		// DbFace.knownDomains.add(prey);
 		if (switchWord.equals("Domain")) {
-			DbFace.knownDomains.add(target);
-			LOG.fine(arrow + "knownDomains      COUNT: "
-					+ DbFace.knownDomains.size() + " records");
+			DbFace.Domain.add(target);
+			LOG.fine(arrow + "Domain        COUNT: "
+					+ DbFace.Domain.size() + " records");
 		}
 		// DbFace.knownDomainsInCC.add(prey);
 		if (switchWord.equals("DomainCC")) {
-			DbFace.knownDomainsInCC.add(target);
-			LOG.fine(arrow + "knownDomainsInCC  COUNT: "
-					+ DbFace.knownDomainsInCC.size() + " records");
+			DbFace.DomainCC.add(target);
+			LOG.fine(arrow + "DomainCC      COUNT: "
+					+ DbFace.DomainCC.size() + " records");
 		}
 		// DbFace.knownNumericSites.add(prey);
 		if (switchWord.equals("Numeric")) {
-			DbFace.knownNumericSites.add(target);
-			LOG.fine(arrow + "knownNumericSites COUNT: "
-					+ DbFace.knownNumericSites.size() + " records");
+			DbFace.Numeric.add(target);
+			LOG.fine(arrow + "Numeric       COUNT: "
+					+ DbFace.Numeric.size() + " records");
 		}
 
 		// Also adding the pray to the file
@@ -189,7 +191,7 @@ public class Accountant {
 		boolean wasFreshMeat = false;
 
 		// For ALL unknown prey names
-		if (!DbFace.knownSites.contains(prey)) {
+		if (!DbFace.AllSites.contains(prey)) {
 			wasFreshMeat = true;
 			// adding to Knownsites Database
 			recordItAs("AllSites", prey, baseFileName);
@@ -201,7 +203,7 @@ public class Accountant {
 				recordItAs("ASN", prey, baseFileName);
 
 				// Recording Full descriptions for initial/CC ASNs
-				if (DbFace.initialASNs.contains(Func.removeASDescr(prey))) {
+				if (DbFace.initialASN.contains(Func.removeASDescr(prey))) {
 					recordItAs("ASNCC", prey, baseFileName);
 				}
 			} // Well, it wasn't an AS
@@ -231,23 +233,24 @@ public class Accountant {
 	 */
 	public static void publicizeStatistics() {
 		String arrow = "STAT--===---===---===---===---> ";
-		LOG.info(arrow + "AllSites          COUNT: "
-				+ DbFace.knownSites.size() + " records");
 
-		LOG.info(arrow + "knownDomains      COUNT: "
-				+ DbFace.knownDomains.size() + " records");
+		LOG.info(arrow + "AllSites      COUNT: "
+				+ DbFace.AllSites.size() + " records");
 
-		LOG.info(arrow + "DomainsInCC       COUNT: "
-				+ DbFace.knownDomainsInCC.size() + " records");
+		LOG.info(arrow + "Domain        COUNT: "
+				+ DbFace.Domain.size() + " records");
 
-		LOG.info(arrow + "knownASNs         COUNT: "
-				+ DbFace.knownASNs.size() + " records");
+		LOG.info(arrow + "DomainCC      COUNT: "
+				+ DbFace.DomainCC.size() + " records");
 
-		LOG.info(arrow + "knownASNsInCC     COUNT: "
-				+ DbFace.knownASNsInCC.size() + " records");
+		LOG.info(arrow + "ASN           COUNT: "
+				+ DbFace.ASN.size() + " records");
 
-		LOG.info(arrow + "knownNumericSites COUNT: "
-				+ DbFace.knownNumericSites.size() + " records");
+		LOG.info(arrow + "ASNCC         COUNT: "
+				+ DbFace.ASNCC.size() + " records");
+
+		LOG.info(arrow + "Numeric       COUNT: "
+				+ DbFace.Numeric.size() + " records");
 
 		return;
 	}

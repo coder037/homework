@@ -42,20 +42,23 @@ import java.util.ArrayList;
  */
 public interface DbFace {
 
+	// Actually these names are in sync with EnumOf.preyCodeWord
+	// and should be defined otherwise
+	
 	// Master list
-	ArrayList<String> initialASNs = new ArrayList<String>();
+	ArrayList<String> initialASN = new ArrayList<String>();
 	// A sub-subset of these in target constituency (option -c EE)
-	ArrayList<String> knownSites = new ArrayList<String>();
+	ArrayList<String> AllSites = new ArrayList<String>();
 	// Only URLs/FQDNs but not ASNs
-	ArrayList<String> knownDomains = new ArrayList<String>();
+	ArrayList<String> Domain = new ArrayList<String>();
 	// The same but only for constituency (option -c EE)
-	ArrayList<String> knownDomainsInCC = new ArrayList<String>();
+	ArrayList<String> DomainCC = new ArrayList<String>();
 	// A subset of Sites without URLs/FQDNs
-	ArrayList<String> knownASNs = new ArrayList<String>();
+	ArrayList<String> ASN = new ArrayList<String>();
 	// A sub-subset of these in target constituency (option -c EE)
-	ArrayList<String> knownASNsInCC = new ArrayList<String>();
-	// Could be I am not lazy and will separate numerics:
-	ArrayList<String> knownNumericSites = new ArrayList<String>();
+	ArrayList<String> ASNCC = new ArrayList<String>();
+	// IPv4 numeric sites
+	ArrayList<String> Numeric = new ArrayList<String>();
 
 	// Future ideas: ArrayList of Structures
 	// to count occurrencies of each
