@@ -219,8 +219,6 @@ public class DataDiver {
 					entryPoint(current); // RECURSIVELY for each argument
 
 				} else {
-					LOG.warning(TAB + "This prey is WEIRD" + target
-							+ " , got it from: " + target2Dive);
 					// Target was already recorded to DB. Not wasting time
 					LOG.fine("---+---+---+---+---> Target " + target
 							+ " was previously KNOWN, a noGo.");

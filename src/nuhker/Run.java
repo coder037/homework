@@ -52,7 +52,7 @@ import java.security.MessageDigest;
  * 
  * created Nov 23, 2014 12:44:46 AM
  * @author coder037@xyz.ee
- * @version 0.8 so far
+ * @version 0.9.1 so far
  */
 public class Run {
 

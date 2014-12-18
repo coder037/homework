@@ -61,7 +61,7 @@ public class Accountant {
 			LOG.info(TAB + "Initializing output file for the category " + next);
 			String fullFileName = (fileWritingBasename + "-" + next + fileSuffix);
 			try {
-				TypeWriter.main(fullFileName, dummyHeader + " Category: next ***");
+				TypeWriter.main(fullFileName, dummyHeader + " Category: " + next + " ***");
 			} catch (IOException e) {
 				LOG.severe(TAB + "FAILURE to open a new file:" + fullFileName
 						+ e);
