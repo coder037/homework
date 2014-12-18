@@ -44,16 +44,16 @@ public class DataDiver {
 			.getStackTrace()[0].getClassName());
 
 	/**
-	 * The MAIN logic of the whole package - an actual recursion.
+	 * The central logic of the whole package - an actual recursion.
 	 * 
-	 * This method is invoked with a copy of previously initialized structure of
+	 * The method is invoked with a copy of previously initialized structure of
 	 * DefaultParms type.
 	 * 
 	 * There are two main flows: on the UPPER level, a country code is
 	 * transformed into a corresponding array of ASNs belonging to that country.
 	 * This is done calling ParseRIPE.grabCountryDescription(cc)
 	 * 
-	 * in the remaining levels, ParseGSB.badReputation(target2Dive) is called
+	 * On the subsequent levels, ParseGSB.badReputation(target2Dive) is called
 	 * which returns an array of String[] subtargets
 	 * 
 	 * A scrupulous care has been excercised to pass both ASNs and FFQDNs via
@@ -79,7 +79,7 @@ public class DataDiver {
 		int currentLevel = current.getCurrentLevelOfRecursion();
 		String fileWritingBasename = current.getFilenameForOutput();
 		String kosherCC = current.getCountryCodeToWorkWith();
-		
+
 		boolean upperLevel = false;
 		LOG.fine("===-> DataDiver HEADER part, level" + currentLevel
 				+ " entered.");
@@ -117,7 +117,7 @@ public class DataDiver {
 
 		// #### Alternative 1 - upper level
 		if (upperLevel) { // RIPE thing
-			
+
 			String toBeParsed = "";
 			LOG.info(TAB + "We only call this ONCE (ALT1)");
 			LOG.info(TAB + TAB + "for a country: " + kosherCC);
@@ -132,7 +132,7 @@ public class DataDiver {
 				// http://www.opensource.apple.com/source/Libc/Libc-320/include/sysexits.h
 			}
 
-			// Initialize our primitive FileLogger
+			// Initialize our primitive Data Layer
 			Accountant.init(kosherCC, outputFileName);
 
 			// Obtain knowledge from RIPE, parse the result
@@ -141,9 +141,11 @@ public class DataDiver {
 			// Now the FileLogger will write down the initial scope:
 			for (String anAutonomousSystem : resultOfFirstParsing) {
 				// Prepend "AS" this first time ;)
-				String firstPassName = (AS + anAutonomousSystem);
-				Accountant.initialASRegistration(firstPassName, fileWritingBasename);
-				LOG.fine(TAB + TAB + "Registered initial ASN: " + anAutonomousSystem);
+				String firstCrop = (AS + anAutonomousSystem);
+				Accountant
+						.initialASRegistration(firstCrop, fileWritingBasename);
+				LOG.fine(TAB + TAB + "Registered initial ASN: "
+						+ anAutonomousSystem);
 			}
 			// ToDo: the initial scope still has no AS descriptions.
 
@@ -152,7 +154,7 @@ public class DataDiver {
 			LOG.info(TAB + "DataDiver got " + countOfASNsObtained
 					+ " ASNs from the ParseRIPE");
 
-			// Actual recursive hunt starts within the scope
+			// Recursive hunt starts within the scope
 			for (String anAutonomousSystem : resultOfFirstParsing) {
 				LOG.fine(TAB + TAB + "Yet another AS to check for: "
 						+ anAutonomousSystem);
@@ -165,35 +167,38 @@ public class DataDiver {
 				current.setCurrentLevelOfRecursion(nextLevel);
 				entryPoint(current); // RECURSIVELY foreach argument
 			}
-			LOG.info("===-! DONE with the All arguments for  country=" + kosherCC);
-			LOG.info(TAB + "===-< ascending from level: " + currentLevel);
+			LOG.fine("===-! DONE with the All arguments for country="
+					+ kosherCC);
+			LOG.fine(TAB + "===-< ascending from level: " + currentLevel);
 		} // END of Upper Level
 
 		else { // #### Alternative 2
-				// - i.e. any subsequent level except the upper one
+				// == any subsequent recursion level except the upper one
 
-			// First PRINTout how much entries are there on the list xN
+			// First PRINTout how much entries are accounted so far
 			Accountant.publicizeStatistics();
 
 			String target2Dive = current.getCurrentTarget();
 			LOG.fine("===+===-> regular AS/FQDN parsing (ALT2), target="
 					+ target2Dive);
 			LOG.finest(TAB + "+===+ Calling ParseGSB for : " + target2Dive);
+			// Call ParseRipe wor actual work
 			String subTargets[] = ParseGSB.badReputation(target2Dive);
 			int countOfTargetsOnThisLevel = subTargets.length;
 			LOG.fine(TAB + "+===+ Got " + countOfTargetsOnThisLevel
 					+ " subtargets to check under this target: " + target2Dive);
-
+			// Loop through the prey found
 			for (String target : subTargets) {
 				// ONLY for these targets Accountant found to be freshMeat
-				if (Accountant.saysWorthToDive (kosherCC, target, fileWritingBasename)) {
+				if (Accountant.saysWorthToDive(kosherCC, target,
+						fileWritingBasename)) {
 					LOG.info(TAB
 							+ TAB
 							+ "DownStairs Decision: --=---==---=-- next subtarget: "
 							+ target);
 
 					// In case of ASNs, we need to strip off the description
-					// and transform it into AS:12345 format Google knows
+					// and transform it into Google coherent AS:12345 format
 					if (AS.equals(Func.whatIsIt(target))) {
 						target = Func.asn2Colon(Func.removeASDescr(target));
 						LOG.finer(TAB + TAB + TAB
@@ -212,7 +217,7 @@ public class DataDiver {
 							+ currentLevel + " to level " + nextLevel);
 					current.setCurrentLevelOfRecursion(nextLevel);
 
-					// spare some extra seconds ignoring level 0
+					// spare some extra seconds pre-ignoring level 0
 					if (nextLevel > 0) {
 						Func.delay(waitTime);
 					}
@@ -227,7 +232,7 @@ public class DataDiver {
 			}
 			LOG.fine("===+===-! DONE with All arguments");
 		}
-		LOG.fine("===+===-< End of oxygen, out of this Parsing Dive");
+		LOG.fine("===+===-< End of fuel, out from this Parsing Dive");
 		return;
 	}
 }

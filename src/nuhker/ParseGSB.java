@@ -33,13 +33,15 @@ import java.util.ArrayList;
 // technical hints obtained: http://stackoverflow.com/questions/12361925/html-parsing-with-jsoup
 
 /**
- * GSB - Google Safe Browsing - a reputation service to indicate whether
- * an internet site is clean or contaminated by the malware.
+ * The data engine we use - GSB (Google Safe Browsing) - is a reputation service
+ * to indicate whether an internet site is clean or is it contaminated by the
+ * malware.
  * 
- * This particular exercise ignores dates; "listed on GSB" means - has been
- * contaminated by malware within last 90 days".
+ * This particular exercise ignores dates; "listed on GSB" means for us -
+ * "has been contaminated by malware within last 90 days" and thus suspicious.
  * 
  * created Nov 28, 2014 8:56:32 AM
+ * 
  * @author coder037@xyz.ee
  */
 public class ParseGSB {
@@ -53,9 +55,9 @@ public class ParseGSB {
 	 * is being checked against the Google SafeBrowsing Interface (a reputation
 	 * service).
 	 * 
-	 * @param source - a target which reputation is to be checked
-	 * could be 1 of 3:
-	 * a FQDN (xyz.ee/) or URL (xyz.ee/X/) or ASN (AS:12345)
+	 * @param source
+	 *            - a target which reputation is to be checked could be 1 of 3:
+	 *            a FQDN (xyz.ee/) or URL (xyz.ee/X/) or ASN (AS:12345)
 	 * @return array containing references to the badness. Should be clear that
 	 *         this is not we inventing badness. This is what Google thinks.
 	 * 
@@ -105,9 +107,9 @@ public class ParseGSB {
 						+ "timeout: Let the Net rest for next 15 secs.");
 				Func.delay(15000);
 			}
-			// Who likes Chopin, but I like String[] array returns
-			// much more than ArrayLists<>. Dancing between the datatypes
-			// should be considered as fuzzing because it eveal bugs. ;)
+			// Somebody likes Che Guevara, me like dancing between the
+			// datatypes.
+			// I call it fuzzing because it will reveal bugs. ;)
 		} // WHILE
 
 		int count = temporaryList.size();
@@ -118,22 +120,20 @@ public class ParseGSB {
 			LOG.finer("---= badReputation: $#%&€ ... no badness discovered under "
 					+ source);
 		} else {
-			LOG.finer("---= badReputation: Normal business: badness count under "
+			LOG.finer("---= badReputation: Normal business: badness count under  "
 					+ source + " is " + count);
 		}
-
 		LOG.finest("===- END badReputation ");
 		return someTargets;
-
 	}
 
-	// ================ Main class is left for debugging only
+	// ================ The remnant Main method
 
 	/**
 	 * main method is mostly kept here for debugging purposes.
 	 * 
 	 * @param args
-	 *            none expected
+	 *            none expected, none used
 	 */
 	public static void main(String[] args) {
 		String target1 = "delfi.ee/";
@@ -149,5 +149,4 @@ public class ParseGSB {
 		LOG.info("=== End of ParseGSB MAIN");
 	} // MAIN
 
-} // CLASS
-
+}

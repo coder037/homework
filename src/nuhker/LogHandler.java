@@ -29,8 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * From here we initialize our Java logger.
- * created: Dec 14, 2014 11:10:05 PM
+ * From here we initialize our Java logger. created: Dec 14, 2014 11:10:05 PM
  * 
  * @author coder037@xyz.ee
  */
@@ -48,11 +47,11 @@ public class LogHandler {
 
 		try {
 			SyslogLikeFormatter humanWay = new SyslogLikeFormatter();
-			
+
 			// Set LOGGER level first, handlers' levels later
 			LOG.setLevel(Level.parse(logLevel));
-			
-			// Creating consoleHandler
+
+			// ====== Creating consoleHandler
 			consoleHandler = new ConsoleHandler();
 			consoleHandler.setFormatter(humanWay);
 
@@ -66,17 +65,16 @@ public class LogHandler {
 			String currentLevel = such.toString();
 			LOG.severe(" The loglevel actually is: " + currentLevel);
 
-			// Creating fileHandler
+			// ====== Creating fileHandler
 			fileHandler = new FileHandler("./nuhker-DEBUG.xml");
-			// Assigning handler to our LOGGER object
+			// Assigning handler to our particular LOGGER
 			LOG.addHandler(fileHandler);
-			// Setting loglevels to this particular handler
+			// Setting loglevel to this particular handler
 			fileHandler.setLevel(Level.parse(logLevel));
 
 			LOG.setUseParentHandlers(false);
 			LOG.config(" Parent logger HAS BEEN SUSPENDED for esthetical reasons");
-			LOG.config(TAB
-					+ "do manually switch over to the DEBUG mode to see more");
+			LOG.config(TAB + "do turn to the FINER resolutions to see more");
 			// final Statements
 			LOG.config(" Logger configuration done.");
 			String loggerName = LOG.getName();

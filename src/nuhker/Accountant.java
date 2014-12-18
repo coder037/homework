@@ -54,7 +54,7 @@ public class Accountant {
 	 *            - a Basename used for most files.
 	 */
 	public static void init(String countryCode, String fileWritingBasename) {
-		// the countryCode has already been checked being a kosher one
+		// the countryCode has been verified previously
 		String fileSuffix = ".txt";
 		String dummyHeader = "*** Target list while hunting for country code "
 				+ countryCode + " ***";
@@ -73,7 +73,7 @@ public class Accountant {
 	}
 
 	/**
-	 * This method writes down the initial set of ASN values got from RIPE. This
+	 * The method writes down the initial set of ASN values got from RIPE. This
 	 * is done for 2 reasons, to have a clear input trail and, to obtain AS
 	 * descriptions later.
 	 * 
@@ -100,18 +100,28 @@ public class Accountant {
 	}
 
 	/**
+	 * The method sits between upper level saysWorthToDive() method and lower
+	 * level TypeWriter class and DbFace interface, trying to screen a big
+	 * quantity of details. It actually should be rewritten clean to avoid even
+	 * the idea of parametrization of variable names ;)
 	 * 
 	 * @param switchWord
+	 *            - token passed from the caller dictates the type of reaction
+	 *            needed.
 	 * @param target
+	 *            - the site name needed to be written into one or more data
+	 *            tables
 	 * @param baseFileName
+	 *            is the generic part of the filename, derived from a timevalue,
+	 *            thus logfiles can easily grouped
 	 */
-	public static void outsourceLogging(String switchWord, String target,
+	public static void recordItAs(String switchWord, String target,
 			String baseFileName) {
 		String fullFileName = "";
 		String fileSuffix = ".txt";
 		String arrow = "===---===---===---===---===---> ";
 
-		// SWITCH
+		// a SWITCH substitute
 		if (switchWord.equals("AllSites")) {
 			DbFace.knownSites.add(target);
 			LOG.fine(arrow + "AllSites          COUNT: "
@@ -148,7 +158,7 @@ public class Accountant {
 					+ (DbFace.knownNumericSites.size() - 1) + " records");
 		}
 
-		// Also adding value to the file
+		// Also adding the pray to the file
 		fullFileName = (baseFileName + "-" + switchWord + fileSuffix);
 
 		try {
@@ -160,9 +170,9 @@ public class Accountant {
 	} // END of method
 
 	/**
-	 * The decision method - makes decision about the target being ASN, URL or
-	 * numeric ASN. Some extra decisions are made - to catch ASNs related to the
-	 * country being harvested and
+	 * The method makes decision about the target being ASN, URL or numeric ASN.
+	 * Some extra decisions are made - to catch ASNs related to the country
+	 * being harvested and
 	 * 
 	 * @param countrycode
 	 *            - a parameter defining "own" country so that own resources can
@@ -182,31 +192,30 @@ public class Accountant {
 		if (!DbFace.knownSites.contains(prey)) {
 			wasFreshMeat = true;
 			// adding to Knownsites Database
-			outsourceLogging("AllSites", prey, baseFileName);
+			recordItAs("AllSites", prey, baseFileName);
 
 			// Now asking: what kind of meat it is?
 			String resultWord = Func.whatIsIt(prey);
 			// For all prey that occurs to be AS
 			if (AS.equals(resultWord)) {
-				outsourceLogging("ASN", prey, baseFileName);
+				recordItAs("ASN", prey, baseFileName);
 
 				// Recording Full descriptions for initial/CC ASNs
 				if (DbFace.initialASNs.contains(Func.removeASDescr(prey))) {
-					outsourceLogging("ASNCC", prey, baseFileName);
+					recordItAs("ASNCC", prey, baseFileName);
 				}
 			} // Well, it wasn't an AS
 			if (resultWord.equals("URL")) {
-				outsourceLogging("Domain", prey, baseFileName);
-
+				recordItAs("Domain", prey, baseFileName);
 				// A strange method to determine local CC URLS
 				String freakyPattern = (PARTIAL_DOMAIN_NAME_PATTERN
 						+ countrycode.toLowerCase() + "\\/.*$");
 				if (prey.matches(freakyPattern)) {
-					outsourceLogging("DomainCC", prey, baseFileName);
+					recordItAs("DomainCC", prey, baseFileName);
 				}
 			} // URL
 			if (resultWord.equals("IPV4")) {
-				outsourceLogging("Numeric", prey, baseFileName);
+				recordItAs("Numeric", prey, baseFileName);
 			} // IPV4
 
 		} else {
@@ -216,7 +225,8 @@ public class Accountant {
 	} // method
 
 	/**
-	 * The method will publicize some status data managed via the DbFace.
+	 * The method will publicize some status data about our so called database
+	 * hidden behind DbFace interface.
 	 * 
 	 */
 	public static void publicizeStatistics() {

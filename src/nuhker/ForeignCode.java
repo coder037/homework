@@ -15,7 +15,8 @@ import java.util.logging.Logger;
 
 /**
  * Foreign code is kept in this Class, that means the code whose authors are not
- * precisely known. This is to mitigate the risk of eventual plagiarism.
+ * precisely known. This is to mitigate the risk of eventual plagiarism
+ * accusations.
  * 
  * @author various sources
  * 
@@ -31,12 +32,12 @@ public class ForeignCode {
 	 * put into a separate subroutine because of it contains lines with
 	 * SOMEBODY's copyright.
 	 * 
-	 * However, because of no responsibility, it is nice to play with a
+	 * However, because of no responsibility, it is a nice to play with a
 	 * truckload of try/catch blocks.
 	 * 
-	 * Authors are unknown. The code represents an industry standard example
-	 * represented in many textbooks. And ... some lines of the code are mine,
-	 * is this too risky to claim?
+	 * Authors are unidentified. The code represents an industry standard
+	 * building block represented in many textbooks. And ... some lines of the
+	 * code are still mine, is this too risky to claim?
 	 * 
 	 * @param urlToDL
 	 *            download link at RIPE
@@ -46,7 +47,7 @@ public class ForeignCode {
 	 */
 	public static byte[] downLoader(String urlToDL) {
 		byte[] byteArray = null;
-		URL urlToVisit = null;
+		URL urlToVisit = null; // init outside of try block
 		try {
 			urlToVisit = new URL(urlToDL);
 		} catch (MalformedURLException e) {
@@ -56,8 +57,7 @@ public class ForeignCode {
 		LOG.info("===* RIPE Downloader");
 		LOG.fine(TAB + "URL: " + urlToVisit);
 
-		// Open a network stream to the resource
-		// and record the answer.
+		// Open a network stream to the resource and record the answer.
 		// input comes from here:
 		InputStream networkSource = null;
 		try {
@@ -111,7 +111,7 @@ public class ForeignCode {
 	 * used this method to mark SOMEBODY'S ELSE COPYRIGHT on hash calculation
 	 * routines.
 	 * 
-	 * This method does some hashing with the string.
+	 * The method calculates hash value from the string.
 	 * 
 	 * @param argument
 	 *            Name of the Author to be checked cryptographically
@@ -148,5 +148,4 @@ public class ForeignCode {
 		LOG.finest(TAB + "==- Done with the hash calculation");
 		return digest;
 	}
-
 }

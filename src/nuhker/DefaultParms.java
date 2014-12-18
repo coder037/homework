@@ -48,7 +48,7 @@ public class DefaultParms {
 	private int depthOfRecursion = 4; // How deep we intend to go?
 	private int currentLevelOfRecursion = 0; // How deep we are?
 
-	// using loglevels in concordance with the Level class
+	// using loglevel codewords instead of the Level class
 	private String logLevel = "ALL";
 	private String countryCodeToWorkWith = "EE";
 	private String filenameForOutput = "out";

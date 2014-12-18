@@ -24,18 +24,19 @@ package nuhker;
 import java.util.ArrayList;
 
 /**
- * This interface is used as a pseudo Database interface. We keep our data both
+ * The interface is used as a pseudo Database interface. We keep our data both
  * EXTERNAL (to classes) and GLOBAL (to the package) to be used from multiple
- * classes and through the multi level recursions.
+ * classes and *through the multi level recursions*.
  * 
- * ArrayList of knownSites is the Global Database for targets found
- * throughout the recursive run. This way, we will not spend time
- * asking for the reputation of a site twice.
+ * ArrayList of knownSites is the Global Database for targets found throughout
+ * the recursive run. This way, we will not spend time asking for the reputation
+ * of a site twice.
  * 
  * However, a separate task is responsible for writing down (at FS level) the
  * data gathered, doing so right before the end.
  * 
  * created Dec 11, 2014 9:48:34 AM
+ * 
  * @author coder037@xyz.ee
  * 
  */
@@ -61,6 +62,5 @@ public interface DbFace {
 	// and to get the statistics about the run.
 	//
 	// http://stackoverflow.com/questions/19337788/java-arraylist-of-multidimensional-arrays-or-arraylist-of-multidimensional-arr
-	
 
 }

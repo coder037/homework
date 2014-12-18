@@ -27,7 +27,6 @@ package nuhker;
 //    Inspiration: http://www.mkyong.com/java/json-simple-example-read-and-write-json/
 // SOLVED MYSELF: how to parse hierarchical JSON (still have seen no public example to follow)
 
-
 import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -41,10 +40,11 @@ import java.util.logging.Logger;
  * return the constituency (extent of IP networks) of a country.
  * 
  * created Nov 26, 2014 11:18:09 PM
+ * 
  * @author coder037@xyz.ee
  */
 public class ParseRIPE {
-	// Some like Chopin, me like constants.
+	// Some like Chopin, me like constants
 	private final static String TAB = "\t";
 	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
 			.getStackTrace()[0].getClassName());
@@ -74,9 +74,9 @@ public class ParseRIPE {
 		LOG.finer(TAB + "Chars in the array: " + response.length);
 		jsonDataObtained = new String(response);
 
-		// WARNING! Is it safe to convert use hyperLONG Strings?
+		// ToDo WARNING! Is it so safe to convert use hyperLONG Strings?
 		// (danger of eventual linesize limits).
-		// Results approx 10kchars in case of EE
+		// Results are approx 10kchars in case of EE
 		LOG.fine(TAB + "RETURN from grabCountryDescription(" + countryCode
 				+ ").");
 		LOG.finest(TAB + TAB + "with BlobString: " + jsonDataObtained);
@@ -84,18 +84,17 @@ public class ParseRIPE {
 	}
 
 	/**
-	 * This is the most important method of the class. It takes the description
-	 * of a country's Internet obtained from RIPE and parses it into a usable
-	 * form.
+	 * This is the axial method of the class. It takes the description of a
+	 * country's Internet obtained from RIPE and parses it into a usableform.
 	 * 
 	 * Depends on external json-simple library.
 	 * 
 	 * Currently we only use AS numbers out of the RIPE description. There are
-	 * yet IPv4 and IPv6 lists available which we are currently not interested.
+	 * yet IPv4 and IPv6 lists available which we are currently uninterested.
 	 * 
 	 * @param jsonedASNList
 	 *            - A JSONPArser object with data structures
-	 * @return String[] array with all ASNs (int) nicely listed
+	 * @return arrayedASNList with all ASNs (int) nicely listed
 	 */
 	public static String[] asnJsonParser(String jsonedASNList) {
 		String[] arrayedASNList = null;
@@ -117,9 +116,8 @@ public class ParseRIPE {
 			LOG.finer(TAB + "Response Time: " + time);
 
 			// Hierarhy Level 2 - "data" keyword
-			Object midObject = (jsonObject1.get("data")); // everything inside
-															// of the middle
-															// braces
+			// everything inside of the middle braces
+			Object midObject = (jsonObject1.get("data"));
 			JSONObject jsonObject2 = (JSONObject) midObject;
 
 			String timeValue = (String) jsonObject2.get("query_time");
@@ -132,7 +130,7 @@ public class ParseRIPE {
 			// Hierarhy level 4 - each particular ASN
 			JSONArray asn = (JSONArray) jsonObject3.get("asn");
 
-			// ToDo! This conversion could be nicer ;)
+			// ToDo! This conversion could certainly be nicer ;)
 			// http://stackoverflow.com/questions/367626/how-do-i-fix-the-expression-of-type-list-needs-unchecked-conversion
 			@SuppressWarnings("unchecked")
 			ArrayList<String> outputList = new ArrayList<String>(asn);
@@ -153,12 +151,11 @@ public class ParseRIPE {
 		return arrayedASNList;
 	} // METHOD//
 
-	// ===========================================
-	// Main method is left here for debugging only.
+	// ============== Remnant MAIN method
 
 	/**
-	 * Main method has been kept to enable simple debugging. No actual use,
-	 * other classes do not call this.
+	 * Main method kept here for debugging. No actual use, other classes do not
+	 * call it.
 	 * 
 	 * @param args
 	 *            not used
@@ -181,4 +178,4 @@ public class ParseRIPE {
 
 	} // MAIN
 
-} // CLASS
+}

@@ -27,28 +27,23 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 /**
- * The class handles some simpliest kind of the file logging.
+ * The class handles some simpliest kind of the file logging and hides these
+ * pecularities from the upper layers.
  * 
  * created Dec 10, 2014 11:18:09 AM
  * 
  * @author coder037@xyz.ee
- * @param fileName
- *            which file to append to, filenames are calculated by Accountant
- *            class
- * @param message
- *            line which is to be appended to the logfile
  */
 public class TypeWriter {
 	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
 			.getStackTrace()[0].getClassName());
 
 	/**
-	 * 
 	 * @param fileName
-	 *            - which file to append to; filenames are provided by
+	 *            - which file to append to, filenames are calculated by the
 	 *            Accountant class
 	 * @param message
-	 *            - the line to append to the file
+	 *            - a line which is to be appended to the logfile
 	 * @throws IOException
 	 *             - if appending to the file or creating the file was
 	 *             unsuccessful

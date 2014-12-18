@@ -21,16 +21,20 @@
 
 package nuhker;
 
-
 import java.util.*;
 import java.util.logging.Logger;
 
 /**
- * Here are concentrated some simple functions (oops, methods)
- * we constantly need. Basically said, these are simple
- * bit-banging things, thus nothing complex.
+ * Here are concentrated some simple functions (oops, methods) we constantly
+ * need. Basically said, these are simple bit-banging things, thus nothing
+ * complex.
+ * 
+ * There is a separate question of unit testing (or not). These little dirty
+ * routines have been checked with tens of thousands of passes on the real data
+ * on the Internet. The question is, could a 10-argument unit test do it better?
  * 
  * created Dec 12, 2014 8:36:39 PM
+ * 
  * @author coder037@xyz.ee
  */
 public class Func {
@@ -70,13 +74,14 @@ public class Func {
 
 	/**
 	 * Method delay (int milliseconds) keeps internet requests a couple of
-	 * seconds apart. This is in order not to abuse services.
+	 * seconds apart. This is in order not to abuse Net services.
 	 * 
-	 * @param someNumber milliSeconds to wait
+	 * @param someNumber
+	 *            milliSeconds to wait
 	 */
 	public static void delay(int someNumber) {
-		int kiikingNumber = variateTheTime(someNumber);
-		LOG.finest("Here we should wait for: " + kiikingNumber + " msec");
+		int delayTime = variateTheTime(someNumber);
+		LOG.finest("Here we should wait for: " + delayTime + " msec");
 		try {
 			Thread.sleep(someNumber);
 		} catch (InterruptedException enough) {
@@ -89,10 +94,11 @@ public class Func {
 	 * 
 	 * The method recognizes Google promotional links and removes these from
 	 * actual data. There are 4 previously known links. We compare the argument
-	 * with these found. On the firstfound, we break the cycle and return a flag
-	 * to the calling program.
+	 * with these four. On the first match, we break the cycle and return a
+	 * boolean flag to the calling program.
 	 * 
-	 * @param suspect URL/sitename to discard as invalid data
+	 * @param suspect
+	 *            URL/sitename to discard as invalid data
 	 * @return decision whether to discard the initial parameter
 	 */
 	public static boolean isSensible(String suspect) {
@@ -117,12 +123,10 @@ public class Func {
 		return whetherToKeep;
 	}
 
-
-
 	/**
 	 * An especially freaky regexp method to distinguish between AS name, an
 	 * URL/FQDN and (last but not least) an IPv4 address. No hopes that no
-	 * errors. This is RegExp.
+	 * errors. This is RegExp. However, tested on tens thousands of cases.
 	 * 
 	 * DataDiver is using our decision to work properly with each of these
 	 * categories. We expect following data: - AS29024 (BALLOU-AS) -> AS -
@@ -140,20 +144,9 @@ public class Func {
 		LOG.finer(TAB + "whatIsIt START");
 
 		LOG.fine(TAB + TAB + "SRC: |" + candidate + "|.");
-		// Pattern: Caret , AS
-		// Bastard AS55592 has no description ;)
+		// Pattern: Beginning , AS, digit
+		// Bastard AS55592 is guilty - it has no description ;)
 		if (candidate.matches("^AS\\d+.*")) {
-
-			// }
-			// workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1$2");
-			// workspace = candidate.replaceAll("(^AS)(\\d+)(\\s.*)", "$1$2");
-			// // workspace = candidate.replaceAll("(^AS)(\\d+)", "$1"); // and
-			// possibly no (Description)
-			// pattern = ( AS );
-			// LOG.fine(TAB + TAB + "MID: |" + workspace + "| and |" + pattern +
-			// "|.");
-			// if (pattern.equals(workspace))
-			// {
 			decision = (AS);
 			LOG.finest(TAB + TAB + " chosen: " + decision);
 
@@ -190,7 +183,9 @@ public class Func {
 		if (decision.equals("ERROR")) {
 			LOG.severe(TAB + "---+---+---+---> whatIsIt made decision="
 					+ decision + " for target " + candidate);
-			System.exit(1);
+			LOG.warning(TAB + "Man, a program could be written better!");
+			System.exit(70);
+			// http://www.opensource.apple.com/source/Libc/Libc-320/include/sysexits.h
 		}
 		LOG.finer(TAB + "---+---+---+---> whatIsIt decision=" + decision);
 		return decision;
@@ -203,7 +198,8 @@ public class Func {
 	 * To be very sure, it can convert even from AS12345 to 12345 Altogether
 	 * used 2 times.
 	 * 
-	 * @param source - number or an ASN in pseudo-int format ("12345")
+	 * @param source
+	 *            - number or an ASN in pseudo-int format ("12345")
 	 * @return the same ASN with "AS:" prepended -> AS:12345 to be directly
 	 *         usable against GSB
 	 */
@@ -255,13 +251,12 @@ public class Func {
 	}
 
 	/**
-	 * This is the wrapper class to check the Autorship. It does nothing except
+	 * This is the wrapper method to check the Autorship. It does nothing except
 	 * taking the proposed author's name and calling a cryptographic validation
-	 * calculateHash(String argument) of that.
+	 * calculateHash(String argument) against it.
 	 * 
 	 * The idea is that if you PREVIOUSLY know the author's name, you can prove
-	 * it but if you don't know it, the program will not share its authors name,
-	 * too.
+	 * it; but if you did'nt know, the program will not share its authors name.
 	 * 
 	 * @param argument
 	 *            Author's name or what you think it is

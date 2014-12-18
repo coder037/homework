@@ -21,7 +21,6 @@
 
 package nuhker;
 
-
 import java.io.IOException;
 import java.util.logging.Logger;
 import joptsimple.OptionException;
@@ -30,19 +29,20 @@ import joptsimple.OptionSet;
 
 /**
  * 
- * This is the class to launch from CLI considering the options. No
- * multi-threading at all.
+ * The runnable from CLI class, honouring CLI options and no multi-threading at
+ * all.
  * 
- * It takes CLI Grammar, stores it in a data class and then calls
+ * It takes CLI Grammar, passes it as a data class and then calls
  * DataDiver.main(DefaultParms modified) to do the actual work
  * 
  * created Nov 23, 2014 12:44:46 AM
+ * 
  * @author coder037@xyz.ee
- * @version 0.9.2 so far
+ * @version 1.0
  */
 public class Run {
 
-	private final static String VERSION = "0.9.2";
+	private final static String VERSION = "1.0";
 	private final static String TAB = "\t";
 	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
 			.getStackTrace()[0].getClassName());
@@ -56,7 +56,8 @@ public class Run {
 	 * If it seems to the library that options are correct and adhere to the
 	 * Grammar, then we return Boolean true, otherwise false.
 	 * 
-	 * @param arguments - a copy of CLI options to be validated
+	 * @param arguments
+	 *            - a copy of CLI options to be validated
 	 * @return decision whether the conformancy was true or false
 	 */
 	public static boolean checkConformity(String[] arguments) {
@@ -87,7 +88,9 @@ public class Run {
 				LOG.warning("Please check the command line options twice!");
 				preParser.printHelpOn(System.err);
 			} catch (IOException e1) {
-				LOG.severe(TAB + "dammit, even jopt-simple help wasn't available:" + e1);
+				LOG.severe(TAB
+						+ "dammit, even jopt-simple help wasn't available:"
+						+ e1);
 			}
 
 			// ==== END of foreign code
@@ -95,9 +98,9 @@ public class Run {
 			System.exit(78);
 			// http://www.opensource.apple.com/source/Libc/Libc-320/include/sysexits.h
 		}
-		// END of the code which authorship is partially of somebody's else.
+		// END of the code with partial authorship of somebody's else.
 		LOG.info("   ===~ DONE: Option Conformity");
-		return true; // We reached this point, thus no bailout
+		return true; // We did reach this point, thus no bailout anymore
 	}
 
 	/**
@@ -107,10 +110,10 @@ public class Run {
 	 * 
 	 * @param arguments
 	 *            to be parsed as options, taken straight from CLI
-	 * @return an object Runtimes of type DefaultParameter that all DataDiver
-	 *         recursions will be called with
+	 * @return runTimeParms object of DefaultParameter type which all DataDiver
+	 *         recursions will be called with.
 	 * @throws Exception
-	 *             which has left mostly unhandled. The reason - a PoC code.
+	 *             which has left relatively unhandled. The reason - a PoC code.
 	 */
 	public static DefaultParms parseContent(String[] arguments)
 			throws Exception {
@@ -244,6 +247,7 @@ public class Run {
 
 	public static void loggingBlock(DefaultParms values) {
 		// From this point on, the LOG output is correctly formatted
+		// ToDo: a singleton launch of the logger
 		LOG.info(TAB + "=================================");
 		// printout of ACTUAL options
 		LOG.info(TAB + "~~~~~~~~ " + "Our Epoch started at: "
@@ -271,19 +275,19 @@ public class Run {
 		values.setCurrentTarget(values.getCountryCodeToWorkWith());
 		LOG.info(TAB + "Launching DataDiver for the constituency: "
 				+ values.getCurrentTarget());
-
 	}
 
 	/**
 	 * The main routine parses CLI options from the command line argv and sets
 	 * the running options according these.
 	 * 
-	 * Some simulated CLI option examples are left commented out.
+	 * Some simulated CLI option examples are presented for eventual debugging
 	 * 
 	 * @param argv
 	 *            CLI options passed to other methods
 	 * @throws Exception
-	 *             which left properly unhandled - b/c this is a PoC code.
+	 *             which remains relativelt unhandled - b/c this is a PoC code
+	 *             and bailout on the initial stage is not so evil.
 	 */
 	public static void main(String[] argv) throws Exception {
 		long firstVariable = System.nanoTime();
@@ -299,7 +303,7 @@ public class Run {
 		// String[] simulation3 = { "--help" };
 		// String[] effectiveOptions = argv; // or simulation{1,2.3}
 		String[] effectiveOptions = argv;
-		
+
 		LOG.severe("============= Starting M A I N ==============");
 
 		// Formal check of command line options syntax
@@ -319,10 +323,11 @@ public class Run {
 		}
 		// From this point on, the LOG output should be correctly formatted
 		loggingBlock(finalOptions);
+		// and YES, we have heard about singleton style, indeed.
 
 		LOG.info("==-> START of the actual launch of our business logic... ");
 		DataDiver.entryPoint(finalOptions);
-		// The recursive grabber will work long ;)
+		// The recursive grabber will spend hours ;)
 
 		// End Statements
 		long duration = (System.nanoTime() - finalOptions.getStartTime());
@@ -330,6 +335,6 @@ public class Run {
 				+ " secs.");
 		LOG.info("================  END of MAIN  ==========");
 		System.exit(0);
+		// An alternative is to accomplish a timer suicide by DataDiver
 	}
-
 }
