@@ -45,7 +45,6 @@ import java.util.ArrayList;
 public class ParseGSB {
 
 	private final static String TAB = "\t";
-	private final static String AS = "AS";
 	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
 			.getStackTrace()[0].getClassName());
 
@@ -138,8 +137,8 @@ public class ParseGSB {
 	 */
 	public static void main(String[] args) {
 		String target1 = "delfi.ee/";
-		String target2 = "AS:8728";
-		String target3 = "AS:12757";
+		// String target2 = "AS:8728";
+		// String target3 = "AS:12757";
 
 		LOG.info("=== ParseGSB MAIN ===");
 		String needToDive[] = badReputation(target1); // choose 1 or 2 or 3

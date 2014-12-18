@@ -27,23 +27,12 @@ package nuhker;
 //    Inspiration: http://www.mkyong.com/java/json-simple-example-read-and-write-json/
 // SOLVED MYSELF: how to parse hierarchical JSON (still have seen no public example to follow)
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-//import java.io.FileNotFoundException;
-//import java.io.FileOutputStream;
-//import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-// import java.util.Iterator; // Will need it later?
 
-//import java.io.FileWriter;
-//import java.io.IOException;
+import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -165,7 +154,7 @@ public class ParseRIPE {
 	} // METHOD//
 
 	// ===========================================
-	// Main method is intended for debugging only.
+	// Main method is left here for debugging only.
 
 	/**
 	 * Main method has been kept to enable simple debugging. No actual use,

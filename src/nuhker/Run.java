@@ -21,26 +21,12 @@
 
 package nuhker;
 
-import java.io.File;
-import java.io.FileInputStream;
+
 import java.io.IOException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import java.util.EnumSet;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-
-import java.security.MessageDigest;
 
 /**
  * 
@@ -98,11 +84,10 @@ public class Run {
 
 			}
 			try {
-				LOG.info("Please check the command line options twice!");
+				LOG.warning("Please check the command line options twice!");
 				preParser.printHelpOn(System.err);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				LOG.severe(TAB + "dammit, even jopt-simple help wasn't available:" + e1);
 			}
 
 			// ==== END of foreign code
