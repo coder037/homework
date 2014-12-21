@@ -87,6 +87,8 @@ public class CLIGrammar extends OptionParser {
 				.withRequiredArg().ofType(Integer.class);
 		// Thus we did it with String.class identifier not File.Class
 
+		
+		// h2 - javas kirjutatud sql andmebaas
 		ourGrammar
 				.acceptsAll(Arrays.asList("o", "filename", OPT_OUTPUT),
 						"Name of the output file; default=output")
@@ -94,7 +96,7 @@ public class CLIGrammar extends OptionParser {
 		ourGrammar
 				.acceptsAll(Arrays.asList("R", OPT_RECURSIONLEVEL),
 						"recursion depth; default=4").withRequiredArg()
-				.ofType(Integer.class);
+				.ofType(Integer.class).defaultsTo(6);
 		ourGrammar
 				.acceptsAll(Arrays.asList("t", OPT_TIMEOUT),
 						"Timeout between requests; default=2800 msecs or Google will block you")

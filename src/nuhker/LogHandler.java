@@ -35,6 +35,10 @@ import java.util.logging.Logger;
  */
 public class LogHandler {
 
+	// dependency injection
+	
+	// spring või guice
+	
 	private static final Logger LOG = Logger.getLogger(Thread.currentThread()
 			.getStackTrace()[0].getClassName());
 	private final static String TAB = "\t";

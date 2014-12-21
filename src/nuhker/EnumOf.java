@@ -21,6 +21,7 @@
 
 package nuhker;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -130,6 +131,8 @@ public class EnumOf {
 	 */
 	public enum preyCodeWord {
 		InitialASN, AllSites, Domain, DomainCC, ASN, ASNCC, Numeric;
+		
+//		private ArrayList list = new ArrayList();
 
 		/**
 		 * Checking the prey code (a target discovered and need to be accounted

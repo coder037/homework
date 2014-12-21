@@ -46,7 +46,7 @@ public class DefaultParms {
 	private int maxTimeToRunBeforeKilled = 80000000; // in milliseconds
 	private int minTimeBetweenGSBRequests = 2500; // in milliseconds
 	private int depthOfRecursion = 4; // How deep we intend to go?
-	private int currentLevelOfRecursion = 0; // How deep we are?
+	private int currentLevelOfRecursion = 6; // How deep we are?
 
 	// using loglevel codewords instead of the Level class
 	private String logLevel = "ALL";

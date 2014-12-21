@@ -101,7 +101,7 @@ public class DataDiver {
 			LOG.finer(TAB + "might be we attempt some houskeeping before that.");
 			System.exit(0);
 		}
-
+		LOG.warning("==== cURRENT lEVEL =" + currentLevel);
 		if (0 == currentLevel) { // Remaining depth = 0
 			LOG.finer("==== --{Recursion FLOOR reached}-- ====");
 			return;

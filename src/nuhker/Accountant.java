@@ -24,6 +24,9 @@ package nuhker;
 import java.util.logging.Logger;
 import java.io.IOException;
 
+import nuhker.EnumOf.preyCodeWord;
+import nuhker.data.DbFace;
+
 /**
  * The class supports main routines datawise, makes decisions on whether or not
  * to deal with next target, depending on the recorded "database".
@@ -123,6 +126,8 @@ public class Accountant {
 		String fileSuffix = ".txt";
 		String arrow = "===---===---===---===---===---> ";
 
+		// preyCodeWord enumValue = EnumOf.preyCodeWord.valueOf(switchWord);
+		
 		// a SWITCH substitute
 		if (switchWord.equals("AllSites")) {
 			DbFace.AllSites.add(target);

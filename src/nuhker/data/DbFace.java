@@ -19,7 +19,7 @@
  *  readers earn with the help of that code, things might be different.
  */
 
-package nuhker;
+package nuhker.data;
 
 import java.util.ArrayList;
 
